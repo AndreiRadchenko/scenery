@@ -15,9 +15,20 @@ import { useState, useEffect } from 'react';
 import { useKeyboardVisible } from '../hooks';
 
 const isPlatformIOS = Platform.OS === 'ios';
+const initialState = {
+  email: '',
+  password: '',
+};
 
 export const LoginScreen = ({ navigation }) => {
   const isKeyboardVisible = useKeyboardVisible();
+  const [credentials, setCredentials] = useState(initialState);
+  const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+
+  const onSubmit = () => {
+    console.log(credentials);
+    setCredentials(initialState);
+  };
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -32,18 +43,38 @@ export const LoginScreen = ({ navigation }) => {
           >
             <View style={{ ...styles.form, paddingBottom: isKeyboardVisible ? 0 : 78 }}>
               <Text style={styles.form__title}>Login</Text>
-              <TextInput style={styles.form__input} placeholder="Email" />
+              <TextInput
+                style={styles.form__input}
+                placeholder="Email"
+                value={credentials.email}
+                onChangeText={value =>
+                  setCredentials(prevState => ({ ...prevState, email: value }))
+                }
+              />
               <View style={styles.form__password__wrap}>
                 <TextInput
                   style={styles.form__input}
                   placeholder="Password"
-                  secureTextEntry={true}
+                  secureTextEntry={isPasswordHidden}
+                  value={credentials.password}
+                  onChangeText={value =>
+                    setCredentials(prevState => ({ ...prevState, password: value }))
+                  }
                 />
-                <Text style={styles.form__input__show}>Show</Text>
+                <Text
+                  style={styles.form__input__show}
+                  onPress={() => setIsPasswordHidden(prevState => !prevState)}
+                >
+                  {isPasswordHidden ? 'Show' : 'Hide'}
+                </Text>
               </View>
               {!isKeyboardVisible && (
                 <>
-                  <TouchableOpacity activeOpacity={0.8} style={styles.form__button}>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    style={styles.form__button}
+                    onPress={onSubmit}
+                  >
                     <Text style={styles.form__button__text}>Login</Text>
                   </TouchableOpacity>
                   <Text

@@ -19,9 +19,21 @@ import AddSvg from '../assets/svg/add.svg';
 const isPlatformIOS = Platform.OS === 'ios';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+const initialState = {
+  name: '',
+  email: '',
+  password: '',
+};
 
 export const RegistrationScreen = ({ navigation }) => {
   const isKeyboardVisible = useKeyboardVisible();
+  const [credentials, setCredentials] = useState(initialState);
+  const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+
+  const onSubmit = () => {
+    console.log(credentials);
+    setCredentials(initialState);
+  };
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -44,8 +56,20 @@ export const RegistrationScreen = ({ navigation }) => {
                 <AddSvg width={25} height={25} style={styles.form__avatar__add} />
               </View>
               <Text style={styles.form__title}>Register</Text>
-              <TextInput style={styles.form__input} placeholder="Name" />
-              <TextInput style={styles.form__input} placeholder="Email" />
+              <TextInput
+                style={styles.form__input}
+                placeholder="Name"
+                value={credentials.name}
+                onChangeText={value => setCredentials(prevState => ({ ...prevState, name: value }))}
+              />
+              <TextInput
+                style={styles.form__input}
+                placeholder="Email"
+                value={credentials.email}
+                onChangeText={value =>
+                  setCredentials(prevState => ({ ...prevState, email: value }))
+                }
+              />
               <View
                 style={{
                   ...styles.form__password__wrap,
@@ -55,13 +79,26 @@ export const RegistrationScreen = ({ navigation }) => {
                 <TextInput
                   style={styles.form__input}
                   placeholder="Password"
-                  secureTextEntry={true}
+                  secureTextEntry={isPasswordHidden}
+                  value={credentials.password}
+                  onChangeText={value =>
+                    setCredentials(prevState => ({ ...prevState, password: value }))
+                  }
                 />
-                <Text style={styles.form__input__show}>Show</Text>
+                <Text
+                  style={styles.form__input__show}
+                  onPress={() => setIsPasswordHidden(prevState => !prevState)}
+                >
+                  {isPasswordHidden ? 'Show' : 'Hide'}
+                </Text>
               </View>
               {!isKeyboardVisible && (
                 <>
-                  <TouchableOpacity activeOpacity={0.8} style={styles.form__button}>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    style={styles.form__button}
+                    onPress={onSubmit}
+                  >
                     <Text style={styles.form__button__text}>Register</Text>
                   </TouchableOpacity>
                   <Text
