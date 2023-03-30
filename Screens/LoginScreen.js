@@ -12,25 +12,12 @@ import {
 } from 'react-native';
 import { cssVar } from '../utils/cssVar';
 import { useState, useEffect } from 'react';
+import { useKeyboardVisible } from '../hooks';
 
 const isPlatformIOS = Platform.OS === 'ios';
 
-export const LoginScreen = () => {
-  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-
-  useEffect(() => {
-    const keyboardWillShowListener = Keyboard.addListener('keyboardWillShow', () => {
-      setKeyboardVisible(true); // or some other action
-    });
-    const keyboardWillHideListener = Keyboard.addListener('keyboardWillHide', () => {
-      setKeyboardVisible(false); // or some other action
-    });
-
-    return () => {
-      keyboardWillHideListener.remove();
-      keyboardWillShowListener.remove();
-    };
-  }, []);
+export const LoginScreen = ({ navigation }) => {
+  const isKeyboardVisible = useKeyboardVisible();
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -43,9 +30,7 @@ export const LoginScreen = () => {
             behavior={isPlatformIOS ? 'padding' : ''}
             keyboardVerticalOffset={0}
           >
-            <View
-              style={{ ...styles.form, height: isKeyboardVisible && isPlatformIOS ? 248 : 489 }}
-            >
+            <View style={{ ...styles.form, paddingBottom: isKeyboardVisible ? 0 : 78 }}>
               <Text style={styles.form__title}>Login</Text>
               <TextInput style={styles.form__input} placeholder="Email" />
               <View style={styles.form__password__wrap}>
@@ -56,10 +41,19 @@ export const LoginScreen = () => {
                 />
                 <Text style={styles.form__input__show}>Show</Text>
               </View>
-              <TouchableOpacity activeOpacity={0.8} style={styles.form__button}>
-                <Text style={styles.form__button__text}>Login</Text>
-              </TouchableOpacity>
-              <Text style={styles.form__register__text}>Don't have account? Register</Text>
+              {!isKeyboardVisible && (
+                <>
+                  <TouchableOpacity activeOpacity={0.8} style={styles.form__button}>
+                    <Text style={styles.form__button__text}>Login</Text>
+                  </TouchableOpacity>
+                  <Text
+                    style={styles.form__register__text}
+                    onPress={() => navigation.navigate('Registration')}
+                  >
+                    Don't have account? Register
+                  </Text>
+                </>
+              )}
             </View>
           </KeyboardAvoidingView>
         </ImageBackground>
