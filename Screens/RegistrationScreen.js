@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     paddingTop: 92,
     // paddingBottom: 78,
     backgroundColor: cssVar.backgroundColor,
-    fontWeight: 400,
+    // fontWeight: 400,
     fontSize: 16,
     lineHeight: 19,
   },
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
   },
   form__title: {
     fontFamily: 'Roboto-Bold',
-    fontWeight: 500,
+    // fontWeight: 500,
     fontSize: 30,
     lineHeight: 35,
     textAlign: 'center',
