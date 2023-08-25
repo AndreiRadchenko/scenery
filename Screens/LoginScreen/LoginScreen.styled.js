@@ -1,5 +1,5 @@
 import { styled } from 'styled-components/native';
-import { ImageBackground, Animated } from 'react-native';
+import { ImageBackground, Text } from 'react-native';
 import themes from '../../utils/themes';
 
 export const Container = styled.View`
@@ -13,7 +13,7 @@ export const BgImage = styled(ImageBackground)`
   justify-content: flex-end;
 `;
 
-export const LoginForm = styled(Animated.View)`
+export const LoginForm = styled.View`
   align-items: center;
   border-top-left-radius: 25px;
   border-top-right-radius: 25px;
@@ -21,7 +21,73 @@ export const LoginForm = styled(Animated.View)`
   background-color: ${themes.primary.colors.backgroundColor};
   font-size: 16px;
   line-height: 19px;
-  /* padding-bottom: 78px; */
   padding-bottom: ${({ isKeyboardVisible }) =>
     isKeyboardVisible ? 0 : '78px'};
+`;
+
+export const Title = styled.Text`
+  font-family: ${themes.primary.font.family.robotoBold};
+  font-size: 30px;
+  line-height: 35px;
+  text-align: center;
+  margin-bottom: 33px;
+`;
+
+export const InputWrapper = styled.View`
+  margin-bottom: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  height: 72px;
+`;
+
+export const Input = styled.TextInput`
+  width: 343px;
+  height: 50px;
+  padding: 16px;
+  background-color: ${themes.primary.colors.inputBgColor};
+  border-width: 1px;
+  border-color: ${({ isError }) =>
+    isError
+      ? themes.primary.colors.accentColor
+      : themes.primary.colors.inputBorderColor};
+  border-radius: 8px;
+`;
+
+export const Error = styled.Text`
+  text-align: right;
+  font-size: 12px;
+  line-height: 12px;
+  padding: 4px;
+  color: ${themes.primary.colors.accentColor};
+`;
+
+export const PasswordWrapper = styled.View`
+  position: relative;
+`;
+
+export const ShowPassword = styled.Text`
+  position: absolute;
+  top: 15px;
+  right: 16px;
+  color: ${themes.primary.colors.formTextColor};
+`;
+
+export const Button = styled.TouchableOpacity`
+  align-items: center;
+  justify-content: center;
+  width: 343px;
+  height: 50px;
+  border-radius: 100px;
+  background-color: ${themes.primary.colors.accentColor};
+  margin-top: 28px;
+`;
+
+export const ButtonText = styled.Text`
+  color: ${themes.primary.colors.backgroundColor};
+`;
+
+export const RegisterText = styled.Text`
+  margin-top: 16px;
+  color: ${themes.primary.colors.formTextColor};
 `;
