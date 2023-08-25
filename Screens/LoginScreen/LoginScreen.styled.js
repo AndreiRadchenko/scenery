@@ -21,7 +21,7 @@ export const LoginForm = styled(Animated.View)`
   background-color: ${themes.primary.colors.backgroundColor};
   font-size: 16px;
   line-height: 19px;
-  /* padding-bottom: 78px; */
-  padding-bottom: ${({ isKeyboardVisible }) =>
-    isKeyboardVisible ? 0 : '78px'};
+  padding-bottom: 78px;
+  /* padding-bottom: ${({ isKeyboardVisible }) =>
+    isKeyboardVisible ? 0 : '78px'}; */
 `;

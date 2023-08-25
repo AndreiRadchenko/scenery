@@ -37,7 +37,7 @@ export const LoginScreen = ({ navigation }) => {
   useEffect(() => {
     Animated.timing(formTranslateAnimation, {
       toValue: formPosition,
-      duration: 500,
+      duration: 150,
       useNativeDriver: true,
       easing: Easing.linear,
     }).start();
@@ -81,12 +81,10 @@ export const LoginScreen = ({ navigation }) => {
           >
             <Styled.LoginForm
               isKeyboardVisible={isKeyboardVisible}
-              style={
-                {
-                  // transform: [{ translateY: formTranslateAnimation }],
-                  // transform: [{ translateY: isKeyboardVisible ? 78 : 0 }],
-                }
-              }
+              style={{
+                transform: [{ translateY: formTranslateAnimation }],
+                // transform: [{ translateY: isKeyboardVisible ? 78 : 0 }],
+              }}
               onFocus={moveUp}
               onBlur={moveDown}
             >
@@ -122,7 +120,7 @@ export const LoginScreen = ({ navigation }) => {
                   {isPasswordHidden ? 'Show' : 'Hide'}
                 </Text>
               </View>
-              {!isKeyboardVisible && (
+              {
                 <>
                   <TouchableOpacity
                     activeOpacity={0.8}
@@ -138,7 +136,7 @@ export const LoginScreen = ({ navigation }) => {
                     Don't have account? Register
                   </Text>
                 </>
-              )}
+              }
             </Styled.LoginForm>
           </KeyboardAvoidingView>
         </Styled.BgImage>
