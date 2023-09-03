@@ -1,6 +1,6 @@
 import { styled } from 'styled-components/native';
 import { ImageBackground, Text } from 'react-native';
-import themes from '../../utils/themes';
+import themes from '../../../utils/themes';
 
 export const Container = styled.View`
   flex: 1;
@@ -22,7 +22,7 @@ export const LoginForm = styled.View`
   font-size: 16px;
   line-height: 19px;
   padding-bottom: ${({ isKeyboardVisible }) =>
-    isKeyboardVisible ? 0 : '78px'};
+    isKeyboardVisible ? 0 : '132px'};
 `;
 
 export const Title = styled.Text`
@@ -64,6 +64,11 @@ export const Error = styled.Text`
 
 export const PasswordWrapper = styled.View`
   position: relative;
+  margin-bottom: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  height: 72px;
 `;
 
 export const ShowPassword = styled.Text`

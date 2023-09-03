@@ -1,15 +1,16 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { RegistrationScreen, LoginScreen } from './Screens';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { StyleSheet, Text, View, TouchableWithoutFeedback, Keyboard } from 'react-native';
+
+import { useRoute } from './router';
 
 SplashScreen.preventAutoHideAsync();
 const MainStack = createStackNavigator();
 
 export default function App() {
+  const [isAuth, setIsAuth] = useState(true);
   const [fontsLoaded] = useFonts({
     'Roboto-Regular': require('./assets/fonts/roboto/Roboto-Regular.ttf'),
     'Roboto-Bold': require('./assets/fonts/roboto/Roboto-Bold.ttf'),
@@ -25,26 +26,11 @@ export default function App() {
     return null;
   }
 
+  const routing = useRoute(isAuth, setIsAuth);
+
   return (
     <NavigationContainer onReady={onLayoutRootView} headerMode="none">
-      <MainStack.Navigator
-        initialRouteName="Login"
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <MainStack.Screen name="Registration" component={RegistrationScreen} />
-        <MainStack.Screen name="Login" component={LoginScreen} />
-      </MainStack.Navigator>
+      {routing}
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

@@ -9,14 +9,14 @@ import { useFormik } from 'formik';
 
 import * as Styled from './LoginScreen.styled';
 
-import { useKeyboardVisible } from '../../hooks';
-import { loginValidationSchema } from '../../validations/loginValidationSchema';
+import { useKeyboardVisible } from '../../../hooks';
+import { loginValidationSchema } from '../../../validations/ValidationSchemas';
 
 const isPlatformIOS = Platform.OS === 'ios';
 
-export const LoginScreen = ({ navigation }) => {
+export const LoginScreen = ({ navigation, route, setIsAuth }) => {
   const isKeyboardVisible = useKeyboardVisible();
-
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
   const formik = useFormik({
@@ -24,25 +24,27 @@ export const LoginScreen = ({ navigation }) => {
       email: '',
       password: '',
     },
+    // validationSchema: isFormSubmitted ? loginValidationSchema : null,
     validationSchema: loginValidationSchema,
-    onSubmit: (values) => {
+    validateOnChange: isFormSubmitted,
+    onSubmit: (values, { resetForm }) => {
       console.log('Form values:', values);
+      setIsAuth(true);
+      resetForm();
+      setIsFormSubmitted(false);
     },
   });
 
-  const handleSubmit = () => {
-    console.log('onSubmit');
-    console.log('Form errors:', formik.errors);
+  const handleSubmit = async () => {
+    await setIsFormSubmitted(true);
     formik.handleSubmit();
-    formik.resetForm();
-    formik.setErrors({});
   };
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <Styled.Container>
         <Styled.BgImage
-          source={require('../../assets/img/PhotoBG-compressed.jpg')}
+          source={require('../../../assets/img/PhotoBG-compressed.jpg')}
         >
           <KeyboardAvoidingView
             behavior={isPlatformIOS ? 'padding' : ''}
@@ -61,11 +63,13 @@ export const LoginScreen = ({ navigation }) => {
               </Styled.InputWrapper>
               <Styled.PasswordWrapper>
                 <Styled.Input
+                  isError={formik.errors.password}
                   placeholder="Password"
                   secureTextEntry={isPasswordHidden}
                   value={formik.values.password}
                   onChangeText={formik.handleChange('password')}
                 />
+                <Styled.Error>{formik.errors.password}</Styled.Error>
                 <Styled.ShowPassword
                   onPress={() => setIsPasswordHidden((prevState) => !prevState)}
                 >

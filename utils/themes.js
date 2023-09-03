@@ -30,6 +30,9 @@ const themes = {
       inputBgColor: '#F6F6F6',
       inputBorderColor: '#E8E8E8',
       formTextColor: '#1B4371',
+      iconInactive: 'rgba(33, 33, 33, 0.8)',
+      iconActive: '#fff',
+      lightGrey: '#bdbdbd',
     },
     media: {
       maxMobile: '(max-width: 768px)',

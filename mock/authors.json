@@ -1,0 +1,26 @@
+[
+  {
+    "_id": "1",
+    "avatar": {
+      "url": "https://res.cloudinary.com/dbm1pjejb/image/upload/v1678445440/rest-api-avatars/bx1yeff5ol1uas5frxyg.jpg"
+    },
+    "name": "Natali Romanova",
+    "email": "email@example.com"
+  },
+  {
+    "_id": "2",
+    "avatar": {
+      "url": "https://res.cloudinary.com/dbm1pjejb/image/upload/v1678444787/rest-api-avatars/gy14gghzjqck1n9sak81.jpg"
+    },
+    "name": "Andrii Radchenko",
+    "email": "test@gmail.com"
+  },
+  {
+    "_id": "3",
+    "avatar": {
+      "url": "https://res.cloudinary.com/dbm1pjejb/image/upload/v1678981447/rest-api-avatars/snow-lion-mirror_mqdo8k.jpg"
+    },
+    "name": "Korban Dallas",
+    "email": "korban.dallas@example.com"
+  }
+]
