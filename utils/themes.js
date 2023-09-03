@@ -32,7 +32,9 @@ const themes = {
       formTextColor: '#1B4371',
       iconInactive: 'rgba(33, 33, 33, 0.8)',
       iconActive: '#fff',
+      text: 'rgba(33, 33, 33, 1)',
       lightGrey: '#bdbdbd',
+      header: '#212121',
     },
     media: {
       maxMobile: '(max-width: 768px)',

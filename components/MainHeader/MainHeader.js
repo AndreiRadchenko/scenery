@@ -1,13 +1,13 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { getHeaderTitle } from '@react-navigation/elements';
 
 import { LogoutSvg } from './LogoutSvg';
-import { PostsSvg } from '../BottomTabNavigator';
 
 import * as Styled from './MainHeader.styled';
 import themes from '../../utils/themes';
 
-export const MainHeader = ({ title, navigation, setIsAuth }) => {
+export const MainHeader = ({ navigation, route, options, back, setIsAuth }) => {
+  const title = getHeaderTitle(options, route.name);
   const handleLogout = () => {
     setIsAuth(false);
   };
@@ -20,7 +20,7 @@ export const MainHeader = ({ title, navigation, setIsAuth }) => {
       >
         <Styled.HeaderTitle>{title}</Styled.HeaderTitle>
         <Styled.LogoutWrapper onPress={handleLogout}>
-          <LogoutSvg color={themes.primary.colors.iconInactive} />
+          <LogoutSvg color={themes.primary.colors.lightGrey} />
         </Styled.LogoutWrapper>
       </Styled.HeaderContainer>
     </>

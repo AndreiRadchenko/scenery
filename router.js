@@ -2,7 +2,6 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { getHeaderTitle } from '@react-navigation/elements';
 
 import {
   LoginScreen,
@@ -48,15 +47,8 @@ export const useRoute = (isAuth, setIsAuth) => {
       tabBar={(props) => <BottomTabBar {...props} />}
       screenOptions={{
         headerStyle: { height: 88 },
-        header: ({ navigation, route, options, back }) => {
-          const title = getHeaderTitle(options, route.name);
-          return (
-            <MainHeader
-              setIsAuth={setIsAuth}
-              title={title}
-              navigation={navigation}
-            />
-          );
+        header: (props) => {
+          return <MainHeader {...props} setIsAuth={setIsAuth} />;
         },
       }}
     >

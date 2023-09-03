@@ -1,6 +1,4 @@
 import { styled } from 'styled-components/native';
-import { ImageBackground, Text } from 'react-native';
-import { BottomTabBar, BottomTabBarItem } from '@react-navigation/bottom-tabs';
 
 import themes from '../../utils/themes';
 

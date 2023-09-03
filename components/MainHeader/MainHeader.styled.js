@@ -1,10 +1,5 @@
 import { styled } from 'styled-components/native';
-import {
-  ImageBackground,
-  Text,
-  TouchableOpacity,
-  TouchableHighlight,
-} from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import themes from '../../utils/themes';
 
 export const HeaderContainer = styled.View`
@@ -22,7 +17,7 @@ export const HeaderContainer = styled.View`
 `;
 
 export const HeaderTitle = styled.Text`
-  color: #212121;
+  color: ${themes.primary.colors.header};
   text-align: center;
   font-family: ${themes.primary.font.family.robotoBold};
   font-size: 17px;
