@@ -4,8 +4,10 @@ import * as Styled from './BottomTabBar.styled';
 import themes from '../../utils/themes';
 
 export function BottomTabBar({ state, descriptors, navigation }) {
+  console.log(state.index);
+
   return (
-    <Styled.TabBar>
+    <Styled.TabBar tabIndex={state.index}>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const label =
@@ -18,7 +20,6 @@ export function BottomTabBar({ state, descriptors, navigation }) {
         const isFocused = state.index === index;
 
         const onPress = () => {
-          console.log(route.name);
           const event = navigation.emit({
             type: 'tabPress',
             target: route.key,

@@ -66,6 +66,7 @@ export const useRoute = (isAuth, setIsAuth) => {
           tabBarIcon: ({ focused, size, color }) => (
             <CreateSvg size={size} color={color} />
           ),
+          headerTitle: 'Create post',
         }}
         name="Create"
         component={CreateScreen}

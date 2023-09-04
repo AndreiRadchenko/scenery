@@ -35,6 +35,7 @@ const themes = {
       text: 'rgba(33, 33, 33, 1)',
       lightGrey: '#bdbdbd',
       header: '#212121',
+      transparentButton: 'rgba(255, 255, 255, 0.3)',
     },
     media: {
       maxMobile: '(max-width: 768px)',

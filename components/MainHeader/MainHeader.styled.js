@@ -28,7 +28,15 @@ export const HeaderTitle = styled.Text`
 `;
 
 export const LogoutWrapper = styled(TouchableOpacity)`
+  display: ${({ isVisible }) => (isVisible ? 'flex' : 'none')};
   position: absolute;
   right: 16px;
+  bottom: 10px;
+`;
+
+export const BackButtonWrapper = styled(TouchableOpacity)`
+  display: ${({ isVisible }) => (isVisible ? 'flex' : 'none')};
+  position: absolute;
+  left: 16px;
   bottom: 10px;
 `;
