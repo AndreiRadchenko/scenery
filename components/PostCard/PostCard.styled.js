@@ -1,0 +1,52 @@
+import { styled } from 'styled-components/native';
+
+import themes from '../../utils/themes';
+
+export const PostCard = styled.View`
+  margin-top: ${({ index }) => (index === 1 ? '32px' : 0)};
+  margin-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+export const CardImage = styled.Image`
+  height: 240px;
+  border-radius: 8px;
+`;
+
+export const CardName = styled.Text`
+  color: ${themes.primary.colors.header};
+  font-family: ${themes.primary.font.family.robotoBold};
+  font-size: 16px;
+  font-weight: 500;
+`;
+
+export const ExtDataWrapper = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+export const InfoBlock = styled.View`
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+`;
+
+export const CommentNumbers = styled.Text`
+  color: ${({ isEmpty }) =>
+    isEmpty ? themes.primary.colors.lightGrey : themes.primary.colors.text};
+  font-family: ${themes.primary.font.family.robotoRegular};
+  font-size: 16px;
+  font-weight: 400;
+`;
+
+export const LocationText = styled.Text`
+  color: ${themes.primary.colors.text};
+  /* text-align: right; */
+  font-family: ${themes.primary.font.family.robotoRegular};
+  font-size: 16px;
+  font-weight: 400;
+  text-decoration-line: underline;
+`;
