@@ -8,8 +8,9 @@ import {
 import { useFormik } from 'formik';
 import { useState } from 'react';
 
-import * as Styled from './RegistrationScreen.styled';
+import { MainButton } from '../../../components/MainButton';
 
+import * as Styled from './RegistrationScreen.styled';
 import { useKeyboardVisible } from '../../../hooks';
 import { RegisterValidationSchema } from '../../../validations/ValidationSchemas';
 
@@ -91,9 +92,7 @@ export const RegistrationScreen = ({ navigation, setIsAuth }) => {
               </Styled.PasswordWrapper>
               {!isKeyboardVisible && (
                 <>
-                  <Styled.Button activeOpacity={0.8} onPress={handleSubmit}>
-                    <Styled.ButtonText>Register</Styled.ButtonText>
-                  </Styled.Button>
+                  <MainButton buttonText="Register" onPress={handleSubmit} />
                   <Styled.RegisterText
                     onPress={() => navigation.navigate('Login')}
                   >

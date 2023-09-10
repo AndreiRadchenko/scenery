@@ -1,5 +1,4 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -9,14 +8,13 @@ import {
   PostsScreen,
   CreateScreen,
   ProfileScreen,
+  CommentsScreen,
 } from './Screens';
 
-import * as Styled from './components/BottomTabNavigator/BottomTabBar.styled';
 import {
   PostsSvg,
   CreateSvg,
   ProfileSvg,
-  TabBarScreenOptions,
   BottomTabBar,
 } from './components/BottomTabNavigator';
 import { MainHeader } from './components/MainHeader';
@@ -80,6 +78,13 @@ export const useRoute = (isAuth, setIsAuth) => {
         name="Profile"
         component={ProfileScreen}
       />
+      {/* <MainTab.Screen
+        options={{
+          tabBarVisible: false,
+        }}
+        name="Comments"
+        component={CommentsScreen}
+      /> */}
     </MainTab.Navigator>
   );
 };

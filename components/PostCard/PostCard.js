@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { CommentSvg, LocationSvg } from '.';
+import { CommentSvg } from './CommentSvg';
+import { LocationSvg } from './LocationSvg';
 
 import * as Styled from './PostCard.styled';
 import themes from '../../utils/themes';

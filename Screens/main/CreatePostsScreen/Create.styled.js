@@ -2,11 +2,21 @@ import { styled } from 'styled-components/native';
 
 import themes from '../../../utils/themes';
 
-export const PostContainer = styled.View`
+export const PostContainer = styled.ScrollView`
   padding: 0 16px 0 16px;
   width: 100%;
   height: 100%;
   background-color: ${themes.primary.colors.backgroundColor};
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const ScreenWrapper = styled.View`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: ${({ screenHeight }) => `${screenHeight}px`};
 `;
 
 export const PostCard = styled.View`
@@ -52,6 +62,16 @@ export const CardAction = styled.Text`
   line-height: 16px;
 `;
 
+export const InputWrapper = styled.View`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  border-bottom-width: 0.5px;
+  border-bottom-color: ${themes.primary.colors.lightGrey};
+  margin-top: 16px;
+`;
+
 export const InputName = styled.TextInput`
   height: 50px;
   width: 100%;
@@ -59,12 +79,14 @@ export const InputName = styled.TextInput`
   font-family: ${themes.primary.font.family.robotoRegular};
   font-size: 16px;
   font-weight: 500;
-  border-bottom-width: 0.5px;
-  border-bottom-color: ${themes.primary.colors.lightGrey};
-  margin-top: 16px;
 `;
 
-export const InputWrapper = styled.View`
-  position: relative;
-  padding-left: 28px;
+export const DeleteButtonBar = styled.View`
+  display: flex;
+  flex-direction: row;
+  height: 83px;
+  align-self: center;
+  justify-content: center;
+  margin-top: 30px;
+  width: 100%;
 `;

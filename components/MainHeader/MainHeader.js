@@ -1,7 +1,8 @@
 import React from 'react';
 import { getHeaderTitle } from '@react-navigation/elements';
 
-import { LogoutSvg, BackButtonSvg } from '.';
+import { LogoutSvg } from './LogoutSvg';
+import { BackButtonSvg } from './BackButtonSvg';
 
 import * as Styled from './MainHeader.styled';
 import themes from '../../utils/themes';

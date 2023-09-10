@@ -5,7 +5,8 @@ import themes from '../../utils/themes';
 export const TabBar = styled.View`
   position: relative;
   z-index: 10;
-  display: ${({ tabIndex }) => (tabIndex !== 1 ? 'flex' : 'none')};
+  display: flex;
+  /* display: ${({ tabIndex }) => (tabIndex !== 1 ? 'flex' : 'none')}; */
   flex-direction: row;
   height: 83px;
   align-self: center;
