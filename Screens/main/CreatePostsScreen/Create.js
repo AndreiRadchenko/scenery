@@ -21,7 +21,7 @@ const isPlatformIOS = Platform.OS === 'ios';
 
 export const CreateScreen = () => {
   const keyboardHeight = useKeyboardVisible();
-  const screenHeight = Dimensions.get('window').height;
+  const screenHeight = Dimensions.get('window').height - 88;
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <KeyboardAvoidingView

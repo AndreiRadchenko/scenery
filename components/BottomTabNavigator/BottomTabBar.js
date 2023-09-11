@@ -3,9 +3,14 @@ import * as React from 'react';
 import * as Styled from './BottomTabBar.styled';
 import themes from '../../utils/themes';
 
+const noTabBarScreens = ['Create', 'Comments'];
+
 export function BottomTabBar({ state, descriptors, navigation }) {
+  const currentScreen = state.routes[state.index].name;
+  const isTabBarVisible = !noTabBarScreens.includes(currentScreen);
+
   return (
-    state.index !== 1 && (
+    isTabBarVisible && (
       <Styled.TabBar tabIndex={state.index}>
         {state.routes.slice(0, 3).map((route, index) => {
           const { options } = descriptors[route.key];
