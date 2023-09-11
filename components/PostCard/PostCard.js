@@ -15,6 +15,7 @@ export const PostCard = ({
   comments,
   author,
   index,
+  onCommentPress,
 }) => {
   return (
     <Styled.PostCard index={index}>
@@ -22,7 +23,7 @@ export const PostCard = ({
       <Styled.CardName>{name}</Styled.CardName>
       <Styled.ExtDataWrapper>
         <Styled.InfoBlock>
-          <CommentSvg isEmpty={!comments.length} />
+          <CommentSvg isEmpty={!comments.length} handlePress={onCommentPress} />
           <Styled.CommentNumbers isEmpty={!comments.length}>
             {comments.length}
           </Styled.CommentNumbers>

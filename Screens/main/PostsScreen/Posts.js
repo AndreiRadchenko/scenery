@@ -20,13 +20,24 @@ const UserCard = () => {
   );
 };
 
-export const PostsScreen = () => {
+export const PostsScreen = ({ navigation, route }) => {
+  const openComments = (item) => {
+    navigation.navigate('Comments', { post: item });
+  };
   return (
     <Styled.PostsContainer>
       <FlatList
         data={userPosts}
         renderItem={({ item, index }) =>
-          index ? <PostCard {...item} index={index} /> : <UserCard />
+          index ? (
+            <PostCard
+              {...item}
+              index={index}
+              onCommentPress={() => openComments(item)}
+            />
+          ) : (
+            <UserCard />
+          )
         }
         keyExtractor={(post) => post._id}
         showsVerticalScrollIndicator={false}

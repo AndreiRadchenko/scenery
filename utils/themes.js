@@ -36,6 +36,7 @@ const themes = {
       lightGrey: '#bdbdbd',
       header: '#212121',
       transparentButton: 'rgba(255, 255, 255, 0.3)',
+      commentsBackground: 'rgba(0, 0, 0, 0.03)',
     },
     media: {
       maxMobile: '(max-width: 768px)',

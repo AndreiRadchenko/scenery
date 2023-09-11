@@ -1,22 +1,6 @@
 import { styled } from 'styled-components/native';
 
-import themes from '../../../utils/themes';
-
-export const CommentsContainer = styled.View`
-  flex: 1;
-  padding: 0 16px;
-  width: 100%;
-  height: 100%;
-  background-color: ${themes.primary.colors.backgroundColor};
-`;
-
-export const ImageCard = styled.Image`
-  width: 100%;
-  height: 240px;
-  border-radius: 8px;
-  align-self: center;
-  margin-top: 32px;
-`;
+import themes from '../../utils/themes';
 
 export const InputBar = styled.View`
   display: flex;
@@ -24,7 +8,9 @@ export const InputBar = styled.View`
   align-self: center;
   justify-content: center;
   padding-top: 8px;
-  padding-bottom: 16px;
+  padding-bottom: ${({ keyboardHeight, isPlatformIOS }) =>
+    // isPlatformIOS ? (keyboardHeight ? 100 : 32) : 16}px;
+    isPlatformIOS ? 32 : 16}px;
   width: 100%;
 `;
 

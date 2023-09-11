@@ -7,7 +7,6 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useRoute } from './router';
 
 SplashScreen.preventAutoHideAsync();
-const MainStack = createStackNavigator();
 
 export default function App() {
   const [isAuth, setIsAuth] = useState(true);
