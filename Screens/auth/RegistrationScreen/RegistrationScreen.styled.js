@@ -60,10 +60,11 @@ export const InputWrapper = styled.View`
   flex-direction: column;
   align-items: flex-end;
   height: 72px;
+  width: 100%;
 `;
 
 export const Input = styled.TextInput`
-  width: 343px;
+  width: 100%;
   height: 50px;
   padding: 16px;
   background-color: ${themes.primary.colors.inputBgColor};
@@ -90,6 +91,7 @@ export const PasswordWrapper = styled.View`
   flex-direction: column;
   align-items: flex-end;
   height: 72px;
+  width: 100%;
 `;
 
 export const ShowPassword = styled.Text`

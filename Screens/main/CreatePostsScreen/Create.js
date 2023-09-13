@@ -50,13 +50,11 @@ export const CreateScreen = () => {
                 <LocationSvg color={themes.primary.colors.lightGrey} />
                 <Styled.InputName placeholder="Location..." />
               </Styled.InputWrapper>
-              {!keyboardHeight && (
-                <MainButton
-                  buttonText="Publish"
-                  onPress={() => {}}
-                  isActive={isImageSelected}
-                />
-              )}
+              <MainButton
+                buttonText="Publish"
+                onPress={() => {}}
+                isActive={isImageSelected}
+              />
             </View>
             <Styled.DeleteButtonBar>
               <DeleteButton isActive={isImageSelected} onPress={() => {}} />

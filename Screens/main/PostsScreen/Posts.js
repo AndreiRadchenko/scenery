@@ -5,7 +5,7 @@ import * as Styled from './Posts.styled';
 import authors from '../../../mock/authors.json';
 import posts from '../../../mock/posts.json';
 
-const author = authors[0];
+const author = authors[1];
 const userPosts = [{ _id: '-1' }, ...posts];
 
 const UserCard = () => {

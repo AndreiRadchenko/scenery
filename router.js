@@ -82,8 +82,9 @@ export const useRoute = (isAuth, setIsAuth) => {
             ),
           }}
           name="Profile"
-          component={ProfileScreen}
-        />
+        >
+          {(props) => <ProfileScreen {...props} setIsAuth={setIsAuth} />}
+        </MainTab.Screen>
         <MainTab.Screen
           options={{
             tabBarVisible: false,
