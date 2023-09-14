@@ -46,6 +46,7 @@ export const RegistrationScreen = ({ navigation, setIsAuth }) => {
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <Styled.Container>
         <Styled.BgImage
+          resizeMode="stretch"
           source={require('../../../assets/img/PhotoBG-compressed.jpg')}
         >
           <KeyboardAvoidingView

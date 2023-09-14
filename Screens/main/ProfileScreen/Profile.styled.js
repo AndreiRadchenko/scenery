@@ -21,12 +21,14 @@ export const ProfileForm = styled.View`
   align-items: center;
   border-top-left-radius: 25px;
   border-top-right-radius: 25px;
+  margin-top: ${({ isPlatformIOS }) => (isPlatformIOS ? '205px' : '190px')};
   padding: 92px 16px 0 16px;
   background-color: ${themes.primary.colors.backgroundColor};
   font-size: 16px;
   line-height: 19px;
-  padding-bottom: ${({ isKeyboardVisible }) =>
-    isKeyboardVisible ? 0 : '78px'};
+  padding-bottom: 58px;
+  /* padding-bottom: ${({ isKeyboardVisible }) =>
+    isKeyboardVisible ? 0 : '78px'}; */
 `;
 
 export const AvatarWrapper = styled.View`
@@ -64,7 +66,7 @@ export const CrossSign = styled(DeleteSvg)`
 export const Title = styled.Text`
   font-family: ${themes.primary.font.family.robotoBold};
   font-size: 30px;
-  line-height: 35px;
+  line-height: 30px;
   text-align: center;
   margin-bottom: 33px;
 `;

@@ -4,9 +4,11 @@ import {
   Platform,
   Dimensions,
   TouchableOpacity,
+  FlatList,
 } from 'react-native';
 
 import { LogoutSvg } from '../../../components/MainHeader/LogoutSvg';
+import { PostCard } from '../../../components/PostCard';
 
 import * as Styled from './Profile.styled';
 import themes from '../../../utils/themes';
@@ -16,7 +18,6 @@ import authors from '../../../mock/authors.json';
 import posts from '../../../mock/posts.json';
 
 const author = authors[1];
-const userPosts = [{ _id: '-1' }, ...posts];
 
 const isPlatformIOS = Platform.OS === 'ios';
 const windowWidth = Dimensions.get('window').width;
@@ -25,6 +26,10 @@ export const ProfileScreen = ({ navigation, setIsAuth }) => {
   const isKeyboardVisible = useKeyboardVisible();
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
+  const openComments = (item) => {
+    navigation.navigate('Comments', { post: item, prevScreen: 'Profile' });
+  };
+
   const handleLogout = () => {
     setIsAuth(false);
   };
@@ -32,13 +37,17 @@ export const ProfileScreen = ({ navigation, setIsAuth }) => {
   return (
     <Styled.Container>
       <Styled.BgImage
+        resizeMode="stretch"
         source={require('../../../assets/img/PhotoBG-compressed.jpg')}
       >
         <KeyboardAvoidingView
           behavior={isPlatformIOS ? 'padding' : ''}
           keyboardVerticalOffset={0}
         >
-          <Styled.ProfileForm isKeyboardVisible={isKeyboardVisible}>
+          <Styled.ProfileForm
+            isKeyboardVisible={isKeyboardVisible}
+            isPlatformIOS={isPlatformIOS}
+          >
             <Styled.AvatarWrapper windowWidth={windowWidth}>
               <Styled.Avatar source={{ uri: author.avatar.url }} />
               <TouchableOpacity activeOpacity={0.8} onPress={() => {}}>
@@ -49,6 +58,20 @@ export const ProfileScreen = ({ navigation, setIsAuth }) => {
               <LogoutSvg color={themes.primary.colors.lightGrey} />
             </Styled.LogoutWrapper>
             <Styled.Title>{author.name}</Styled.Title>
+            <FlatList
+              style={{ width: '100%', paddingBottom: 183 }}
+              data={posts}
+              renderItem={({ item, index }) => (
+                <PostCard
+                  {...item}
+                  index={index}
+                  onCommentPress={() => openComments(item)}
+                  onLikePress={() => {}}
+                />
+              )}
+              keyExtractor={(post) => post._id}
+              showsVerticalScrollIndicator={false}
+            />
           </Styled.ProfileForm>
         </KeyboardAvoidingView>
       </Styled.BgImage>

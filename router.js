@@ -88,7 +88,7 @@ export const useRoute = (isAuth, setIsAuth) => {
         <MainTab.Screen
           options={{
             tabBarVisible: false,
-            headerTitle: 'Create comments',
+            headerTitle: 'Comments',
           }}
           name="Comments"
           component={CommentsScreen}

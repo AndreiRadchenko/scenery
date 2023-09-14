@@ -1,7 +1,9 @@
 import React from 'react';
+import { View } from 'react-native';
 
 import { CommentSvg } from './CommentSvg';
 import { LocationSvg } from './LocationSvg';
+import { LikeSvg } from './LikeSvg';
 
 import * as Styled from './PostCard.styled';
 import themes from '../../utils/themes';
@@ -16,18 +18,30 @@ export const PostCard = ({
   author,
   index,
   onCommentPress,
+  onLikePress,
 }) => {
   return (
     <Styled.PostCard index={index}>
       <Styled.CardImage source={{ uri: image.url }} />
       <Styled.CardName>{name}</Styled.CardName>
       <Styled.ExtDataWrapper>
-        <Styled.InfoBlock>
-          <CommentSvg isEmpty={!comments.length} handlePress={onCommentPress} />
-          <Styled.CommentNumbers isEmpty={!comments.length}>
-            {comments.length}
-          </Styled.CommentNumbers>
-        </Styled.InfoBlock>
+        <Styled.Achievements>
+          <Styled.InfoBlock>
+            <CommentSvg
+              isEmpty={!comments.length}
+              handlePress={onCommentPress}
+            />
+            <Styled.CommentNumbers isEmpty={!comments.length}>
+              {comments.length}
+            </Styled.CommentNumbers>
+          </Styled.InfoBlock>
+          <Styled.InfoBlock>
+            <LikeSvg isEmpty={likes == 0} handlePress={onLikePress} />
+            <Styled.CommentNumbers isEmpty={likes == 0}>
+              {likes}
+            </Styled.CommentNumbers>
+          </Styled.InfoBlock>
+        </Styled.Achievements>
         <Styled.InfoBlock>
           <LocationSvg color={themes.primary.colors.lightGrey} />
           <Styled.LocationText>{location}</Styled.LocationText>

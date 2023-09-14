@@ -3,16 +3,18 @@ import { styled } from 'styled-components/native';
 import themes from '../../utils/themes';
 
 export const PostCard = styled.View`
-  margin-top: ${({ index }) => (index === 1 ? '32px' : 0)};
+  margin-top: ${({ index }) => (index === 0 ? '32px' : 0)};
   margin-bottom: 32px;
   display: flex;
   flex-direction: column;
   gap: 8px;
+  width: 100%;
 `;
 
 export const CardImage = styled.Image`
   height: 240px;
   border-radius: 8px;
+  width: 100%;
 `;
 
 export const CardName = styled.Text`
@@ -28,10 +30,17 @@ export const ExtDataWrapper = styled.View`
   justify-content: space-between;
 `;
 
+export const Achievements = styled.View`
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+`;
+
 export const InfoBlock = styled.View`
   display: flex;
   flex-direction: row;
   gap: 6px;
+  align-items: center;
 `;
 
 export const CommentNumbers = styled.Text`
@@ -44,7 +53,6 @@ export const CommentNumbers = styled.Text`
 
 export const LocationText = styled.Text`
   color: ${themes.primary.colors.text};
-  /* text-align: right; */
   font-family: ${themes.primary.font.family.robotoRegular};
   font-size: 16px;
   font-weight: 400;
