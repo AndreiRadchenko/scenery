@@ -14,7 +14,6 @@ const ImageCard = ({ url }) => {
 };
 
 export const CommentsScreen = ({ navigation, route }) => {
-  const nav = useNavigation();
   const { image, comments } = route.params.post;
 
   return (

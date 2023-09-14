@@ -8,11 +8,15 @@ const noTabBarScreens = ['Create', 'Comments'];
 export function BottomTabBar({ state, descriptors, navigation }) {
   const currentScreen = state.routes[state.index].name;
   const isTabBarVisible = !noTabBarScreens.includes(currentScreen);
-
+  let buttonTabArray = state.routes.slice(0, 3);
+  if (state.index === 2) {
+    const lastButtons = buttonTabArray.slice(1, 3);
+    buttonTabArray = [buttonTabArray[0], ...lastButtons.reverse()];
+  }
   return (
     isTabBarVisible && (
       <Styled.TabBar tabIndex={state.index}>
-        {state.routes.slice(0, 3).map((route, index) => {
+        {buttonTabArray.map((route, index) => {
           const { options } = descriptors[route.key];
           const label =
             options.tabBarLabel !== undefined
@@ -22,6 +26,7 @@ export function BottomTabBar({ state, descriptors, navigation }) {
               : route.name;
 
           const isFocused = state.index === index;
+          const isCentralButton = index === 1;
 
           const onPress = () => {
             const event = navigation.emit({
@@ -29,8 +34,8 @@ export function BottomTabBar({ state, descriptors, navigation }) {
               target: route.key,
             });
 
-            if (!isFocused && !event.defaultPrevented) {
-              navigation.navigate(route.name);
+            if (!event.defaultPrevented) {
+              navigation.navigate(route.name, { prevScreen: currentScreen });
             }
           };
 
@@ -50,10 +55,10 @@ export function BottomTabBar({ state, descriptors, navigation }) {
               testID={options.tabBarTestID}
               onPress={onPress}
               onLongPress={onLongPress}
-              isFocused={isFocused}
+              isFocused={isCentralButton}
             >
               {options.tabBarIcon({
-                color: isFocused
+                color: isCentralButton
                   ? themes.primary.colors.iconActive
                   : themes.primary.colors.iconInactive,
                 size: 24,

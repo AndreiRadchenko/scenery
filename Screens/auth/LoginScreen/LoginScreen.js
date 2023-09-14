@@ -3,9 +3,11 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
+  Dimensions,
 } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { MainButton } from '../../../components/MainButton';
 
@@ -16,9 +18,18 @@ import { loginValidationSchema } from '../../../validations/ValidationSchemas';
 const isPlatformIOS = Platform.OS === 'ios';
 
 export const LoginScreen = ({ navigation, route, setIsAuth }) => {
+  const [formOffset, setFormOffset] = useState(0);
   const isKeyboardVisible = useKeyboardVisible();
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+  const screenHeight = Dimensions.get('window').height;
+
+  const handleLayout = (event) => {
+    const { height } = event.nativeEvent.layout;
+    setFormOffset(screenHeight - height);
+  };
+
+  useEffect(() => {});
 
   const formik = useFormik({
     initialValues: {
@@ -45,13 +56,18 @@ export const LoginScreen = ({ navigation, route, setIsAuth }) => {
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <Styled.Container>
         <Styled.BgImage
+          resizeMode="stretch"
           source={require('../../../assets/img/PhotoBG-compressed.jpg')}
         >
           <KeyboardAvoidingView
             behavior={isPlatformIOS ? 'padding' : ''}
             keyboardVerticalOffset={0}
           >
-            <Styled.LoginForm isKeyboardVisible={isKeyboardVisible}>
+            <Styled.LoginForm
+              formOffset={formOffset}
+              onLayout={handleLayout}
+              isKeyboardVisible={isKeyboardVisible}
+            >
               <Styled.Title>Login</Styled.Title>
               <Styled.InputWrapper>
                 <Styled.Input
@@ -77,9 +93,11 @@ export const LoginScreen = ({ navigation, route, setIsAuth }) => {
                   {isPasswordHidden ? 'Show' : 'Hide'}
                 </Styled.ShowPassword>
               </Styled.PasswordWrapper>
+
               {!isKeyboardVisible && (
                 <>
                   <MainButton buttonText="Login" onPress={handleSubmit} />
+
                   <Styled.RegisterText
                     onPress={() => navigation.navigate('Registration')}
                   >

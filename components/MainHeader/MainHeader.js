@@ -8,30 +8,35 @@ import * as Styled from './MainHeader.styled';
 import themes from '../../utils/themes';
 
 const backButtonHeaders = ['Create', 'Comments'];
+const noHeaderScreens = ['Profile'];
 
-export const MainHeader = ({ navigation, route, options, back, setIsAuth }) => {
+export const MainHeader = ({ navigation, route, options, setIsAuth }) => {
+  const previousScreen = route?.params?.prevScreen;
   const title = getHeaderTitle(options, route.name);
   const isBackButtonHeaders = backButtonHeaders.includes(route.name);
+  const isNoHeader = noHeaderScreens.includes(route.name);
 
   const handleLogout = () => {
     setIsAuth(false);
   };
 
   return (
-    <Styled.HeaderContainer>
-      <Styled.BackButtonWrapper
-        isVisible={isBackButtonHeaders}
-        onPress={() => navigation.goBack()}
-      >
-        <BackButtonSvg color={themes.primary.colors.iconInactive} />
-      </Styled.BackButtonWrapper>
-      <Styled.HeaderTitle>{title}</Styled.HeaderTitle>
-      <Styled.LogoutWrapper
-        onPress={handleLogout}
-        isVisible={!isBackButtonHeaders}
-      >
-        <LogoutSvg color={themes.primary.colors.lightGrey} />
-      </Styled.LogoutWrapper>
-    </Styled.HeaderContainer>
+    !isNoHeader && (
+      <Styled.HeaderContainer>
+        <Styled.BackButtonWrapper
+          isVisible={isBackButtonHeaders}
+          onPress={() => navigation.navigate(previousScreen)}
+        >
+          <BackButtonSvg color={themes.primary.colors.iconInactive} />
+        </Styled.BackButtonWrapper>
+        <Styled.HeaderTitle>{title}</Styled.HeaderTitle>
+        <Styled.LogoutWrapper
+          onPress={handleLogout}
+          isVisible={!isBackButtonHeaders}
+        >
+          <LogoutSvg color={themes.primary.colors.lightGrey} />
+        </Styled.LogoutWrapper>
+      </Styled.HeaderContainer>
+    )
   );
 };

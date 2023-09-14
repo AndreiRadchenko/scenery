@@ -5,8 +5,7 @@ import * as Styled from './Posts.styled';
 import authors from '../../../mock/authors.json';
 import posts from '../../../mock/posts.json';
 
-const author = authors[0];
-const userPosts = [{ _id: '-1' }, ...posts];
+const author = authors[1];
 
 const UserCard = () => {
   return (
@@ -22,23 +21,20 @@ const UserCard = () => {
 
 export const PostsScreen = ({ navigation, route }) => {
   const openComments = (item) => {
-    navigation.navigate('Comments', { post: item });
+    navigation.navigate('Comments', { post: item, prevScreen: 'Posts' });
   };
   return (
     <Styled.PostsContainer>
       <FlatList
-        data={userPosts}
-        renderItem={({ item, index }) =>
-          index ? (
-            <PostCard
-              {...item}
-              index={index}
-              onCommentPress={() => openComments(item)}
-            />
-          ) : (
-            <UserCard />
-          )
-        }
+        data={posts}
+        renderItem={({ item, index }) => (
+          <PostCard
+            {...item}
+            index={index}
+            onCommentPress={() => openComments(item)}
+          />
+        )}
+        ListHeaderComponent={UserCard}
         keyExtractor={(post) => post._id}
         showsVerticalScrollIndicator={false}
       />

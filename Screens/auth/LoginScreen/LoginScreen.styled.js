@@ -14,6 +14,7 @@ export const BgImage = styled(ImageBackground)`
 `;
 
 export const LoginForm = styled.View`
+  z-index: 10;
   align-items: center;
   border-top-left-radius: 25px;
   border-top-right-radius: 25px;
@@ -39,10 +40,11 @@ export const InputWrapper = styled.View`
   flex-direction: column;
   align-items: flex-end;
   height: 72px;
+  width: 100%;
 `;
 
 export const Input = styled.TextInput`
-  width: 343px;
+  width: 100%;
   height: 50px;
   padding: 16px;
   background-color: ${themes.primary.colors.inputBgColor};
@@ -63,6 +65,7 @@ export const Error = styled.Text`
 `;
 
 export const PasswordWrapper = styled.View`
+  width: 100%;
   position: relative;
   margin-bottom: 5px;
   display: flex;
