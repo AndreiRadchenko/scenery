@@ -1,30 +1,21 @@
 import React from 'react';
-import { SafeAreaView, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import {
   LoginScreen,
   RegistrationScreen,
-  PostsScreen,
-  CreateScreen,
-  ProfileScreen,
   CommentsScreen,
+  HomeTabNavigator,
 } from './Screens';
 
-import {
-  PostsSvg,
-  CreateSvg,
-  ProfileSvg,
-  BottomTabBar,
-} from './components/BottomTabNavigator';
 import { MainHeader } from './components/MainHeader';
 import { FocusAwareStatusBar } from './components/FocusAwareStatusBar/FocusAwareStatusBar';
 
 const isPlatformIos = Platform.OS === 'ios';
 
 const AuthStack = createStackNavigator();
-const MainTab = createBottomTabNavigator();
+const MainStack = createStackNavigator();
 
 export const useRoute = (isAuth, setIsAuth) => {
   if (!isAuth) {
@@ -47,53 +38,28 @@ export const useRoute = (isAuth, setIsAuth) => {
   return (
     <>
       {isPlatformIos && <FocusAwareStatusBar barStyle="dark-content" />}
-      <MainTab.Navigator
-        tabBar={(props) => <BottomTabBar {...props} />}
+      <MainStack.Navigator
         screenOptions={{
-          headerStyle: { height: 88 },
-          header: (props) => {
-            return <MainHeader {...props} setIsAuth={setIsAuth} />;
-          },
+          headerShown: false,
         }}
       >
-        <MainTab.Screen
+        <MainStack.Screen name="Home">
+          {(props) => <HomeTabNavigator {...props} setIsAuth={setIsAuth} />}
+        </MainStack.Screen>
+        <MainStack.Screen
           options={{
-            tabBarIcon: ({ focused, size, color }) => (
-              <PostsSvg size={size} color={color} />
-            ),
-          }}
-          name="Posts"
-          component={PostsScreen}
-        />
-        <MainTab.Screen
-          options={{
-            tabBarIcon: ({ focused, size, color }) => (
-              <CreateSvg size={size} color={color} />
-            ),
-            headerTitle: 'Create post',
-          }}
-          name="Create"
-          component={CreateScreen}
-        />
-        <MainTab.Screen
-          options={{
-            tabBarIcon: ({ focused, size, color }) => (
-              <ProfileSvg size={size} color={color} />
-            ),
-          }}
-          name="Profile"
-        >
-          {(props) => <ProfileScreen {...props} setIsAuth={setIsAuth} />}
-        </MainTab.Screen>
-        <MainTab.Screen
-          options={{
+            headerShown: true,
             tabBarVisible: false,
             headerTitle: 'Comments',
+            headerStyle: { height: 88 },
+            header: (props) => {
+              return <MainHeader {...props} setIsAuth={setIsAuth} />;
+            },
           }}
           name="Comments"
           component={CommentsScreen}
         />
-      </MainTab.Navigator>
+      </MainStack.Navigator>
     </>
   );
 };
