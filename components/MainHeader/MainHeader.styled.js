@@ -4,7 +4,7 @@ import themes from '../../utils/themes';
 
 export const HeaderContainer = styled.View`
   position: relative;
-  display: flex;
+  display: ${({ displayOption }) => (displayOption ? displayOption : 'flex')};
   flex-direction: row;
   justify-content: space-around;
   align-items: flex-end;
