@@ -18,7 +18,6 @@ export const TabBarScreenOptions = ({ route, navigation }) => ({
     paddingTop: 8,
   },
   tabBarButton: (props) => {
-    console.log(props);
     return (
       <TouchableOpacity
         {...props}
