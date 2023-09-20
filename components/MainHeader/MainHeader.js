@@ -15,6 +15,7 @@ const backButtonHeaders = [
   SCREEN.MAIN.CREATE_POST,
   STACK.CREATE_POST,
   SCREEN.MAIN.COMMENTS,
+  SCREEN.MAIN.MAP,
 ];
 
 export const MainHeader = ({ navigation, route, setIsAuth }) => {

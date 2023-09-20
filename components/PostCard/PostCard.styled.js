@@ -43,6 +43,13 @@ export const InfoBlock = styled.View`
   align-items: center;
 `;
 
+export const LocationBlock = styled.TouchableOpacity`
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  align-items: center;
+`;
+
 export const CommentNumbers = styled.Text`
   color: ${({ isEmpty }) =>
     isEmpty ? themes.primary.colors.lightGrey : themes.primary.colors.text};

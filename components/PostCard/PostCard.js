@@ -18,6 +18,7 @@ export const PostCard = ({
   author,
   index,
   onCommentPress,
+  onLocationPress,
   onLikePress,
 }) => {
   return (
@@ -42,10 +43,10 @@ export const PostCard = ({
             </Styled.CommentNumbers>
           </Styled.InfoBlock>
         </Styled.Achievements>
-        <Styled.InfoBlock>
+        <Styled.LocationBlock onPress={onLocationPress}>
           <LocationSvg color={themes.primary.colors.lightGrey} />
-          <Styled.LocationText>{location}</Styled.LocationText>
-        </Styled.InfoBlock>
+          <Styled.LocationText>{location.name}</Styled.LocationText>
+        </Styled.LocationBlock>
       </Styled.ExtDataWrapper>
     </Styled.PostCard>
   );

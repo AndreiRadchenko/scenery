@@ -37,6 +37,16 @@ export const ProfileScreen = ({ navigation, setIsAuth }) => {
     });
   };
 
+  const openMap = (item) => {
+    navigation.navigate(STACK.PROFILE, {
+      screen: SCREEN.MAIN.MAP,
+      params: {
+        post: item,
+        prevScreen: SCREEN.MAIN.PROFILE,
+      },
+    });
+  };
+
   const handleLogout = () => {
     setIsAuth(false);
   };
@@ -73,6 +83,7 @@ export const ProfileScreen = ({ navigation, setIsAuth }) => {
                   {...item}
                   index={index}
                   onCommentPress={() => openComments(item)}
+                  onLocationPress={() => openMap(item)}
                   onLikePress={() => {}}
                 />
               )}

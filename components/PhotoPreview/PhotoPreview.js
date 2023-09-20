@@ -1,15 +1,36 @@
-import * as Styled from './PhotoPreview.styled';
+import {
+  Ionicons,
+  FontAwesome,
+  MaterialCommunityIcons,
+} from '@expo/vector-icons';
+import { StatusBar } from 'react-native';
 
-export const PhotoPreview = () => {
+import * as Styled from './PhotoPreview.styled';
+import { SCREEN, STACK } from '../../navigation/constants';
+import { Dimensions } from 'react-native';
+
+export const PhotoPreview = ({ photo, setPhoto, location, navigation }) => {
+  const screenHeight = Dimensions.get('window').height;
+  const acceptPhoto = () => {
+    navigation.navigate(SCREEN.MAIN.CREATE_POST, { photo, location });
+  };
+
   return (
     <Styled.CameraViewContainer>
+      <StatusBar
+        barStyle="light-content" // Set the text color of the status bar (light or dark)
+      />
+      <Styled.ImagePreview
+        source={{ uri: photo }}
+        style={{ resizeMode: 'contain' }}
+      />
       <Styled.ControlsWrapper>
-        <Styled.BackButton onPress={() => navigation.goBack()}>
-          <Ionicons name="ios-close-outline" size={32} color="gray" />
+        <Styled.BackButton onPress={() => setPhoto(null)}>
+          <Ionicons name="ios-close-outline" size={32} color="white" />
         </Styled.BackButton>
-        <Styled.NoAccessContainer>
-          <Styled.NoAccessText>No access to camera</Styled.NoAccessText>
-        </Styled.NoAccessContainer>
+        <Styled.AcceptButton onPress={acceptPhoto}>
+          <Ionicons name="checkmark-sharp" size={24} color="white" />
+        </Styled.AcceptButton>
       </Styled.ControlsWrapper>
     </Styled.CameraViewContainer>
   );

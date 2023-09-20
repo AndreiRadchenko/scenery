@@ -6,6 +6,7 @@ const noTabBarScreens = [
   SCREEN.MAIN.CREATE_POST,
   SCREEN.MAIN.COMMENTS,
   SCREEN.MAIN.CAMERA,
+  SCREEN.MAIN.MAP,
 ];
 
 const noMainHeaderScreens = [SCREEN.MAIN.CAMERA];

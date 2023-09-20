@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import { ProfileScreen } from '../screens/main/ProfileScreen';
 import { CommentsScreen } from '../screens/main/CommentsScreen';
+import { MapScreen } from '../screens/main/MapScreen';
 import { MainHeader } from '../../components/MainHeader';
 
 import { SCREEN, STACK } from '../constants';
@@ -27,6 +28,16 @@ export const ProfileStack = ({ setIsAuth }) => {
         }}
         name={SCREEN.MAIN.COMMENTS}
         component={CommentsScreen}
+      />
+      <Profile.Screen
+        options={{
+          headerStyle: { height: 88 },
+          header: (props) => {
+            return <MainHeader {...props} setIsAuth={setIsAuth} />;
+          },
+        }}
+        name={SCREEN.MAIN.MAP}
+        component={MapScreen}
       />
     </Profile.Navigator>
   );

@@ -2,6 +2,17 @@ import { styled } from 'styled-components/native';
 
 import themes from '../../../../utils/themes';
 
+export const CameraContainer = styled.View`
+  width: 100%;
+  height: 100%;
+  padding: 0 16px 0 16px;
+  background: black;
+  display: flex;
+  justify-content: center;
+  /* border-radius: 8px; */
+  overflow: hidden;
+`;
+
 export const CameraViewContainer = styled.View`
   position: relative;
   width: 100%;
@@ -58,7 +69,6 @@ export const ShootButton = styled.TouchableOpacity`
 
 export const NoAccessContainer = styled.View`
   position: absolute;
-  /* background-color: ${themes.primary.colors.backgroundColor}; */
   border-radius: 30px;
   top: 50%;
   left: 50%;

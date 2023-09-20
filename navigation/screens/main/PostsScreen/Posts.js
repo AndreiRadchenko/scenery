@@ -30,6 +30,15 @@ export const PostsScreen = ({ navigation, route }) => {
       },
     });
   };
+  const openMap = (item) => {
+    navigation.navigate(STACK.HOME, {
+      screen: SCREEN.MAIN.MAP,
+      params: {
+        post: item,
+        prevScreen: SCREEN.MAIN.POSTS,
+      },
+    });
+  };
   return (
     <Styled.PostsContainer>
       <FlatList
@@ -39,6 +48,7 @@ export const PostsScreen = ({ navigation, route }) => {
             {...item}
             index={index}
             onCommentPress={() => openComments(item)}
+            onLocationPress={() => openMap(item)}
           />
         )}
         ListHeaderComponent={UserCard}
