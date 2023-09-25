@@ -7,6 +7,7 @@ const isPlatformIOS = Platform.OS === 'ios';
 
 export const MapScreen = ({ navigation, route }) => {
   const { image, comments, location } = route.params.post;
+  console.log(location);
 
   return (
     <Styled.MapContainer>
@@ -14,16 +15,24 @@ export const MapScreen = ({ navigation, route }) => {
         zoomEnabled
         zoomControlEnabled
         region={{
-          latitude: location.latitude ? location.latitude : 37.78825,
-          longitude: location.longitude ? location.longitude : -122.4324,
+          latitude: location.latitude
+            ? Number.parseFloat(location.latitude)
+            : +37.78825,
+          longitude: location.longitude
+            ? Number.parseFloat(location.longitude)
+            : -122.4324,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
       >
         <Marker
           coordinate={{
-            latitude: location.latitude,
-            longitude: location.longitude,
+            latitude: location.latitude
+              ? Number.parseFloat(location.latitude)
+              : +37.78825,
+            longitude: location.longitude
+              ? Number.parseFloat(location.longitude)
+              : -122.4324,
           }}
           title={location.name}
         />

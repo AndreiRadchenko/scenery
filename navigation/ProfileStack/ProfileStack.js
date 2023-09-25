@@ -10,20 +10,20 @@ import { SCREEN, STACK } from '../constants';
 
 const Profile = createStackNavigator();
 
-export const ProfileStack = ({ setIsAuth }) => {
+export const ProfileStack = () => {
   return (
     <Profile.Navigator>
       <Profile.Screen
         options={{ headerShown: false }}
         name={SCREEN.MAIN.PROFILE}
       >
-        {(props) => <ProfileScreen {...props} setIsAuth={setIsAuth} />}
+        {(props) => <ProfileScreen {...props} />}
       </Profile.Screen>
       <Profile.Screen
         options={{
           headerStyle: { height: 88 },
           header: (props) => {
-            return <MainHeader {...props} setIsAuth={setIsAuth} />;
+            return <MainHeader {...props} />;
           },
         }}
         name={SCREEN.MAIN.COMMENTS}
@@ -33,7 +33,7 @@ export const ProfileStack = ({ setIsAuth }) => {
         options={{
           headerStyle: { height: 88 },
           header: (props) => {
-            return <MainHeader {...props} setIsAuth={setIsAuth} />;
+            return <MainHeader {...props} />;
           },
         }}
         name={SCREEN.MAIN.MAP}

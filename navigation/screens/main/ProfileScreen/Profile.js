@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import { LogoutSvg } from '../../../../components/MainHeader/LogoutSvg';
 import { PostCard } from '../../../../components/PostCard';
@@ -17,13 +18,15 @@ import { useKeyboardVisible } from '../../../../hooks';
 import authors from '../../../../mock/authors.json';
 import posts from '../../../../mock/posts.json';
 import { SCREEN, STACK } from '../../../constants';
+import { logOut } from '../../../../redux/auth/auth-operations';
 
 const author = authors[1];
 
 const isPlatformIOS = Platform.OS === 'ios';
 const windowWidth = Dimensions.get('window').width;
 
-export const ProfileScreen = ({ navigation, setIsAuth }) => {
+export const ProfileScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
   const isKeyboardVisible = useKeyboardVisible();
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
@@ -48,7 +51,7 @@ export const ProfileScreen = ({ navigation, setIsAuth }) => {
   };
 
   const handleLogout = () => {
-    setIsAuth(false);
+    dispatch(logOut());
   };
 
   return (

@@ -25,8 +25,8 @@ const isPlatformIos = Platform.OS === 'ios';
 const AuthStack = createStackNavigator();
 const HomeTab = createBottomTabNavigator();
 
-export const useRoute = (isAuth, setIsAuth) => {
-  if (!isAuth) {
+export const UseRoute = ({ isLoggedIn }) => {
+  if (!isLoggedIn) {
     return (
       <AuthStack.Navigator
         initialRouteName={SCREEN.AUTH.LOGIN}
@@ -35,10 +35,10 @@ export const useRoute = (isAuth, setIsAuth) => {
         }}
       >
         <AuthStack.Screen name={SCREEN.AUTH.LOGIN}>
-          {(props) => <LoginScreen {...props} setIsAuth={setIsAuth} />}
+          {(props) => <LoginScreen {...props} />}
         </AuthStack.Screen>
         <AuthStack.Screen name={SCREEN.AUTH.REGISTRATION}>
-          {(props) => <RegistrationScreen {...props} setIsAuth={setIsAuth} />}
+          {(props) => <RegistrationScreen {...props} />}
         </AuthStack.Screen>
       </AuthStack.Navigator>
     );
@@ -57,12 +57,12 @@ export const useRoute = (isAuth, setIsAuth) => {
             ),
             headerStyle: { height: 88 },
             header: (props) => {
-              return <MainHeader {...props} setIsAuth={setIsAuth} />;
+              return <MainHeader {...props} />;
             },
           })}
           name={STACK.HOME}
         >
-          {(props) => <HomeStack {...props} setIsAuth={setIsAuth} />}
+          {(props) => <HomeStack {...props} />}
         </HomeTab.Screen>
         <HomeTab.Screen
           options={{
@@ -73,7 +73,7 @@ export const useRoute = (isAuth, setIsAuth) => {
             headerTitle: 'Create Post',
             headerStyle: { height: 88 },
             header: (props) => {
-              return <MainHeader {...props} setIsAuth={setIsAuth} />;
+              return <MainHeader {...props} />;
             },
           }}
           name={STACK.CREATE_POST}
@@ -88,7 +88,7 @@ export const useRoute = (isAuth, setIsAuth) => {
           }}
           name={STACK.PROFILE}
         >
-          {(props) => <ProfileStack {...props} setIsAuth={setIsAuth} />}
+          {(props) => <ProfileStack {...props} />}
         </HomeTab.Screen>
       </HomeTab.Navigator>
     </>

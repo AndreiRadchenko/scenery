@@ -13,7 +13,7 @@ import { MainHeader } from '../../components/MainHeader';
 
 const HomeTab = createBottomTabNavigator();
 
-export const HomeTabNavigator = ({ setIsAuth }) => {
+export const HomeTabNavigator = () => {
   return (
     <HomeTab.Navigator tabBar={(props) => <BottomTabBar {...props} />}>
       <HomeTab.Screen
@@ -23,7 +23,7 @@ export const HomeTabNavigator = ({ setIsAuth }) => {
           ),
           headerStyle: { height: 88 },
           header: (props) => {
-            return <MainHeader {...props} setIsAuth={setIsAuth} />;
+            return <MainHeader {...props} />;
           },
         }}
         name="Posts"
@@ -39,7 +39,7 @@ export const HomeTabNavigator = ({ setIsAuth }) => {
           headerTitle: 'Create Post',
           headerStyle: { height: 88 },
           header: (props) => {
-            return <MainHeader {...props} setIsAuth={setIsAuth} />;
+            return <MainHeader {...props} />;
           },
         }}
         name="Create"
@@ -54,7 +54,7 @@ export const HomeTabNavigator = ({ setIsAuth }) => {
         }}
         name="Profile"
       >
-        {(props) => <ProfileScreen {...props} setIsAuth={setIsAuth} />}
+        {(props) => <ProfileScreen {...props} />}
       </HomeTab.Screen>
     </HomeTab.Navigator>
   );

@@ -7,17 +7,19 @@ import {
 } from 'react-native';
 import { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useDispatch } from 'react-redux';
 
 import { MainButton } from '../../../../components/MainButton';
 
 import * as Styled from './LoginScreen.styled';
 import { useKeyboardVisible } from '../../../../hooks';
 import { loginValidationSchema } from '../../../../validations/ValidationSchemas';
+import { logIn } from '../../../../redux/auth/auth-operations';
 
 const isPlatformIOS = Platform.OS === 'ios';
 
-export const LoginScreen = ({ navigation, route, setIsAuth }) => {
+export const LoginScreen = ({ navigation, route }) => {
+  const dispatch = useDispatch();
   const [formOffset, setFormOffset] = useState(0);
   const isKeyboardVisible = useKeyboardVisible();
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
@@ -41,7 +43,7 @@ export const LoginScreen = ({ navigation, route, setIsAuth }) => {
     validateOnChange: isFormSubmitted,
     onSubmit: (values, { resetForm }) => {
       console.log('Form values:', values);
-      setIsAuth(true);
+      dispatch(logIn(values));
       resetForm();
       setIsFormSubmitted(false);
     },

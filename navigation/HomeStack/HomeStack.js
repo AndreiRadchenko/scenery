@@ -9,7 +9,7 @@ import { SCREEN, STACK } from '../constants';
 
 const Home = createStackNavigator();
 
-export const HomeStack = ({ setIsAuth }) => {
+export const HomeStack = () => {
   return (
     <Home.Navigator initialRouteName={SCREEN.MAIN.POSTS}>
       <Home.Screen

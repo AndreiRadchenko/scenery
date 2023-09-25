@@ -7,17 +7,21 @@ import {
 } from 'react-native';
 import { useFormik } from 'formik';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import { MainButton } from '../../../../components/MainButton';
 
 import * as Styled from './RegistrationScreen.styled';
 import { useKeyboardVisible } from '../../../../hooks';
 import { RegisterValidationSchema } from '../../../../validations/ValidationSchemas';
+import { authSignUpUser } from '../../../../redux/auth/auth-operations';
+import { register } from '../../../../redux/auth/auth-operations';
 
 const isPlatformIOS = Platform.OS === 'ios';
 const windowWidth = Dimensions.get('window').width;
 
-export const RegistrationScreen = ({ navigation, setIsAuth }) => {
+export const RegistrationScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
   const isKeyboardVisible = useKeyboardVisible();
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
@@ -31,7 +35,7 @@ export const RegistrationScreen = ({ navigation, setIsAuth }) => {
     validationSchema: isFormSubmitted ? RegisterValidationSchema : null,
     onSubmit: (values, { resetForm }) => {
       console.log('Form values:', values);
-      setIsAuth(true);
+      dispatch(register(values));
       resetForm();
       setIsFormSubmitted(false);
     },
