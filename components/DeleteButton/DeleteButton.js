@@ -5,7 +5,7 @@ import themes from '../../utils/themes';
 export const DeleteButton = ({ isActive, onPress }) => {
   return (
     <Styled.DeleteButton
-      activeOpacity={isActive ? 0.8 : 1}
+      activeOpacity={isActive ? 0.6 : 1}
       onPress={isActive ? onPress : null}
       isActive={isActive}
     >

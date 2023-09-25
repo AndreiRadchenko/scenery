@@ -3,7 +3,6 @@ import { FlatList, KeyboardAvoidingView, Platform } from 'react-native';
 import { CommentCard } from '../../../../components/CommentCard';
 import { InputBottomBar } from '../../../../components/InputBottomBar';
 
-import { useNavigation } from '@react-navigation/native';
 import * as Styled from './Comments.styled';
 import authors from '../../../../mock/authors.json';
 

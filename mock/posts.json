@@ -5,7 +5,11 @@
       "url": "https://res.cloudinary.com/dbm1pjejb/image/upload/v1678396479/samples/landscapes/beach-boat.jpg"
     },
     "name": "Beach-boat",
-    "location": "Ivano-Frankivs'k Region, Ukraine",
+    "location": {
+      "name": "Ivano-Frankivs'k Region, Ukraine",
+      "latitude": "50.605241",
+      "longitude": "30.927880"
+    },
     "likes": "5",
     "comments": [
       {
@@ -37,7 +41,11 @@
       "url": "https://res.cloudinary.com/dbm1pjejb/image/upload/v1678396478/samples/landscapes/architecture-signs.jpg"
     },
     "name": "Architecture-signs",
-    "location": "New-York, USA",
+    "location": {
+      "name": "New-York, USA",
+      "latitude": "",
+      "longitude": ""
+    },
     "likes": "0",
     "comments": [
       {
@@ -64,7 +72,11 @@
       "url": "https://res.cloudinary.com/dbm1pjejb/image/upload/v1678396475/samples/landscapes/girl-urban-view.jpg"
     },
     "name": "Girl-urban-view",
-    "location": "Ivano-Frankivs'k Region, Ukraine",
+    "location": {
+      "name": "Ivano-Frankivs'k Region, Ukraine",
+      "latitude": "50.605241",
+      "longitude": "30.927880"
+    },
     "likes": "10",
     "comments": [
       {

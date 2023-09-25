@@ -1,6 +1,7 @@
 import React from 'react';
 import { getHeaderTitle } from '@react-navigation/elements';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
 
 import { LogoutSvg } from './LogoutSvg';
 import { BackButtonSvg } from './BackButtonSvg';
@@ -10,14 +11,17 @@ import themes from '../../utils/themes';
 import { getHeaderLabel } from '../../helpers/getHeaderLabel';
 import { SCREEN, STACK } from '../../navigation/constants';
 import { getMainHeaderVisibility } from '../../helpers/getTabBarVisibility';
+import { logOut } from '../../redux/auth/auth-operations';
 
 const backButtonHeaders = [
   SCREEN.MAIN.CREATE_POST,
   STACK.CREATE_POST,
   SCREEN.MAIN.COMMENTS,
+  SCREEN.MAIN.MAP,
 ];
 
-export const MainHeader = ({ navigation, route, setIsAuth }) => {
+export const MainHeader = ({ navigation, route }) => {
+  const dispatch = useDispatch();
   const routeName = getFocusedRouteNameFromRoute(route) ?? route.name;
   const title = getHeaderLabel(route);
   const displayOption = getMainHeaderVisibility(route);
@@ -28,7 +32,7 @@ export const MainHeader = ({ navigation, route, setIsAuth }) => {
   const isBackButtonHeaders = backButtonHeaders.includes(routeName);
 
   const handleLogout = () => {
-    setIsAuth(false);
+    dispatch(logOut());
   };
 
   return (
