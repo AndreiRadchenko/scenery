@@ -12,7 +12,8 @@ import {
   signInWithEmailAndPassword,
   AuthErrorCodes,
 } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import { getFirestore, collection, addDoc } from 'firebase/firestore';
+import { getStorage, ref } from 'firebase/storage';
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 
 const firebaseConfig = {
@@ -30,3 +31,6 @@ export const auth = initializeAuth(app, {
   persistence: getReactNativePersistence(ReactNativeAsyncStorage),
 });
 export const db = getFirestore(app);
+export const postsCollection = collection(db, 'posts');
+export const storage = getStorage(app);
+export const imagesStorage = ref(storage, 'images');

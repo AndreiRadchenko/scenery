@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import uuid from 'react-native-uuid';
 import {
   TouchableWithoutFeedback,
   Keyboard,
@@ -7,16 +8,32 @@ import {
   View,
   Dimensions,
 } from 'react-native';
+import {
+  getFirestore,
+  collection,
+  doc,
+  addDoc,
+  setDoc,
+} from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { useSelector } from 'react-redux';
 
 import { PhotoSvg } from './PhotoSvg';
 import { LocationSvg } from '../../../../components/PostCard/LocationSvg';
 import { DeleteButton } from '../../../../components/DeleteButton';
 import { MainButton } from '../../../../components/MainButton';
+import {
+  storage,
+  db,
+  postsCollection,
+  imagesStorage,
+} from '../../../../firebase/config';
 
 import * as Styled from './Create.styled';
 import themes from '../../../../utils/themes';
 import { useKeyboardVisible } from '../../../../hooks';
 import { SCREEN, STACK } from '../../../constants';
+import { selectUser } from '../../../../redux/auth/auth-selector';
 
 const isPlatformIOS = Platform.OS === 'ios';
 
@@ -27,10 +44,36 @@ export const CreateScreen = ({ navigation, route }) => {
   const keyboardHeight = useKeyboardVisible();
   const screenHeight = Dimensions.get('window').height - 88;
 
-  console.log(location);
+  const { nickName, id } = useSelector(selectUser);
 
   const openCamera = () => {
     navigation.navigate(SCREEN.MAIN.CAMERA);
+  };
+
+  const uploadPhotoToServer = async () => {
+    const response = await fetch(photo);
+    const file = await response.blob();
+
+    const uniquePhotoId = uuid.v4();
+    const newImageRef = ref(imagesStorage, uniquePhotoId);
+    await uploadBytes(newImageRef, file);
+
+    const photoUrl = await getDownloadURL(newImageRef);
+
+    return { photoUrl, uniquePhotoId };
+  };
+
+  const onPublish = async () => {
+    const { photoUrl, uniquePhotoId } = await uploadPhotoToServer();
+    const newPost = doc(postsCollection, uniquePhotoId);
+    const createPost = await setDoc(newPost, {
+      image: { url: photoUrl },
+      location,
+      author: { id, name: nickName },
+    });
+    setIsImageSelected(false);
+    setPhoto(null);
+    navigation.goBack();
   };
 
   const deletePost = () => {
@@ -41,7 +84,6 @@ export const CreateScreen = ({ navigation, route }) => {
   useEffect(() => {
     const photo = route?.params?.photo;
     const location = route?.params?.location;
-    console.log(location);
     setIsImageSelected(!!photo);
     setPhoto(photo);
     setLocation(location);
@@ -88,7 +130,7 @@ export const CreateScreen = ({ navigation, route }) => {
               </Styled.InputWrapper>
               <MainButton
                 buttonText="Publish"
-                onPress={() => {}}
+                onPress={onPublish}
                 isActive={isImageSelected}
               />
             </View>
