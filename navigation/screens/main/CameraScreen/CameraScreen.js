@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Camera } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
-import { Dimensions, View, StatusBar } from 'react-native';
-import * as Location from 'expo-location';
+import { Dimensions, View, StatusBar, Alert } from 'react-native';
 import {
   Ionicons,
   FontAwesome,
   MaterialCommunityIcons,
 } from '@expo/vector-icons';
+import { manipulateAsync, FlipType, SaveFormat } from 'expo-image-manipulator';
 
 import { PhotoPreview } from '../../../../components/PhotoPreview/PhotoPreview';
 
@@ -15,15 +15,9 @@ import * as Styled from './CameraScreen.styled';
 
 export const CameraScreen = ({ navigation, route }) => {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
-  const [hasLocationPermission, setHasLocationPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [photo, setPhoto] = useState(null);
-  const [location, setLocation] = useState({
-    name: '',
-    latitude: '',
-    longitude: '',
-  });
 
   const screenWidth = Dimensions.get('window').width;
   const cameraHeight = screenWidth * 1.41;
@@ -32,16 +26,12 @@ export const CameraScreen = ({ navigation, route }) => {
     if (cameraRef) {
       try {
         const photo = await cameraRef.takePictureAsync();
-        setPhoto(photo.uri);
-        // await MediaLibrary.createAssetAsync(photo.uri);
-        if (hasLocationPermission) {
-          const location = await Location.getCurrentPositionAsync();
-          const coords = {
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-          };
-          setLocation({ name: '', ...coords });
-        }
+        const resizedPhoto = await manipulateAsync(
+          photo.uri,
+          [{ resize: { height: photo.height / 3, width: photo.width / 3 } }],
+          { compress: 0.5, format: SaveFormat.JPEG }
+        );
+        setPhoto(resizedPhoto.uri);
       } catch (e) {
         console.log(e.message);
       }
@@ -60,11 +50,8 @@ export const CameraScreen = ({ navigation, route }) => {
     (async () => {
       const { status: cameraStatus } =
         await Camera.requestCameraPermissionsAsync();
-      const { status: locationStatus } =
-        await Location.requestForegroundPermissionsAsync();
       await MediaLibrary.requestPermissionsAsync();
       setHasCameraPermission(cameraStatus === 'granted');
-      setHasLocationPermission(locationStatus === 'granted');
     })();
   }, []);
 
@@ -86,13 +73,7 @@ export const CameraScreen = ({ navigation, route }) => {
     );
   }
   return photo ? (
-    <PhotoPreview
-      photo={photo}
-      setPhoto={setPhoto}
-      location={location}
-      setLocation={setLocation}
-      navigation={navigation}
-    />
+    <PhotoPreview photo={photo} setPhoto={setPhoto} navigation={navigation} />
   ) : (
     <Styled.CameraContainer cameraHeight={cameraHeight}>
       <StatusBar

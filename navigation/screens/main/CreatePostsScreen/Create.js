@@ -17,6 +17,7 @@ import {
 } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useSelector } from 'react-redux';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import { PhotoSvg } from './PhotoSvg';
 import { LocationSvg } from '../../../../components/PostCard/LocationSvg';
@@ -41,6 +42,8 @@ export const CreateScreen = ({ navigation, route }) => {
   const [isImageSelected, setIsImageSelected] = useState(false);
   const [photo, setPhoto] = useState(null);
   const [location, setLocation] = useState(null);
+  const [imageName, setImageName] = useState('');
+  const [isUploading, setIsUploading] = useState(false);
   const keyboardHeight = useKeyboardVisible();
   const screenHeight = Dimensions.get('window').height - 88;
 
@@ -64,21 +67,26 @@ export const CreateScreen = ({ navigation, route }) => {
   };
 
   const onPublish = async () => {
+    setIsUploading(true);
     const { photoUrl, uniquePhotoId } = await uploadPhotoToServer();
     const newPost = doc(postsCollection, uniquePhotoId);
     const createPost = await setDoc(newPost, {
       image: { url: photoUrl },
       location,
       author: { id, name: nickName },
+      name: imageName,
     });
+    setIsUploading(false);
     setIsImageSelected(false);
     setPhoto(null);
+    setImageName('');
     navigation.goBack();
   };
 
   const deletePost = () => {
     setIsImageSelected(false);
     setPhoto(null);
+    setImageName('');
   };
 
   useEffect(() => {
@@ -96,6 +104,11 @@ export const CreateScreen = ({ navigation, route }) => {
         behavior={Platform.OS === 'ios' ? 'padding' : null}
       >
         <Styled.PostContainer>
+          <Spinner
+            visible={isUploading}
+            textContent={'Post upload...'}
+            textStyle={{ color: 'white' }}
+          />
           <Styled.ScreenWrapper screenHeight={screenHeight}>
             <View>
               <Styled.PostCard>
@@ -115,7 +128,11 @@ export const CreateScreen = ({ navigation, route }) => {
                 <Styled.CardAction>Take a photo</Styled.CardAction>
               </Styled.PostCard>
               <Styled.InputWrapper>
-                <Styled.InputName placeholder="Name..." />
+                <Styled.InputName
+                  placeholder="Name..."
+                  value={imageName}
+                  onChangeText={(value) => setImageName(value)}
+                />
               </Styled.InputWrapper>
               <Styled.InputWrapper style={{ marginBottom: 4 }}>
                 <LocationSvg color={themes.primary.colors.lightGrey} />
@@ -123,7 +140,9 @@ export const CreateScreen = ({ navigation, route }) => {
                   placeholder="Location..."
                   value={
                     isImageSelected
-                      ? `${location?.latitude}, ${location?.longitude}`
+                      ? !location?.name
+                        ? `${location?.latitude}, ${location?.longitude}`
+                        : location?.name
                       : ''
                   }
                 />
