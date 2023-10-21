@@ -29,11 +29,11 @@ export const PostCard = ({
         <Styled.Achievements>
           <Styled.InfoBlock>
             <CommentSvg
-              isEmpty={!comments.length}
+              isEmpty={!comments?.length}
               handlePress={onCommentPress}
             />
-            <Styled.CommentNumbers isEmpty={!comments.length}>
-              {comments.length}
+            <Styled.CommentNumbers isEmpty={!comments?.length}>
+              {comments?.length}
             </Styled.CommentNumbers>
           </Styled.InfoBlock>
           <Styled.InfoBlock>
