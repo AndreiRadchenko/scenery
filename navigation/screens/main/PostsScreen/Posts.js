@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { FlatList } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { PostCard } from '../../../../components/PostCard';
 
 import * as Styled from './Posts.styled';
@@ -8,6 +10,13 @@ import authors from '../../../../mock/authors.json';
 import { SCREEN, STACK } from '../../../constants';
 import { postsCollection } from '../../../../firebase/config';
 import { getPaginatedPosts, getLastItem } from '../../../../firebase/services';
+import {
+  selectLastVisiblePost,
+  selectIsLoading,
+  selectIsEndOfPosts,
+  selectPosts,
+} from '../../../../redux/posts/posts-selectors';
+import { fetchPostsOperation } from '../../../../redux/posts/posts-operations';
 
 const author = authors[1];
 
@@ -24,23 +33,14 @@ const UserCard = () => {
 };
 
 export const PostsScreen = ({ navigation, route }) => {
-  const [posts, setPosts] = useState([]);
-  const [lastDocument, setLastDocument] = useState(null);
-  const [isEndOfPosts, setIsEndOfPosts] = useState(false);
+  const dispatch = useDispatch();
+  const lastVisiblePost = useSelector(selectLastVisiblePost);
+  const isEndOfPosts = useSelector(selectIsEndOfPosts);
+  const isLoading = useSelector(selectIsLoading);
+  const posts = useSelector(selectPosts);
 
   const fetchMore = async () => {
-    if (!isEndOfPosts) {
-      const morePosts = await getPaginatedPosts(lastDocument, 4);
-      console.log('lastDocument: ', lastDocument);
-      console.log('morePosts.docs: ', morePosts.docs);
-      const postsMapped = morePosts.docs.map((doc) => ({
-        ...doc.data(),
-        _id: doc.id,
-      }));
-      setPosts((prevState) => [...prevState, ...postsMapped]);
-      setLastDocument(getLastItem(morePosts.docs));
-      setIsEndOfPosts(!morePosts.docs.length);
-    }
+    dispatch(fetchPostsOperation(4));
   };
 
   // useEffect(() => {

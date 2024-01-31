@@ -5,6 +5,7 @@ import {
   startAfter,
   limit,
   getDocs,
+  Timestamp,
 } from 'firebase/firestore';
 
 import { postsCollection } from './config';
@@ -17,11 +18,11 @@ export const getPaginatedPosts = async (lastVisible, limits) => {
   const q = lastVisible
     ? query(
         postsCollection,
-        orderBy('name'),
-        startAfter(lastVisible),
+        orderBy('timestamp', 'desc'),
+        startAfter(Timestamp.fromMillis(lastVisible)),
         limit(limits)
       )
-    : query(postsCollection, orderBy('name'), limit(limits));
+    : query(postsCollection, orderBy('timestamp', 'desc'), limit(limits));
 
   try {
     documentSnapshots = await getDocs(q);

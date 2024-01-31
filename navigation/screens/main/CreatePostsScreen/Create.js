@@ -14,10 +14,11 @@ import {
   doc,
   addDoc,
   setDoc,
+  serverTimestamp,
 } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { useSelector } from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { PhotoSvg } from './PhotoSvg';
 import { LocationSvg } from '../../../../components/PostCard/LocationSvg';
@@ -29,21 +30,25 @@ import {
   postsCollection,
   imagesStorage,
 } from '../../../../firebase/config';
+import { addPostOperation } from '../../../../redux/posts/posts-operations';
+import { selectUser } from '../../../../redux/auth/auth-selector';
+import { selectIsLoading } from '../../../../redux/posts/posts-selectors';
 
 import * as Styled from './Create.styled';
 import themes from '../../../../utils/themes';
 import { useKeyboardVisible } from '../../../../hooks';
 import { SCREEN, STACK } from '../../../constants';
-import { selectUser } from '../../../../redux/auth/auth-selector';
 
 const isPlatformIOS = Platform.OS === 'ios';
 
 export const CreateScreen = ({ navigation, route }) => {
+  const dispatch = useDispatch();
   const [isImageSelected, setIsImageSelected] = useState(false);
   const [photo, setPhoto] = useState(null);
   const [location, setLocation] = useState(null);
   const [imageName, setImageName] = useState('');
   const [isUploading, setIsUploading] = useState(false);
+  const isLoading = useSelector(selectIsLoading);
   const keyboardHeight = useKeyboardVisible();
   const screenHeight = Dimensions.get('window').height - 88;
 
@@ -67,16 +72,26 @@ export const CreateScreen = ({ navigation, route }) => {
   };
 
   const onPublish = async () => {
-    setIsUploading(true);
-    const { photoUrl, uniquePhotoId } = await uploadPhotoToServer();
-    const newPost = doc(postsCollection, uniquePhotoId);
-    const createPost = await setDoc(newPost, {
-      image: { url: photoUrl },
-      location,
-      author: { id, name: nickName },
-      name: imageName,
-    });
-    setIsUploading(false);
+    // setIsUploading(true);
+    // const { photoUrl, uniquePhotoId } = await uploadPhotoToServer();
+    // const newPost = doc(postsCollection, uniquePhotoId);
+    // const createPost = await setDoc(newPost, {
+    //   image: { url: photoUrl },
+    //   location,
+    //   author: { id, name: nickName },
+    //   name: imageName,
+    //   timestamp: serverTimestamp(),
+    // });
+    dispatch(
+      addPostOperation({
+        photo,
+        location,
+        author: { id, name: nickName },
+        name: imageName,
+      })
+    );
+    // console.log('createPost returns: ', createPost);
+    // setIsUploading(false);
     setIsImageSelected(false);
     setPhoto(null);
     setImageName('');
@@ -105,7 +120,7 @@ export const CreateScreen = ({ navigation, route }) => {
       >
         <Styled.PostContainer>
           <Spinner
-            visible={isUploading}
+            visible={isLoading}
             textContent={'Post upload...'}
             textStyle={{ color: 'white' }}
           />
