@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Keyboard } from 'react-native';
+import { useState, useEffect, useCallback } from 'react';
+import { Keyboard, Platform } from 'react-native';
 
 export const useKeyboardVisible = () => {
   const [keyboardHeight, setKeyboardHeight] = useState(0);
@@ -8,7 +8,7 @@ export const useKeyboardVisible = () => {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
       (event) => {
-        setKeyboardHeight(event.endCoordinates.height); // or some other action
+        setKeyboardHeight(event.endCoordinates.height);
       }
     );
     const keyboardDidHideListener = Keyboard.addListener(

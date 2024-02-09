@@ -1,5 +1,5 @@
 import { styled } from 'styled-components/native';
-import { ImageBackground, Text } from 'react-native';
+import { ImageBackground, Text, Animated } from 'react-native';
 import themes from '../../../../utils/themes';
 
 import AddSvg from '../../../../assets/svg/add.svg';
@@ -15,17 +15,15 @@ export const BgImage = styled(ImageBackground)`
   justify-content: flex-end;
 `;
 
-export const RegisterForm = styled.View`
+export const RegisterForm = styled(Animated.View)`
   position: relative;
   align-items: center;
   border-top-left-radius: 25px;
   border-top-right-radius: 25px;
-  padding: 92px 16px 0 16px;
+  padding: 92px 16px 78px 16px;
   background-color: ${themes.primary.colors.backgroundColor};
   font-size: 16px;
   line-height: 19px;
-  padding-bottom: ${({ isKeyboardVisible }) =>
-    isKeyboardVisible ? 0 : '78px'};
 `;
 
 export const AvatarWrapper = styled.View`

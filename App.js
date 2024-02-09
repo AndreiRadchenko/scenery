@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { Provider } from 'react-redux';
+import 'expo-dev-client';
 
 import Main from './Main';
 

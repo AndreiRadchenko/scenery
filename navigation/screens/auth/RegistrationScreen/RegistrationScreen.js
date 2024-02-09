@@ -4,12 +4,14 @@ import {
   KeyboardAvoidingView,
   Platform,
   Dimensions,
+  Animated,
 } from 'react-native';
 import { useFormik } from 'formik';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { MainButton } from '../../../../components/MainButton';
+import { PasswordInput } from '../../../../components/PasswordInput';
 
 import * as Styled from './RegistrationScreen.styled';
 import { useKeyboardVisible } from '../../../../hooks';
@@ -22,9 +24,25 @@ const windowWidth = Dimensions.get('window').width;
 
 export const RegistrationScreen = ({ navigation }) => {
   const dispatch = useDispatch();
-  const isKeyboardVisible = useKeyboardVisible();
-  const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+  const keyboardHeight = useKeyboardVisible();
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+
+  const [translateAnim] = useState(new Animated.Value(+0));
+  const [translateForm, setTranslateForm] = useState(+0);
+
+  useEffect(() => {
+    Animated.timing(translateAnim, {
+      toValue: translateForm,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
+  }, [translateForm]);
+
+  useEffect(() => {
+    keyboardHeight
+      ? setTranslateForm(195 - keyboardHeight)
+      : setTranslateForm(+0);
+  }, [keyboardHeight]);
 
   const formik = useFormik({
     initialValues: {
@@ -53,60 +71,49 @@ export const RegistrationScreen = ({ navigation }) => {
           resizeMode="stretch"
           source={require('../../../../assets/img/PhotoBG-compressed.jpg')}
         >
-          <KeyboardAvoidingView
-            behavior={isPlatformIOS ? 'padding' : ''}
-            keyboardVerticalOffset={0}
+          <Styled.RegisterForm
+            style={{
+              transform: [
+                { scale: 1 },
+                { rotateY: '0deg' },
+                { perspective: 100 },
+                { translateY: translateAnim },
+              ],
+            }}
           >
-            <Styled.RegisterForm isKeyboardVisible={isKeyboardVisible}>
-              <Styled.AvatarWrapper windowWidth={windowWidth}>
-                <Styled.PlusSign />
-              </Styled.AvatarWrapper>
-              <Styled.Title>Register</Styled.Title>
-              <Styled.InputWrapper>
-                <Styled.Input
-                  isError={formik.errors.name}
-                  placeholder="Name"
-                  value={formik.values.name}
-                  onChangeText={formik.handleChange('name')}
-                />
-                <Styled.Error>{formik.errors.name}</Styled.Error>
-              </Styled.InputWrapper>
-              <Styled.InputWrapper>
-                <Styled.Input
-                  isError={formik.errors.email}
-                  placeholder="Email"
-                  value={formik.values.email}
-                  onChangeText={formik.handleChange('email')}
-                />
-                <Styled.Error>{formik.errors.email}</Styled.Error>
-              </Styled.InputWrapper>
-              <Styled.PasswordWrapper>
-                <Styled.Input
-                  isError={formik.errors.password}
-                  placeholder="Password"
-                  secureTextEntry={isPasswordHidden}
-                  value={formik.values.password}
-                  onChangeText={formik.handleChange('password')}
-                />
-                <Styled.Error>{formik.errors.password}</Styled.Error>
-                <Styled.ShowPassword
-                  onPress={() => setIsPasswordHidden((prevState) => !prevState)}
-                >
-                  {isPasswordHidden ? 'Show' : 'Hide'}
-                </Styled.ShowPassword>
-              </Styled.PasswordWrapper>
-              {!isKeyboardVisible && (
-                <>
-                  <MainButton buttonText="Register" onPress={handleSubmit} />
-                  <Styled.RegisterText
-                    onPress={() => navigation.navigate('Login')}
-                  >
-                    Already have account? Login
-                  </Styled.RegisterText>
-                </>
-              )}
-            </Styled.RegisterForm>
-          </KeyboardAvoidingView>
+            <Styled.AvatarWrapper windowWidth={windowWidth}>
+              <Styled.PlusSign />
+            </Styled.AvatarWrapper>
+            <Styled.Title>Register</Styled.Title>
+            <Styled.InputWrapper>
+              <Styled.Input
+                isError={formik.errors.name}
+                placeholder="Name"
+                value={formik.values.name}
+                onChangeText={formik.handleChange('name')}
+              />
+              <Styled.Error>{formik.errors.name}</Styled.Error>
+            </Styled.InputWrapper>
+            <Styled.InputWrapper>
+              <Styled.Input
+                isError={formik.errors.email}
+                placeholder="Email"
+                value={formik.values.email}
+                onChangeText={formik.handleChange('email')}
+              />
+              <Styled.Error>{formik.errors.email}</Styled.Error>
+            </Styled.InputWrapper>
+            <PasswordInput
+              error={formik.errors.password}
+              value={formik.values.password}
+              onChangeText={formik.handleChange('password')}
+            />
+
+            <MainButton buttonText="Register" onPress={handleSubmit} />
+            <Styled.RegisterText onPress={() => navigation.navigate('Login')}>
+              Already have account? Login
+            </Styled.RegisterText>
+          </Styled.RegisterForm>
         </Styled.BgImage>
       </Styled.Container>
     </TouchableWithoutFeedback>
