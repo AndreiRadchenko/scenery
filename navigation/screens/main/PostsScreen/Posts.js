@@ -1,10 +1,22 @@
+import { useState, useEffect } from 'react';
 import { FlatList } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { PostCard } from '../../../../components/PostCard';
 
 import * as Styled from './Posts.styled';
 import authors from '../../../../mock/authors.json';
-import posts from '../../../../mock/posts.json';
+// import posts from '../../../../mock/posts.json';
 import { SCREEN, STACK } from '../../../constants';
+import { postsCollection } from '../../../../firebase/config';
+import { getPaginatedPosts, getLastItem } from '../../../../firebase/services';
+import {
+  selectLastVisiblePost,
+  selectIsLoading,
+  selectIsEndOfPosts,
+  selectPosts,
+} from '../../../../redux/posts/posts-selectors';
+import { fetchPostsOperation } from '../../../../redux/posts/posts-operations';
 
 const author = authors[1];
 
@@ -21,6 +33,20 @@ const UserCard = () => {
 };
 
 export const PostsScreen = ({ navigation, route }) => {
+  const dispatch = useDispatch();
+  const lastVisiblePost = useSelector(selectLastVisiblePost);
+  const isEndOfPosts = useSelector(selectIsEndOfPosts);
+  const isLoading = useSelector(selectIsLoading);
+  const posts = useSelector(selectPosts);
+
+  const fetchMore = async () => {
+    dispatch(fetchPostsOperation(4));
+  };
+
+  // useEffect(() => {
+  //   fetchMore();
+  // }, []);
+
   const openComments = (item) => {
     navigation.navigate(STACK.HOME, {
       screen: SCREEN.MAIN.COMMENTS,
@@ -30,6 +56,7 @@ export const PostsScreen = ({ navigation, route }) => {
       },
     });
   };
+
   const openMap = (item) => {
     navigation.navigate(STACK.HOME, {
       screen: SCREEN.MAIN.MAP,
@@ -39,6 +66,7 @@ export const PostsScreen = ({ navigation, route }) => {
       },
     });
   };
+
   return (
     <Styled.PostsContainer>
       <FlatList
@@ -54,6 +82,8 @@ export const PostsScreen = ({ navigation, route }) => {
         ListHeaderComponent={UserCard}
         keyExtractor={(post) => post._id}
         showsVerticalScrollIndicator={false}
+        onEndReachedThreshold={0.1}
+        onEndReached={fetchMore}
       />
     </Styled.PostsContainer>
   );
