@@ -1,48 +1,27 @@
-import {
-  TouchableWithoutFeedback,
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  Dimensions,
-  Animated,
-} from 'react-native';
+import { TouchableWithoutFeedback, Keyboard, Dimensions } from 'react-native';
 import { useFormik } from 'formik';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { MainButton } from '../../../../components/MainButton';
 import { PasswordInput } from '../../../../components/PasswordInput';
 
 import * as Styled from './RegistrationScreen.styled';
-import { useKeyboardVisible } from '../../../../hooks';
+import { useFormAnimation } from '../../../../hooks';
 import { RegisterValidationSchema } from '../../../../validations/ValidationSchemas';
 import { authSignUpUser } from '../../../../redux/auth/auth-operations';
 import { register } from '../../../../redux/auth/auth-operations';
 
-const isPlatformIOS = Platform.OS === 'ios';
 const windowWidth = Dimensions.get('window').width;
 
 export const RegistrationScreen = ({ navigation }) => {
   const dispatch = useDispatch();
-  const keyboardHeight = useKeyboardVisible();
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
-  const [translateAnim] = useState(new Animated.Value(+0));
-  const [translateForm, setTranslateForm] = useState(+0);
-
-  useEffect(() => {
-    Animated.timing(translateAnim, {
-      toValue: translateForm,
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
-  }, [translateForm]);
-
-  useEffect(() => {
-    keyboardHeight
-      ? setTranslateForm(195 - keyboardHeight)
-      : setTranslateForm(+0);
-  }, [keyboardHeight]);
+  const translateAnim = useFormAnimation({
+    formOffset: 195,
+    animationDuration: 200,
+  });
 
   const formik = useFormik({
     initialValues: {

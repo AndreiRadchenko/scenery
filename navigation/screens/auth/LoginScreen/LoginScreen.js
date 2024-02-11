@@ -1,12 +1,10 @@
 import {
   TouchableWithoutFeedback,
   Keyboard,
-  KeyboardAvoidingView,
   Platform,
   Dimensions,
-  Animated,
 } from 'react-native';
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState } from 'react';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 
@@ -14,40 +12,19 @@ import { MainButton } from '../../../../components/MainButton';
 import { PasswordInput } from '../../../../components/PasswordInput';
 
 import * as Styled from './LoginScreen.styled';
-import { useKeyboardVisible } from '../../../../hooks';
+import { useFormAnimation } from '../../../../hooks';
 import { loginValidationSchema } from '../../../../validations/ValidationSchemas';
 import { logIn } from '../../../../redux/auth/auth-operations';
 
-const isPlatformIOS = Platform.OS === 'ios';
-
 export const LoginScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
-  const [formOffset, setFormOffset] = useState(0);
-  const keyboardHeight = useKeyboardVisible();
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const screenHeight = Dimensions.get('window').height;
 
-  // const handleLayout = (event) => {
-  //   const { height } = event.nativeEvent.layout;
-  //   setFormOffset(screenHeight - height);
-  // };
-
-  const [translateAnim] = useState(new Animated.Value(+0));
-  const [translateForm, setTranslateForm] = useState(+0);
-
-  useEffect(() => {
-    Animated.timing(translateAnim, {
-      toValue: translateForm,
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
-  }, [translateForm]);
-
-  useEffect(() => {
-    keyboardHeight
-      ? setTranslateForm(250 - keyboardHeight)
-      : setTranslateForm(+0);
-  }, [keyboardHeight]);
+  const translateAnim = useFormAnimation({
+    formOffset: 250,
+    animationDuration: 200,
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -73,9 +50,11 @@ export const LoginScreen = ({ navigation, route }) => {
     <TouchableWithoutFeedback
       onPress={() => {
         Keyboard.dismiss();
-        setTranslateForm(0);
       }}
-      style={{ flex: 1 }}
+      style={{
+        flex: 1,
+        minHeight: Math.round(Dimensions.get('window').height),
+      }}
     >
       <Styled.Container>
         <Styled.BgImage
