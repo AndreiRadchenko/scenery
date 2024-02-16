@@ -1,22 +1,33 @@
-import { TouchableWithoutFeedback, Keyboard, Dimensions } from 'react-native';
+import { TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { useFormik } from 'formik';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { MainButton } from '../../../../components/MainButton';
 import { PasswordInput } from '../../../../components/PasswordInput';
+import { Avatar } from '../../../../components/Avatar';
 
 import * as Styled from './RegistrationScreen.styled';
 import { useFormAnimation } from '../../../../hooks';
 import { RegisterValidationSchema } from '../../../../validations/ValidationSchemas';
-import { authSignUpUser } from '../../../../redux/auth/auth-operations';
 import { register } from '../../../../redux/auth/auth-operations';
+import { SCREEN, STACK } from '../../../constants';
 
-const windowWidth = Dimensions.get('window').width;
-
-export const RegistrationScreen = ({ navigation }) => {
+export const RegistrationScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  const [avatar, setAvatar] = useState(null);
+
+  useEffect(() => {
+    const photo = route?.params?.photo;
+    setAvatar(photo);
+  }, [route]);
+
+  const openCamera = () => {
+    navigation.navigate(SCREEN.MAIN.CAMERA, {
+      prevScreen: SCREEN.AUTH.REGISTRATION,
+    });
+  };
 
   const translateAnim = useFormAnimation({
     formOffset: 195,
@@ -25,13 +36,13 @@ export const RegistrationScreen = ({ navigation }) => {
 
   const formik = useFormik({
     initialValues: {
+      avatar: null,
       name: '',
       email: '',
       password: '',
     },
     validationSchema: isFormSubmitted ? RegisterValidationSchema : null,
-    onSubmit: (values, { resetForm }) => {
-      console.log('Form values:', values);
+    onSubmit: async (values, { resetForm }) => {
       dispatch(register(values));
       resetForm();
       setIsFormSubmitted(false);
@@ -39,7 +50,8 @@ export const RegistrationScreen = ({ navigation }) => {
   });
 
   const handleSubmit = async () => {
-    await setIsFormSubmitted(true);
+    await formik.setFieldValue('avatar', avatar);
+    setIsFormSubmitted(true);
     formik.handleSubmit();
   };
 
@@ -60,9 +72,11 @@ export const RegistrationScreen = ({ navigation }) => {
               ],
             }}
           >
-            <Styled.AvatarWrapper windowWidth={windowWidth}>
-              <Styled.PlusSign />
-            </Styled.AvatarWrapper>
+            <Avatar
+              avatarURL={avatar}
+              onCreateAvatar={openCamera}
+              onDeleteAvatar={() => setAvatar(null)}
+            />
             <Styled.Title>Register</Styled.Title>
             <Styled.InputWrapper>
               <Styled.Input

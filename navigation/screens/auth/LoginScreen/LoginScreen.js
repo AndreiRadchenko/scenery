@@ -15,6 +15,7 @@ import * as Styled from './LoginScreen.styled';
 import { useFormAnimation } from '../../../../hooks';
 import { loginValidationSchema } from '../../../../validations/ValidationSchemas';
 import { logIn } from '../../../../redux/auth/auth-operations';
+import { SCREEN, STACK } from '../../../constants';
 
 export const LoginScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
@@ -34,7 +35,6 @@ export const LoginScreen = ({ navigation, route }) => {
     validationSchema: loginValidationSchema,
     validateOnChange: isFormSubmitted,
     onSubmit: (values, { resetForm }) => {
-      console.log('Form values:', values);
       dispatch(logIn(values));
       resetForm();
       setIsFormSubmitted(false);
@@ -91,7 +91,7 @@ export const LoginScreen = ({ navigation, route }) => {
             <>
               <MainButton buttonText="Login" onPress={handleSubmit} />
               <Styled.RegisterText
-                onPress={() => navigation.navigate('Registration')}
+                onPress={() => navigation.navigate(STACK.REGISTRATION)}
               >
                 Don't have account? Register
               </Styled.RegisterText>

@@ -8,27 +8,31 @@ import * as Styled from './Posts.styled';
 import authors from '../../../../mock/authors.json';
 // import posts from '../../../../mock/posts.json';
 import { SCREEN, STACK } from '../../../constants';
-import { postsCollection } from '../../../../firebase/config';
-import { getPaginatedPosts, getLastItem } from '../../../../firebase/services';
 import {
   selectLastVisiblePost,
   selectIsLoading,
   selectIsEndOfPosts,
   selectPosts,
 } from '../../../../redux/posts/posts-selectors';
+import {
+  selectUser,
+  selectIsLoading as selectIsUserLoading,
+} from '../../../../redux/auth/auth-selector';
 import { fetchPostsOperation } from '../../../../redux/posts/posts-operations';
 
-const author = authors[1];
+// const user = authors[1];
 
-const UserCard = () => {
+const UserCard = ({ user, isUserLoading }) => {
   return (
-    <Styled.AuthorWrapper>
-      <Styled.AuthorAvatar source={{ uri: author.avatar.url }} />
-      <Styled.AuthorTextWrapper>
-        <Styled.AuthorName>{author.name}</Styled.AuthorName>
-        <Styled.AuthorEmail>{author.email} </Styled.AuthorEmail>
-      </Styled.AuthorTextWrapper>
-    </Styled.AuthorWrapper>
+    !isUserLoading && (
+      <Styled.AuthorWrapper>
+        <Styled.AuthorAvatar source={{ uri: user.avatar }} />
+        <Styled.AuthorTextWrapper>
+          <Styled.AuthorName>{user.nickName}</Styled.AuthorName>
+          <Styled.AuthorEmail>{user.email} </Styled.AuthorEmail>
+        </Styled.AuthorTextWrapper>
+      </Styled.AuthorWrapper>
+    )
   );
 };
 
@@ -38,14 +42,12 @@ export const PostsScreen = ({ navigation, route }) => {
   const isEndOfPosts = useSelector(selectIsEndOfPosts);
   const isLoading = useSelector(selectIsLoading);
   const posts = useSelector(selectPosts);
+  const user = useSelector(selectUser);
+  const isUserLoading = useSelector(selectIsUserLoading);
 
   const fetchMore = async () => {
     dispatch(fetchPostsOperation(4));
   };
-
-  // useEffect(() => {
-  //   fetchMore();
-  // }, []);
 
   const openComments = (item) => {
     navigation.navigate(STACK.HOME, {
@@ -79,7 +81,7 @@ export const PostsScreen = ({ navigation, route }) => {
             onLocationPress={() => openMap(item)}
           />
         )}
-        ListHeaderComponent={UserCard}
+        ListHeaderComponent={UserCard({ user, isUserLoading })}
         keyExtractor={(post) => post._id}
         showsVerticalScrollIndicator={false}
         onEndReachedThreshold={0.1}

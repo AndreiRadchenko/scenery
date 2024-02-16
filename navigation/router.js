@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { LoginScreen } from './screens/auth/LoginScreen';
 import { RegistrationScreen } from './screens/auth/RegistrationScreen';
+import { RegistrationStack } from './RegistrationStack';
 import { HomeStack } from './HomeStack';
 import { CreateStack } from './CreateStack';
 import { ProfileStack } from './ProfileStack';
@@ -37,8 +38,8 @@ export const UseRoute = ({ isLoggedIn }) => {
         <AuthStack.Screen name={SCREEN.AUTH.LOGIN}>
           {(props) => <LoginScreen {...props} />}
         </AuthStack.Screen>
-        <AuthStack.Screen name={SCREEN.AUTH.REGISTRATION}>
-          {(props) => <RegistrationScreen {...props} />}
+        <AuthStack.Screen name={STACK.REGISTRATION}>
+          {(props) => <RegistrationStack {...props} />}
         </AuthStack.Screen>
       </AuthStack.Navigator>
     );

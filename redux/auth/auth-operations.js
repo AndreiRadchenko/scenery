@@ -9,21 +9,41 @@ import {
   AuthErrorCodes,
   updateProfile,
 } from 'firebase/auth';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useDispatch } from 'react-redux';
+import uuid from 'react-native-uuid';
 
-import { db, auth } from '../../firebase/config';
+import { db, auth, avatarStorage } from '../../firebase/config';
 
 export const register = createAsyncThunk(
   'auth/register',
-  async ({ name, email, password }, thunkAPI) => {
+  async ({ avatar, name, email, password }, thunkAPI) => {
     try {
       const { user } = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
-      await updateProfile(user, { displayName: name });
-      return { name: user.displayName, id: user.uid, email: user.email };
+      let photoUrl = null;
+      if (avatar) {
+        const response = await fetch(avatar);
+        const file = await response.blob();
+
+        const uniquePhotoId = uuid.v4();
+        const newImageRef = ref(avatarStorage, uniquePhotoId);
+        await uploadBytes(newImageRef, file);
+
+        photoUrl = await getDownloadURL(newImageRef);
+      }
+
+      await updateProfile(user, { displayName: name, photoURL: photoUrl });
+
+      return {
+        avatar: user.photoURL,
+        name: user.displayName,
+        id: user.uid,
+        email: user.email,
+      };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -35,7 +55,12 @@ export const logIn = createAsyncThunk(
   async ({ email, password }, thunkAPI) => {
     try {
       const { user } = await signInWithEmailAndPassword(auth, email, password);
-      return { name: user.displayName, id: user.uid, email: user.email };
+      return {
+        avatar: user.photoURL,
+        name: user.displayName,
+        id: user.uid,
+        email: user.email,
+      };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

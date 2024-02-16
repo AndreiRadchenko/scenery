@@ -6,10 +6,11 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { LogoutSvg } from '../../../../components/MainHeader/LogoutSvg';
 import { PostCard } from '../../../../components/PostCard';
+import { Avatar } from '../../../../components/Avatar';
 
 import * as Styled from './Profile.styled';
 import themes from '../../../../utils/themes';
@@ -19,8 +20,11 @@ import authors from '../../../../mock/authors.json';
 import posts from '../../../../mock/posts.json';
 import { SCREEN, STACK } from '../../../constants';
 import { logOut } from '../../../../redux/auth/auth-operations';
+import { AvatarChangeButton } from '../../../../components/AvatarChangeButton';
+import { AddSvg } from '../../../../components/AvatarChangeButton/AddSvg';
+import { selectUser } from '../../../../redux/auth/auth-selector';
 
-const author = authors[1];
+// const user = authors[1];
 
 const isPlatformIOS = Platform.OS === 'ios';
 const windowWidth = Dimensions.get('window').width;
@@ -28,7 +32,8 @@ const windowWidth = Dimensions.get('window').width;
 export const ProfileScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const isKeyboardVisible = useKeyboardVisible();
-  const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+  // const [avatar, setAvatar] = useState(null);
+  const user = useSelector(selectUser);
 
   const openComments = (item) => {
     navigation.navigate(STACK.PROFILE, {
@@ -68,16 +73,15 @@ export const ProfileScreen = ({ navigation }) => {
             isKeyboardVisible={isKeyboardVisible}
             isPlatformIOS={isPlatformIOS}
           >
-            <Styled.AvatarWrapper windowWidth={windowWidth}>
-              <Styled.Avatar source={{ uri: author.avatar.url }} />
-              <TouchableOpacity activeOpacity={0.8} onPress={() => {}}>
-                {author.avatar.url ? <Styled.CrossSign /> : <Styled.PlusSign />}
-              </TouchableOpacity>
-            </Styled.AvatarWrapper>
+            <Avatar
+              avatarURL={user.avatar}
+              onCreateAvatar={() => {}}
+              onDeleteAvatar={() => {}}
+            />
             <Styled.LogoutWrapper onPress={handleLogout} isVisible={true}>
               <LogoutSvg color={themes.primary.colors.lightGrey} />
             </Styled.LogoutWrapper>
-            <Styled.Title>{author.name}</Styled.Title>
+            <Styled.Title>{user.nickName}</Styled.Title>
             <FlatList
               style={{ width: '100%', paddingBottom: 183 }}
               data={posts}

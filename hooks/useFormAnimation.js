@@ -10,8 +10,6 @@ export const useFormAnimation = ({ formOffset, animationDuration }) => {
   const [translateAnim] = useState(new Animated.Value(+0));
   const [translateTo, setTranslateTo] = useState(+0);
 
-  console.log('keyboardHeight: ', keyboardHeight);
-
   useEffect(() => {
     Animated.timing(translateAnim, {
       toValue: translateTo,

@@ -2,7 +2,7 @@ import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import { register, logIn, logOut } from './auth-operations';
 
 const initialState = {
-  user: { nickName: null, email: null, id: null },
+  user: { avatar: null, nickName: null, email: null, id: null },
   isLoggedIn: null,
   isLoading: false,
   error: null,
@@ -20,6 +20,7 @@ const handlePending = (state) => {
 };
 
 const handleSuccess = (state, { payload }) => {
+  state.user.avatar = payload.avatar;
   state.user.nickName = payload.name;
   state.user.email = payload.email;
   state.user.id = payload.id;
@@ -39,6 +40,7 @@ export const authSlice = createSlice({
       state.error = null;
     },
     updateUserProfile(state, { payload }) {
+      state.user.avatar = payload.avatar;
       state.user.nickName = payload.name;
       state.user.email = payload.email;
       state.user.id = payload.id;
