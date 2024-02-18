@@ -25,7 +25,7 @@ export const CommentsScreen = ({ navigation, route }) => {
         <FlatList
           data={comments}
           renderItem={({ item, index }) => {
-            const avatar = authors.find((e) => e._id === item.authorId)?.avatar;
+            const avatar = authors.find((e) => e._id === item.authorId);
             const isLastComment = index === comments.length - 1;
             return (
               <CommentCard

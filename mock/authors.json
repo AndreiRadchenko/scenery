@@ -13,10 +13,8 @@
   },
   {
     "_id": "3",
-    "avatar": {
-      "url": ""
-    },
-    "name": "Korban Dallas",
-    "email": "korban.dallas@example.com"
+    "photoURL": "",
+    "displayName": "Test User2",
+    "email": "test@test.com"
   }
 ]

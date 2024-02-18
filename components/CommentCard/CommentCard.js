@@ -1,5 +1,5 @@
 import { View, Text, FlatList } from 'react-native';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 
 import * as Styled from './CommentCard.styled';
 
@@ -7,10 +7,10 @@ export const CommentCard = ({ avatar, text, date, index, isLastComment }) => {
   const isEvenCard = index % 2 === 0;
   return (
     <Styled.CardContainer isEvenCard={isEvenCard} isLastComment={isLastComment}>
-      {!avatar.url ? (
-        <FontAwesome5 name="user-circle" size={28} color="gray" />
+      {!avatar.photoURL ? (
+        <FontAwesome name="user-circle" size={28} color="gray" />
       ) : (
-        <Styled.Avatar source={{ uri: avatar.url }} />
+        <Styled.Avatar source={{ uri: avatar.photoURL }} />
       )}
       <Styled.CommentContainer isEvenCard={isEvenCard}>
         <Styled.CommentText>{text}</Styled.CommentText>
