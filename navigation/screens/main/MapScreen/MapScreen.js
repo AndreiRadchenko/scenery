@@ -7,7 +7,6 @@ const isPlatformIOS = Platform.OS === 'ios';
 
 export const MapScreen = ({ navigation, route }) => {
   const { image, comments, location } = route.params.post;
-  console.log(location);
 
   return (
     <Styled.MapContainer>

@@ -15,4 +15,5 @@ export const STACK = {
   HOME: 'PostsStack',
   CREATE_POST: 'CreateStack',
   PROFILE: 'ProfileStack',
+  REGISTRATION: 'RegistrationStack',
 };

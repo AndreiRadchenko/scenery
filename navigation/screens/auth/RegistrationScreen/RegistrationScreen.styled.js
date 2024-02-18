@@ -36,6 +36,18 @@ export const AvatarWrapper = styled.View`
   border-radius: 16px;
 `;
 
+export const ImageWrapper = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const Avatar = styled.Image`
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+`;
+
 export const PlusSign = styled(AddSvg)`
   position: absolute;
   bottom: 14px;

@@ -9,9 +9,11 @@ import {
 } from '@expo/vector-icons';
 import { manipulateAsync, FlipType, SaveFormat } from 'expo-image-manipulator';
 
-import { PhotoPreview } from '../../../../components/PhotoPreview/PhotoPreview';
+import { PhotoPreview } from '../../../../components/PhotoPreview';
+import { NoPermissionView } from '../../../../components/NoPermissionView';
 
 import * as Styled from './CameraScreen.styled';
+import { SCREEN } from '../../../constants';
 
 export const CameraScreen = ({ navigation, route }) => {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
@@ -21,6 +23,8 @@ export const CameraScreen = ({ navigation, route }) => {
 
   const screenWidth = Dimensions.get('window').width;
   const cameraHeight = screenWidth * 1.41;
+
+  const isAvatar = route?.params?.prevScreen !== SCREEN.MAIN.CREATE_POST;
 
   const takePhoto = async () => {
     if (cameraRef) {
@@ -59,21 +63,16 @@ export const CameraScreen = ({ navigation, route }) => {
     return <View />;
   }
   if (hasCameraPermission === false) {
-    return (
-      <Styled.CameraViewContainer>
-        <Styled.ControlsWrapper>
-          <Styled.BackButton onPress={() => navigation.goBack()}>
-            <Ionicons name="ios-close-outline" size={32} color="gray" />
-          </Styled.BackButton>
-          <Styled.NoAccessContainer>
-            <Styled.NoAccessText>No access to camera</Styled.NoAccessText>
-          </Styled.NoAccessContainer>
-        </Styled.ControlsWrapper>
-      </Styled.CameraViewContainer>
-    );
+    return <NoPermissionView navigation={navigation} />;
   }
   return photo ? (
-    <PhotoPreview photo={photo} setPhoto={setPhoto} navigation={navigation} />
+    <PhotoPreview
+      photo={photo}
+      setPhoto={setPhoto}
+      navigation={navigation}
+      route={route}
+      isAvatar={isAvatar}
+    />
   ) : (
     <Styled.CameraContainer cameraHeight={cameraHeight}>
       <StatusBar
@@ -89,7 +88,7 @@ export const CameraScreen = ({ navigation, route }) => {
         <Styled.CameraViewContainer>
           <Styled.ControlsWrapper>
             <Styled.BackButton onPress={() => navigation.goBack()}>
-              <Ionicons name="ios-close-outline" size={32} color="white" />
+              <Ionicons name="close-outline" size={32} color="white" />
             </Styled.BackButton>
             <Styled.ToolBarContainer>
               <Styled.ImageButton>

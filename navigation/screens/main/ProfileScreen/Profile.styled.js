@@ -47,22 +47,6 @@ export const Avatar = styled.Image`
   border-radius: 16px;
 `;
 
-export const PlusSign = styled(AddSvg)`
-  position: absolute;
-  bottom: 14px;
-  left: 107px;
-  width: 25px;
-  height: 25px;
-`;
-
-export const CrossSign = styled(DeleteSvg)`
-  position: absolute;
-  bottom: 9px;
-  left: 101px;
-  width: 25px;
-  height: 25px;
-`;
-
 export const Title = styled.Text`
   font-family: ${themes.primary.font.family.robotoBold};
   font-size: 30px;

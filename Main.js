@@ -22,6 +22,7 @@ export default function Main() {
       if (user) {
         dispatch(
           updateUserProfile({
+            avatar: user.photoURL,
             name: user.displayName,
             id: user.uid,
             email: user.email,
@@ -31,6 +32,7 @@ export default function Main() {
       } else {
         dispatch(
           updateUserProfile({
+            avatar: null,
             name: null,
             id: null,
             email: null,

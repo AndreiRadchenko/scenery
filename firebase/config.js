@@ -35,7 +35,6 @@ const firebaseConfig = {
 // };
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
-console.log('firebase app: ', app);
 export const auth = initializeAuth(app, {
   persistence: getReactNativePersistence(ReactNativeAsyncStorage),
 });
@@ -43,3 +42,4 @@ export const db = getFirestore(app);
 export const postsCollection = collection(db, 'posts');
 export const storage = getStorage(app);
 export const imagesStorage = ref(storage, 'images');
+export const avatarStorage = ref(storage, 'avatars');
