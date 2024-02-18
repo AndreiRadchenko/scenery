@@ -1,9 +1,8 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
   Dimensions,
-  TouchableOpacity,
   FlatList,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,9 +18,10 @@ import { useKeyboardVisible } from '../../../../hooks';
 import authors from '../../../../mock/authors.json';
 import posts from '../../../../mock/posts.json';
 import { SCREEN, STACK } from '../../../constants';
-import { logOut } from '../../../../redux/auth/auth-operations';
-import { AvatarChangeButton } from '../../../../components/AvatarChangeButton';
-import { AddSvg } from '../../../../components/AvatarChangeButton/AddSvg';
+import {
+  logOut,
+  updateUserDetails,
+} from '../../../../redux/auth/auth-operations';
 import { selectUser } from '../../../../redux/auth/auth-selector';
 
 // const user = authors[1];
@@ -29,11 +29,28 @@ import { selectUser } from '../../../../redux/auth/auth-selector';
 const isPlatformIOS = Platform.OS === 'ios';
 const windowWidth = Dimensions.get('window').width;
 
-export const ProfileScreen = ({ navigation }) => {
+export const ProfileScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const isKeyboardVisible = useKeyboardVisible();
   // const [avatar, setAvatar] = useState(null);
   const user = useSelector(selectUser);
+
+  const openCamera = () => {
+    navigation.navigate(SCREEN.MAIN.CAMERA, {
+      prevScreen: SCREEN.MAIN.PROFILE,
+    });
+  };
+
+  const deleteAvatar = () => {
+    dispatch(updateUserDetails({ avatar: '', name: user.nickName }));
+  };
+
+  useEffect(() => {
+    route?.params?.photo &&
+      dispatch(
+        updateUserDetails({ avatar: route?.params?.photo, name: user.nickName })
+      );
+  }, [route?.params?.photo]);
 
   const openComments = (item) => {
     navigation.navigate(STACK.PROFILE, {
@@ -75,8 +92,8 @@ export const ProfileScreen = ({ navigation }) => {
           >
             <Avatar
               avatarURL={user.avatar}
-              onCreateAvatar={() => {}}
-              onDeleteAvatar={() => {}}
+              onCreateAvatar={openCamera}
+              onDeleteAvatar={deleteAvatar}
             />
             <Styled.LogoutWrapper onPress={handleLogout} isVisible={true}>
               <LogoutSvg color={themes.primary.colors.lightGrey} />

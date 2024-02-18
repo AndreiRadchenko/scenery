@@ -1,5 +1,5 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
-import { register, logIn, logOut } from './auth-operations';
+import { register, logIn, logOut, updateUserDetails } from './auth-operations';
 
 const initialState = {
   user: { avatar: null, nickName: null, email: null, id: null },
@@ -8,7 +8,7 @@ const initialState = {
   error: null,
 };
 
-const extraActions = [register, logIn, logOut];
+const extraActions = [register, logIn, logOut, updateUserDetails];
 
 const getActions = (actionType) =>
   extraActions.map((action) => {
@@ -54,11 +54,7 @@ export const authSlice = createSlice({
       .addCase(logOut.fulfilled, (state) => {
         return initialState;
       })
-      // .addCase(fetchCurrentUser.fulfilled, (state, { payload }) => {
-      //   state.user = payload;
-      //   state.isLoggedIn = true;
-      // })
-      // .addCase(fetchCurrentUser.fulfilled, handleSuccess)
+      .addCase(updateUserDetails.fulfilled, handleSuccess)
 
       .addCase(logIn.rejected, (state, { payload }) => {
         state.error = 'Login failed, please try again';
@@ -72,14 +68,13 @@ export const authSlice = createSlice({
         state.error = payload;
         state.isLoading = false;
       })
-      // .addCase(fetchCurrentUser.rejected, (state, { payload }) => {
-      //   state.error = '';
-      //   state.isLoading = false;
-      // })
+      .addCase(updateUserDetails.rejected, (state, { payload }) => {
+        state.error = "Sorry, can't update user details!";
+        state.isLoading = false;
+      })
 
       .addMatcher(isAnyOf(...getActions('fulfilled')), handleAnySuccess)
       .addMatcher(isAnyOf(...getActions('pending')), handlePending);
-    // .addMatcher(isAnyOf(...getActions('rejected')), handleError);
   },
 });
 

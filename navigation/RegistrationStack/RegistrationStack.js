@@ -1,14 +1,13 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { RegistrationScreen } from '../screens/auth/RegistrationScreen';
 import { CameraScreen } from '../screens/main/CameraScreen';
 
 import { SCREEN, STACK } from '../constants';
 
-const Create = createNativeStackNavigator();
+const Create = createStackNavigator();
 
 export const RegistrationStack = () => {
   return (

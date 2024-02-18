@@ -24,7 +24,7 @@ export const CameraScreen = ({ navigation, route }) => {
   const screenWidth = Dimensions.get('window').width;
   const cameraHeight = screenWidth * 1.41;
 
-  const isAvatar = route?.params?.prevScreen === SCREEN.AUTH.REGISTRATION;
+  const isAvatar = route?.params?.prevScreen !== SCREEN.MAIN.CREATE_POST;
 
   const takePhoto = async () => {
     if (cameraRef) {
@@ -70,6 +70,7 @@ export const CameraScreen = ({ navigation, route }) => {
       photo={photo}
       setPhoto={setPhoto}
       navigation={navigation}
+      route={route}
       isAvatar={isAvatar}
     />
   ) : (

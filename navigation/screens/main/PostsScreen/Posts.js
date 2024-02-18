@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { FontAwesome } from '@expo/vector-icons';
 
 import { PostCard } from '../../../../components/PostCard';
 
 import * as Styled from './Posts.styled';
+import themes from '../../../../utils/themes';
 import authors from '../../../../mock/authors.json';
 // import posts from '../../../../mock/posts.json';
 import { SCREEN, STACK } from '../../../constants';
@@ -26,7 +28,17 @@ const UserCard = ({ user, isUserLoading }) => {
   return (
     !isUserLoading && (
       <Styled.AuthorWrapper>
-        <Styled.AuthorAvatar source={{ uri: user.avatar }} />
+        <Styled.ImageWrapper>
+          {user.avatar ? (
+            <Styled.AuthorAvatar source={{ uri: user.avatar }} />
+          ) : (
+            <FontAwesome
+              name="user-circle"
+              size={54}
+              color={themes.primary.colors.lightGrey}
+            />
+          )}
+        </Styled.ImageWrapper>
         <Styled.AuthorTextWrapper>
           <Styled.AuthorName>{user.nickName}</Styled.AuthorName>
           <Styled.AuthorEmail>{user.email} </Styled.AuthorEmail>

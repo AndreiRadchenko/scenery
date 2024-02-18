@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import { ProfileScreen } from '../screens/main/ProfileScreen';
 import { CommentsScreen } from '../screens/main/CommentsScreen';
+import { CameraScreen } from '../screens/main/CameraScreen';
 import { MapScreen } from '../screens/main/MapScreen';
 import { MainHeader } from '../../components/MainHeader';
 
@@ -39,6 +40,13 @@ export const ProfileStack = () => {
         name={SCREEN.MAIN.MAP}
         component={MapScreen}
       />
+      <Profile.Screen
+        options={{ headerShown: false }}
+        name={SCREEN.MAIN.CAMERA}
+        // component={CameraScreen}
+      >
+        {(props) => <CameraScreen {...props} />}
+      </Profile.Screen>
     </Profile.Navigator>
   );
 };

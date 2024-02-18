@@ -9,7 +9,13 @@ import { SCREEN, STACK } from '../../navigation/constants';
 import { Dimensions } from 'react-native';
 import { acceptPhoto } from '../../helpers/acceptPhoto';
 
-export const PhotoPreview = ({ photo, setPhoto, navigation, isAvatar }) => {
+export const PhotoPreview = ({
+  photo,
+  setPhoto,
+  navigation,
+  route,
+  isAvatar,
+}) => {
   const [hasLocationPermission, setHasLocationPermission] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -19,7 +25,7 @@ export const PhotoPreview = ({ photo, setPhoto, navigation, isAvatar }) => {
     setIsLoading(true);
     !isAvatar
       ? await acceptPhoto(hasLocationPermission, photo, navigation)
-      : navigation.navigate(SCREEN.AUTH.REGISTRATION, {
+      : navigation.navigate(route?.params?.prevScreen, {
           photo,
         });
     setIsLoading(false);

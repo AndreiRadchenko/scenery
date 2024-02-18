@@ -9,11 +9,9 @@ import {
   AuthErrorCodes,
   updateProfile,
 } from 'firebase/auth';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { useDispatch } from 'react-redux';
-import uuid from 'react-native-uuid';
 
-import { db, auth, avatarStorage } from '../../firebase/config';
+import { db, auth, avatarStorage, storage } from '../../firebase/config';
+import fireStorage from '../../firebase/fireStorage';
 
 export const register = createAsyncThunk(
   'auth/register',
@@ -24,17 +22,12 @@ export const register = createAsyncThunk(
         email,
         password
       );
-      let photoUrl = null;
-      if (avatar) {
-        const response = await fetch(avatar);
-        const file = await response.blob();
-
-        const uniquePhotoId = uuid.v4();
-        const newImageRef = ref(avatarStorage, uniquePhotoId);
-        await uploadBytes(newImageRef, file);
-
-        photoUrl = await getDownloadURL(newImageRef);
-      }
+      const { photoUrl, uniquePhotoId } = avatar
+        ? await fireStorage.uploadImage({
+            storage: avatarStorage,
+            image: avatar,
+          })
+        : { photoUrl: '', uniquePhotoId: '' };
 
       await updateProfile(user, { displayName: name, photoURL: photoUrl });
 
@@ -75,6 +68,41 @@ export const logOut = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
     return thunkAPI.rejectWithValue(error.message);
   }
 });
+
+export const updateUserDetails = createAsyncThunk(
+  'auth/updateUserDetails',
+  async ({ avatar = '', name = '' }, thunkAPI) => {
+    try {
+      // const state = thunkAPI.getState();
+      const { currentUser } = auth;
+
+      const { photoUrl, uniquePhotoId } = avatar
+        ? await fireStorage.uploadImage({
+            storage: avatarStorage,
+            image: avatar,
+          })
+        : { photoUrl: '', uniquePhotoId: '' };
+      !photoUrl && (await fireStorage.deleteImage(currentUser.photoURL));
+
+      await updateProfile(currentUser, {
+        displayName: name || currentUser.displayName,
+        photoURL: photoUrl,
+      });
+
+      await currentUser.reload();
+
+      return {
+        avatar: currentUser.photoURL,
+        name: currentUser.displayName,
+        id: currentUser.uid,
+        email: currentUser.email,
+      };
+    } catch (error) {
+      console.log(error.message);
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
 
 export const fetchCurrentUser = createAsyncThunk(
   'auth/refresh',

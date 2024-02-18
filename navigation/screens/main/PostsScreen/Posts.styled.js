@@ -18,9 +18,18 @@ export const AuthorWrapper = styled.View`
   padding-top: 32px;
 `;
 
-export const AuthorAvatar = styled.Image`
+export const ImageWrapper = styled.View`
   width: 60px;
   height: 60px;
+  border-radius: 16px;
+  /* flex: 1; */
+  justify-content: center;
+  align-items: center;
+`;
+
+export const AuthorAvatar = styled.Image`
+  width: 100%;
+  height: 100%;
   border-radius: 16px;
 `;
 

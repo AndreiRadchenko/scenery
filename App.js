@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
@@ -12,7 +12,6 @@ import { store } from './redux/store';
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(null);
   const [fontsLoaded] = useFonts({
     'Roboto-Regular': require('./assets/fonts/roboto/Roboto-Regular.ttf'),
     'Roboto-Bold': require('./assets/fonts/roboto/Roboto-Bold.ttf'),
