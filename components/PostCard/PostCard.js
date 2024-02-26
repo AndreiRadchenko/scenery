@@ -45,7 +45,7 @@ export const PostCard = ({
         </Styled.Achievements>
         <Styled.LocationBlock onPress={onLocationPress}>
           <LocationSvg color={themes.primary.colors.lightGrey} />
-          <Styled.LocationText>{location.name}</Styled.LocationText>
+          <Styled.LocationText>{location?.name}</Styled.LocationText>
         </Styled.LocationBlock>
       </Styled.ExtDataWrapper>
     </Styled.PostCard>

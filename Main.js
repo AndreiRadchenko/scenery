@@ -6,16 +6,20 @@ import * as SplashScreen from 'expo-splash-screen';
 
 import { UseRoute } from './navigation/router';
 import { db, auth } from './firebase/config';
-import { fetchCurrentUser } from './redux/auth/auth-operations';
 import { updateUserProfile } from './redux/auth/auth-slice';
-import { selectIsLoggedIn, selectIsLoading } from './redux/auth/auth-selector';
+import {
+  selectIsLoggedIn,
+  selectIsLoading as selectIsUserLoading,
+} from './redux/auth/auth-selector';
+import { selectIsLoading as selectIsPostsLoading } from './redux/posts/posts-selectors';
 
 SplashScreen.preventAutoHideAsync();
 
 export default function Main() {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(selectIsLoggedIn);
-  const isLoading = useSelector(selectIsLoading);
+  const isUserLoading = useSelector(selectIsUserLoading);
+  const isPostsLoading = useSelector(selectIsPostsLoading);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -49,7 +53,7 @@ export default function Main() {
   return (
     <>
       <Spinner
-        visible={isLoading}
+        visible={isUserLoading || isPostsLoading}
         textContent={'Loading...'}
         textStyle={{ color: 'white' }}
       />

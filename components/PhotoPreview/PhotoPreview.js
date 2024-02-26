@@ -7,7 +7,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import * as Styled from './PhotoPreview.styled';
 import { SCREEN, STACK } from '../../navigation/constants';
 import { Dimensions } from 'react-native';
-import { acceptPhoto } from '../../helpers/acceptPhoto';
+import { acceptPhoto } from '../../helpers/getCurrentLocation';
 
 export const PhotoPreview = ({
   photo,
