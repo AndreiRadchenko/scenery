@@ -20,20 +20,27 @@ export const useImagePickerActions = ({
         setRequiredPermission('Location');
         return;
       }
-
-      setPhoto(await imagePickerService.takePhoto());
-      setIsLocationLoading(true);
-      setLocation !== null &&
-        locationPermission?.granted &&
+      const photo = await imagePickerService.takePhoto();
+      if (!photo) {
+        return;
+      }
+      setPhoto(photo);
+      if (photo && setLocation !== null && locationPermission?.granted) {
+        setIsLocationLoading(true);
         setLocation(await getCurrentLocation(locationPermission?.granted));
-      setIsLocationLoading(false);
+        setIsLocationLoading(false);
+      }
     }
   };
   const pickImage = async () => {
     setRequiredPermission('Media Library');
     if (mediaLibraryPermission?.granted) {
       try {
-        setPhoto(await imagePickerService.pickPhoto());
+        const photo = await imagePickerService.pickPhoto();
+        if (!photo) {
+          return;
+        }
+        setPhoto(photo);
         setLocation !== null && setLocation({ name: 'Unknown location' });
       } catch (error) {
         console.log(error.message);
