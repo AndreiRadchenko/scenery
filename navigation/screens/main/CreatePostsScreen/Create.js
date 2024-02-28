@@ -14,31 +14,45 @@ import { PhotoSvg } from './PhotoSvg';
 import { LocationSvg } from '../../../../components/PostCard/LocationSvg';
 import { DeleteButton } from '../../../../components/DeleteButton';
 import { MainButton } from '../../../../components/MainButton';
+import { NoPermissionView } from '../../../../components/NoPermissionView';
 
 import { addPostOperation } from '../../../../redux/posts/posts-operations';
 import { selectUser } from '../../../../redux/auth/auth-selector';
-import { selectIsLoading } from '../../../../redux/posts/posts-selectors';
 
 import * as Styled from './Create.styled';
 import themes from '../../../../utils/themes';
-import { SCREEN, STACK } from '../../../constants';
+import {
+  useActionSheetMenu,
+  usePermissions,
+  useImagePickerActions,
+} from '../../../../hooks';
 
 export const CreateScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
-  const [isImageSelected, setIsImageSelected] = useState(false);
   const [photo, setPhoto] = useState(null);
   const [location, setLocation] = useState(null);
   const [imageName, setImageName] = useState('');
-  const isLoading = useSelector(selectIsLoading);
-  const screenHeight = Dimensions.get('window').height - 88;
-
   const { nickName, id } = useSelector(selectUser);
 
-  const openCamera = () => {
-    navigation.navigate(SCREEN.MAIN.CAMERA, {
-      prevScreen: SCREEN.MAIN.CREATE_POST,
+  const screenHeight = Dimensions.get('window').height - 88;
+
+  const {
+    cameraPermission,
+    mediaLibraryPermission,
+    locationPermission,
+    permissionsList,
+  } = usePermissions();
+
+  const { takePhoto, pickImage, requiredPermission, isLocationLoading } =
+    useImagePickerActions({
+      setPhoto,
+      setLocation,
+      cameraPermission,
+      mediaLibraryPermission,
+      locationPermission,
     });
-  };
+
+  const showActionSheetMenu = useActionSheetMenu(takePhoto, pickImage);
 
   const onPublish = async () => {
     dispatch(
@@ -49,26 +63,29 @@ export const CreateScreen = ({ navigation, route }) => {
         name: imageName,
       })
     );
-    setIsImageSelected(false);
     setPhoto(null);
     setImageName('');
     navigation.goBack();
   };
 
   const deletePost = () => {
-    setIsImageSelected(false);
     setPhoto(null);
     setImageName('');
   };
 
-  useEffect(() => {
-    const photo = route?.params?.photo;
-    const location = route?.params?.location;
-    setIsImageSelected(!!photo);
-    setPhoto(photo);
-    setLocation(location);
-  }, [route]);
-
+  if (
+    (requiredPermission === 'Camera' && !cameraPermission.granted) ||
+    (requiredPermission === 'Location' && !locationPermission.granted) ||
+    (requiredPermission === 'Media Library' && !mediaLibraryPermission.granted)
+  ) {
+    return (
+      <NoPermissionView
+        requiredPermission={requiredPermission}
+        permission={permissionsList[requiredPermission].permission}
+        requestPermission={permissionsList[requiredPermission].request}
+      />
+    );
+  }
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <KeyboardAvoidingView
@@ -77,8 +94,8 @@ export const CreateScreen = ({ navigation, route }) => {
       >
         <Styled.PostContainer>
           <Spinner
-            visible={isLoading}
-            textContent={'Post upload...'}
+            visible={isLocationLoading}
+            textContent={'Getting location...'}
             textStyle={{ color: 'white' }}
           />
           <Styled.ScreenWrapper screenHeight={screenHeight}>
@@ -86,15 +103,15 @@ export const CreateScreen = ({ navigation, route }) => {
               <Styled.PostCard>
                 <Styled.ImageContainer>
                   <Styled.CardImage
-                    source={{ uri: isImageSelected ? photo : '/' }}
+                    source={{ uri: !!photo ? photo : '/' }}
                     style={{ resizeMode: 'cover' }}
                   />
                   <Styled.UploadImageButton
                     activeOpacity={0.6}
-                    isImageSelected={isImageSelected}
-                    onPress={openCamera}
+                    isImageSelected={!!photo}
+                    onPress={showActionSheetMenu}
                   >
-                    <PhotoSvg isImageSelected={isImageSelected} />
+                    <PhotoSvg isImageSelected={!!photo} />
                   </Styled.UploadImageButton>
                 </Styled.ImageContainer>
                 <Styled.CardAction>Take a photo</Styled.CardAction>
@@ -111,7 +128,7 @@ export const CreateScreen = ({ navigation, route }) => {
                 <Styled.InputName
                   placeholder="Location..."
                   value={
-                    isImageSelected
+                    !!photo
                       ? !location?.name
                         ? `${location?.latitude}, ${location?.longitude}`
                         : location?.name
@@ -122,11 +139,11 @@ export const CreateScreen = ({ navigation, route }) => {
               <MainButton
                 buttonText="Publish"
                 onPress={onPublish}
-                isActive={isImageSelected}
+                isActive={!!photo}
               />
             </View>
             <Styled.DeleteButtonBar>
-              <DeleteButton isActive={isImageSelected} onPress={deletePost} />
+              <DeleteButton isActive={!!photo} onPress={deletePost} />
             </Styled.DeleteButtonBar>
           </Styled.ScreenWrapper>
         </Styled.PostContainer>

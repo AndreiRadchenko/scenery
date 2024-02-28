@@ -4,6 +4,7 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { Provider } from 'react-redux';
 import 'expo-dev-client';
+import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 
 import Main from './Main';
 
@@ -29,9 +30,11 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <NavigationContainer onReady={onLayoutRootView} headerMode="none">
-        <Main />
-      </NavigationContainer>
+      <ActionSheetProvider>
+        <NavigationContainer onReady={onLayoutRootView} headerMode="none">
+          <Main />
+        </NavigationContainer>
+      </ActionSheetProvider>
     </Provider>
   );
 }

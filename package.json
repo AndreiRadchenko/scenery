@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "-": "^0.0.1",
+    "@expo/react-native-action-sheet": "^4.0.1",
     "@expo/vector-icons": "^14.0.0",
     "@react-native-async-storage/async-storage": "1.21.0",
     "@react-native-community/masked-view": "^0.1.11",
@@ -25,6 +26,7 @@
     "expo-dev-client": "~3.3.8",
     "expo-font": "^11.10.2",
     "expo-image-manipulator": "~11.8.0",
+    "expo-image-picker": "~14.7.1",
     "expo-location": "~16.5.2",
     "expo-media-library": "~15.9.1",
     "expo-splash-screen": "~0.26.4",

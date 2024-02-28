@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -10,10 +10,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { LogoutSvg } from '../../../../components/MainHeader/LogoutSvg';
 import { PostCard } from '../../../../components/PostCard';
 import { Avatar } from '../../../../components/Avatar';
+import { NoPermissionView } from '../../../../components/NoPermissionView';
 
 import * as Styled from './Profile.styled';
 import themes from '../../../../utils/themes';
-import { useKeyboardVisible } from '../../../../hooks';
+import {
+  useKeyboardVisible,
+  useActionSheetMenu,
+  usePermissions,
+  useImagePickerActions,
+} from '../../../../hooks';
 
 import authors from '../../../../mock/authors.json';
 import posts from '../../../../mock/posts.json';
@@ -32,25 +38,33 @@ const windowWidth = Dimensions.get('window').width;
 export const ProfileScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const isKeyboardVisible = useKeyboardVisible();
-  // const [avatar, setAvatar] = useState(null);
+  const [avatar, setAvatar] = useState(null);
   const user = useSelector(selectUser);
 
-  const openCamera = () => {
-    navigation.navigate(SCREEN.MAIN.CAMERA, {
-      prevScreen: SCREEN.MAIN.PROFILE,
+  const {
+    cameraPermission,
+    mediaLibraryPermission,
+    locationPermission,
+    permissionsList,
+  } = usePermissions();
+
+  const { takePhoto, pickImage, requiredPermission, isLocationLoading } =
+    useImagePickerActions({
+      setPhoto: setAvatar,
+      cameraPermission,
+      mediaLibraryPermission,
+      locationPermission,
     });
-  };
+
+  const showActionSheetMenu = useActionSheetMenu(takePhoto, pickImage);
 
   const deleteAvatar = () => {
     dispatch(updateUserDetails({ avatar: '', name: user.nickName }));
   };
 
   useEffect(() => {
-    route?.params?.photo &&
-      dispatch(
-        updateUserDetails({ avatar: route?.params?.photo, name: user.nickName })
-      );
-  }, [route?.params?.photo]);
+    avatar && dispatch(updateUserDetails({ avatar, name: user.nickName }));
+  }, [avatar]);
 
   const openComments = (item) => {
     navigation.navigate(STACK.PROFILE, {
@@ -76,6 +90,18 @@ export const ProfileScreen = ({ navigation, route }) => {
     dispatch(logOut());
   };
 
+  if (
+    (requiredPermission === 'Camera' && !cameraPermission.granted) ||
+    (requiredPermission === 'Media Library' && !mediaLibraryPermission.granted)
+  ) {
+    return (
+      <NoPermissionView
+        requiredPermission={requiredPermission}
+        permission={permissionsList[requiredPermission].permission}
+        requestPermission={permissionsList[requiredPermission].request}
+      />
+    );
+  }
   return (
     <Styled.Container>
       <Styled.BgImage
@@ -92,7 +118,7 @@ export const ProfileScreen = ({ navigation, route }) => {
           >
             <Avatar
               avatarURL={user.avatar}
-              onCreateAvatar={openCamera}
+              onCreateAvatar={showActionSheetMenu}
               onDeleteAvatar={deleteAvatar}
             />
             <Styled.LogoutWrapper onPress={handleLogout} isVisible={true}>

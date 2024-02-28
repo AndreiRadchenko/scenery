@@ -1,17 +1,37 @@
 import React from 'react';
-import { Ionicons } from '@expo/vector-icons';
+import { Linking } from 'react-native';
+
+import { MainButton } from '../MainButton';
 
 import * as Styled from './NoPermissionView.styled';
 
-export const NoPermissionView = ({ navigation }) => {
+export const NoPermissionView = ({
+  requiredPermission,
+  permission,
+  requestPermission,
+}) => {
+  const setButtonText = () => {
+    return permission?.status === 'denied' && !permission?.canAskAgain
+      ? 'Go To Settings'
+      : `Request ${requiredPermission} Permission`;
+  };
+
+  const onButtonPress = async () => {
+    if (permission?.status === 'denied' && !permission?.canAskAgain) {
+      Linking.openSettings();
+    } else {
+      await requestPermission();
+    }
+  };
+
   return (
     <Styled.CameraViewContainer>
       <Styled.ControlsWrapper>
-        <Styled.BackButton onPress={() => navigation.goBack()}>
-          <Ionicons name="close-outline" size={32} color="gray" />
-        </Styled.BackButton>
         <Styled.NoAccessContainer>
-          <Styled.NoAccessText>No access to camera</Styled.NoAccessText>
+          <Styled.NoAccessText>
+            No access to {requiredPermission}
+          </Styled.NoAccessText>
+          <MainButton buttonText={setButtonText()} onPress={onButtonPress} />
         </Styled.NoAccessContainer>
       </Styled.ControlsWrapper>
     </Styled.CameraViewContainer>

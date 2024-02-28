@@ -40,13 +40,6 @@ export const ProfileStack = () => {
         name={SCREEN.MAIN.MAP}
         component={MapScreen}
       />
-      <Profile.Screen
-        options={{ headerShown: false }}
-        name={SCREEN.MAIN.CAMERA}
-        // component={CameraScreen}
-      >
-        {(props) => <CameraScreen {...props} />}
-      </Profile.Screen>
     </Profile.Navigator>
   );
 };

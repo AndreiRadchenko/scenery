@@ -8,6 +8,7 @@ import {
   MaterialCommunityIcons,
 } from '@expo/vector-icons';
 import { manipulateAsync, FlipType, SaveFormat } from 'expo-image-manipulator';
+import * as ImagePicker from 'expo-image-picker';
 
 import { PhotoPreview } from '../../../../components/PhotoPreview';
 import { NoPermissionView } from '../../../../components/NoPermissionView';
@@ -21,26 +22,45 @@ export const CameraScreen = ({ navigation, route }) => {
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [photo, setPhoto] = useState(null);
 
+  const [cameraPermission, requestCameraPermission] = ImagePicker.useCameraPermissions();
+  const [mediaLibraryPermission, requestMediaLibraryPermission] = ImagePicker.useMediaLibraryPermissions();
+
   const screenWidth = Dimensions.get('window').width;
   const cameraHeight = screenWidth * 1.41;
 
   const isAvatar = route?.params?.prevScreen !== SCREEN.MAIN.CREATE_POST;
 
+  // const takePhoto = async () => {
+  //   if (cameraRef) {
+  //     try {
+  //       const photo = await cameraRef.takePictureAsync();
+  //       const resizedPhoto = await manipulateAsync(
+  //         photo.uri,
+  //         [{ resize: { height: photo.height / 3, width: photo.width / 3 } }],
+  //         { compress: 0.5, format: SaveFormat.JPEG }
+  //       );
+  //       setPhoto(resizedPhoto.uri);
+  //     } catch (e) {
+  //       console.log(e.message);
+  //     }
+  //   }
+  // };
+
   const takePhoto = async () => {
-    if (cameraRef) {
-      try {
-        const photo = await cameraRef.takePictureAsync();
-        const resizedPhoto = await manipulateAsync(
-          photo.uri,
-          [{ resize: { height: photo.height / 3, width: photo.width / 3 } }],
-          { compress: 0.5, format: SaveFormat.JPEG }
-        );
-        setPhoto(resizedPhoto.uri);
-      } catch (e) {
-        console.log(e.message);
-      }
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setPhoto(result.assets[0].uri);
     }
-  };
+  }
 
   const toggleCamera = () => {
     setType(
@@ -50,19 +70,19 @@ export const CameraScreen = ({ navigation, route }) => {
     );
   };
 
-  useEffect(() => {
-    (async () => {
-      const { status: cameraStatus } =
-        await Camera.requestCameraPermissionsAsync();
-      await MediaLibrary.requestPermissionsAsync();
-      setHasCameraPermission(cameraStatus === 'granted');
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     const { status: cameraStatus } =
+  //       await Camera.requestCameraPermissionsAsync();
+  //     await MediaLibrary.requestPermissionsAsync();
+  //     setHasCameraPermission(cameraStatus === 'granted');
+  //   })();
+  // }, []);
 
-  if (hasCameraPermission === null) {
-    return <View />;
-  }
-  if (hasCameraPermission === false) {
+  // if (hasCameraPermission === null) {
+  //   return <View />;
+  // }
+  if (cameraPermission?.status !== ImagePicker.PermissionStatus.GRANTED) {
     return <NoPermissionView navigation={navigation} />;
   }
   return photo ? (
@@ -78,9 +98,9 @@ export const CameraScreen = ({ navigation, route }) => {
       <StatusBar
         barStyle="light-content" // Set the text color of the status bar (light or dark)
       />
-      <Camera
+      <View
         style={{ height: cameraHeight, borderRadius: 8 }}
-        type={type}
+        // type={type}
         ref={(ref) => {
           setCameraRef(ref);
         }}
@@ -107,7 +127,7 @@ export const CameraScreen = ({ navigation, route }) => {
             </Styled.ToolBarContainer>
           </Styled.ControlsWrapper>
         </Styled.CameraViewContainer>
-      </Camera>
+      </View>
     </Styled.CameraContainer>
   );
 };

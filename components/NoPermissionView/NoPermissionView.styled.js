@@ -37,6 +37,7 @@ export const NoAccessContainer = styled.View`
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 10px;
 `;
 
 export const NoAccessText = styled.Text`
@@ -45,4 +46,11 @@ export const NoAccessText = styled.Text`
   font-size: 16px;
   font-weight: 400;
   line-height: 16px;
+`;
+
+export const Button = styled.TouchableOpacity`
+  width: 132px;
+  height: 32px;
+  border-radius: 16px;
+  background-color: ${themes.primary.colors.accentColor};
 `;
