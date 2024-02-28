@@ -6,28 +6,39 @@ import { useDispatch } from 'react-redux';
 import { MainButton } from '../../../../components/MainButton';
 import { PasswordInput } from '../../../../components/PasswordInput';
 import { Avatar } from '../../../../components/Avatar';
+import { NoPermissionView } from '../../../../components/NoPermissionView';
 
 import * as Styled from './RegistrationScreen.styled';
-import { useFormAnimation } from '../../../../hooks';
+import {
+  useFormAnimation,
+  useActionSheetMenu,
+  usePermissions,
+  useImagePickerActions,
+} from '../../../../hooks';
 import { RegisterValidationSchema } from '../../../../validations/ValidationSchemas';
 import { register } from '../../../../redux/auth/auth-operations';
-import { SCREEN, STACK } from '../../../constants';
 
 export const RegistrationScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [avatar, setAvatar] = useState(null);
 
-  useEffect(() => {
-    const photo = route?.params?.photo;
-    setAvatar(photo);
-  }, [route]);
+  const {
+    cameraPermission,
+    mediaLibraryPermission,
+    locationPermission,
+    permissionsList,
+  } = usePermissions();
 
-  const openCamera = () => {
-    navigation.navigate(SCREEN.MAIN.CAMERA, {
-      prevScreen: SCREEN.AUTH.REGISTRATION,
+  const { takePhoto, pickImage, requiredPermission, isLocationLoading } =
+    useImagePickerActions({
+      setPhoto: setAvatar,
+      cameraPermission,
+      mediaLibraryPermission,
+      locationPermission,
     });
-  };
+
+  const showActionSheetMenu = useActionSheetMenu(takePhoto, pickImage);
 
   const translateAnim = useFormAnimation({
     formOffset: 195,
@@ -55,6 +66,19 @@ export const RegistrationScreen = ({ navigation, route }) => {
     formik.handleSubmit();
   };
 
+  if (
+    (requiredPermission === 'Camera' && !cameraPermission.granted) ||
+    (requiredPermission === 'Media Library' && !mediaLibraryPermission.granted)
+  ) {
+    return (
+      <NoPermissionView
+        requiredPermission={requiredPermission}
+        permission={permissionsList[requiredPermission].permission}
+        requestPermission={permissionsList[requiredPermission].request}
+      />
+    );
+  }
+
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <Styled.Container>
@@ -74,7 +98,7 @@ export const RegistrationScreen = ({ navigation, route }) => {
           >
             <Avatar
               avatarURL={avatar}
-              onCreateAvatar={openCamera}
+              onCreateAvatar={showActionSheetMenu}
               onDeleteAvatar={() => setAvatar(null)}
             />
             <Styled.Title>Register</Styled.Title>

@@ -46,12 +46,17 @@ class ImagePickerService {
   }
 
   async pickPhoto() {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      // allowsEditing: true,
-      // aspect: [16, 9],
-      quality: 1,
-    });
+    let result = null;
+    try {
+      result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        // allowsEditing: true,
+        // aspect: [16, 9],
+        quality: 1,
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
     if (!result.canceled) {
       // return result.assets[0].uri;
       return await this.resizeImage(result.assets[0]);

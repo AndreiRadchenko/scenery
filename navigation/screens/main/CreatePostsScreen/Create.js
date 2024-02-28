@@ -9,8 +9,6 @@ import {
 } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { useDispatch, useSelector } from 'react-redux';
-import * as ImagePicker from 'expo-image-picker';
-import * as Location from 'expo-location';
 
 import { PhotoSvg } from './PhotoSvg';
 import { LocationSvg } from '../../../../components/PostCard/LocationSvg';
@@ -20,52 +18,41 @@ import { NoPermissionView } from '../../../../components/NoPermissionView';
 
 import { addPostOperation } from '../../../../redux/posts/posts-operations';
 import { selectUser } from '../../../../redux/auth/auth-selector';
-// import { imagePickerService } from '../../../../services/ImagePickerService';
 
 import * as Styled from './Create.styled';
 import themes from '../../../../utils/themes';
-import { useActionSheetMenu } from '../../../../hooks';
+import {
+  useActionSheetMenu,
+  usePermissions,
+  useImagePickerActions,
+} from '../../../../hooks';
 
 export const CreateScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const [photo, setPhoto] = useState(null);
   const [location, setLocation] = useState(null);
-  const [requiredPermission, setRequiredPermission] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [imageName, setImageName] = useState('');
+  const { nickName, id } = useSelector(selectUser);
 
-  const [cameraPermission, requestCameraPermission] =
-    ImagePicker.useCameraPermissions();
-  const [mediaLibraryPermission, requestMediaLibraryPermission] =
-    ImagePicker.useMediaLibraryPermissions();
-  const [locationPermission, requestLocationPermission] =
-    Location.useForegroundPermissions();
+  const screenHeight = Dimensions.get('window').height - 88;
 
-  const permissionsList = {
-    Camera: { request: requestCameraPermission, permission: cameraPermission },
-    'Media Library': {
-      request: requestMediaLibraryPermission,
-      permission: mediaLibraryPermission,
-    },
-    Location: {
-      request: requestLocationPermission,
-      permission: locationPermission,
-    },
-  };
-
-  const showActionSheetMenu = useActionSheetMenu({
-    setPhoto,
-    setLocation,
-    setRequiredPermission,
-    setIsLoading,
+  const {
     cameraPermission,
     mediaLibraryPermission,
     locationPermission,
-  });
+    permissionsList,
+  } = usePermissions();
 
-  const [imageName, setImageName] = useState('');
-  const screenHeight = Dimensions.get('window').height - 88;
+  const { takePhoto, pickImage, requiredPermission, isLocationLoading } =
+    useImagePickerActions({
+      setPhoto,
+      setLocation,
+      cameraPermission,
+      mediaLibraryPermission,
+      locationPermission,
+    });
 
-  const { nickName, id } = useSelector(selectUser);
+  const showActionSheetMenu = useActionSheetMenu(takePhoto, pickImage);
 
   const onPublish = async () => {
     dispatch(
@@ -94,7 +81,6 @@ export const CreateScreen = ({ navigation, route }) => {
     return (
       <NoPermissionView
         requiredPermission={requiredPermission}
-        setRequiredPermission={setRequiredPermission}
         permission={permissionsList[requiredPermission].permission}
         requestPermission={permissionsList[requiredPermission].request}
       />
@@ -108,8 +94,8 @@ export const CreateScreen = ({ navigation, route }) => {
       >
         <Styled.PostContainer>
           <Spinner
-            visible={isLoading}
-            textContent={'Getting photo...'}
+            visible={isLocationLoading}
+            textContent={'Getting location...'}
             textStyle={{ color: 'white' }}
           />
           <Styled.ScreenWrapper screenHeight={screenHeight}>

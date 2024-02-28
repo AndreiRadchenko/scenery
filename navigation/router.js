@@ -5,9 +5,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { LoginScreen } from './screens/auth/LoginScreen';
 import { RegistrationScreen } from './screens/auth/RegistrationScreen';
-import { RegistrationStack } from './RegistrationStack';
 import { HomeStack } from './HomeStack';
-import { CreateStack } from './CreateStack';
+import { CreateScreen } from './screens/main/CreatePostsScreen';
 import { ProfileStack } from './ProfileStack';
 import {
   PostsSvg,
@@ -19,7 +18,6 @@ import { MainHeader } from '../components/MainHeader';
 import { FocusAwareStatusBar } from '../components/FocusAwareStatusBar/FocusAwareStatusBar';
 
 import { SCREEN, STACK } from './constants';
-import { getTabBarVisibility } from '../helpers/getTabBarVisibility';
 
 const isPlatformIos = Platform.OS === 'ios';
 
@@ -39,7 +37,7 @@ export const UseRoute = ({ isLoggedIn }) => {
           {(props) => <LoginScreen {...props} />}
         </AuthStack.Screen>
         <AuthStack.Screen name={STACK.REGISTRATION}>
-          {(props) => <RegistrationStack {...props} />}
+          {(props) => <RegistrationScreen {...props} />}
         </AuthStack.Screen>
       </AuthStack.Navigator>
     );
@@ -77,8 +75,8 @@ export const UseRoute = ({ isLoggedIn }) => {
               return <MainHeader {...props} />;
             },
           }}
-          name={STACK.CREATE_POST}
-          component={CreateStack}
+          name={SCREEN.MAIN.CREATE_POST}
+          component={CreateScreen}
         />
         <HomeTab.Screen
           options={{

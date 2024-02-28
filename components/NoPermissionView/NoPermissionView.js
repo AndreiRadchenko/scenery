@@ -6,26 +6,21 @@ import { MainButton } from '../MainButton';
 import * as Styled from './NoPermissionView.styled';
 
 export const NoPermissionView = ({
-  setRequiredPermission,
   requiredPermission,
   permission,
   requestPermission,
 }) => {
   const setButtonText = () => {
-    return permission.status === 'denied' && !permission.canAskAgain
+    return permission?.status === 'denied' && !permission?.canAskAgain
       ? 'Go To Settings'
       : `Request ${requiredPermission} Permission`;
   };
 
   const onButtonPress = async () => {
-    console.log('requiredPermission: ', requiredPermission);
-    if (permission.status === 'denied' && !permission.canAskAgain) {
+    if (permission?.status === 'denied' && !permission?.canAskAgain) {
       Linking.openSettings();
     } else {
-      const permission = await requestPermission();
-      if (requiredPermission === 'Camera' && permission.granted) {
-        setRequiredPermission('Location');
-      }
+      await requestPermission();
     }
   };
 
