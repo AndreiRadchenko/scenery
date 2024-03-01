@@ -1,9 +1,7 @@
 import { Animated } from 'react-native';
 import { useState, useEffect } from 'react';
 
-import { useKeyboardVisible } from '.';
-
-const isPlatformIOS = Platform.OS === 'ios';
+import { useKeyboardVisible } from './useKeyboardVisible';
 
 export const useFormAnimation = ({ formOffset, animationDuration }) => {
   const keyboardHeight = useKeyboardVisible();
@@ -21,9 +19,10 @@ export const useFormAnimation = ({ formOffset, animationDuration }) => {
   useEffect(() => {
     keyboardHeight
       ? setTranslateTo(
-          isPlatformIOS
-            ? formOffset - keyboardHeight
-            : formOffset - keyboardHeight
+          formOffset - keyboardHeight
+          // Platform.OS === 'ios'
+          //   ? formOffset - keyboardHeight
+          //   : formOffset - keyboardHeight
         )
       : setTranslateTo(+0);
   }, [keyboardHeight]);
