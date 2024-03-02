@@ -24,7 +24,7 @@ export const LoginScreen = ({ navigation, route }) => {
 
   const translateAnim = useFormAnimation({
     formOffset: 250,
-    animationDuration: 200,
+    animationDuration: Platform.OS === 'ios' ? 200 : 200,
   });
 
   const formik = useFormik({

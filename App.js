@@ -3,8 +3,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { Provider } from 'react-redux';
-import 'expo-dev-client';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
+// import { KeyboardProvider } from 'react-native-keyboard-controller';
+
+import 'expo-dev-client';
 
 import Main from './Main';
 
@@ -30,11 +32,13 @@ export default function App() {
 
   return (
     <Provider store={store}>
+      {/* <KeyboardProvider statusBarTranslucent> */}
       <ActionSheetProvider>
         <NavigationContainer onReady={onLayoutRootView} headerMode="none">
           <Main />
         </NavigationContainer>
       </ActionSheetProvider>
+      {/* </KeyboardProvider> */}
     </Provider>
   );
 }
