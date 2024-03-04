@@ -1,16 +1,14 @@
-import { Platform } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
 import * as Styled from './MapScreen.styled';
 
-const isPlatformIOS = Platform.OS === 'ios';
-
-export const MapScreen = ({ navigation, route }) => {
-  const { image, comments, location } = route.params.post;
+export const MapScreen = ({ route }) => {
+  const { location } = route.params.post;
 
   return (
     <Styled.MapContainer>
       <Styled.Map
+        provider={PROVIDER_GOOGLE}
         zoomEnabled
         zoomControlEnabled
         region={{

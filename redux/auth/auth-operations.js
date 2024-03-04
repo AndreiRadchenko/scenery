@@ -38,6 +38,7 @@ export const register = createAsyncThunk(
         email: user.email,
       };
     } catch (error) {
+      console.log('register: ', error.message);
       return thunkAPI.rejectWithValue(error.message);
     }
   }
@@ -55,6 +56,7 @@ export const logIn = createAsyncThunk(
         email: user.email,
       };
     } catch (error) {
+      console.log('login: ', error.message);
       return thunkAPI.rejectWithValue(error.message);
     }
   }

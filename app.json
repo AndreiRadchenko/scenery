@@ -4,17 +4,15 @@
     "slug": "scenery",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/img/logo.jpg",
     "userInterfaceStyle": "light",
     "jsEngine": "hermes",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/img/PhotoBG-compressed.jpg",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "jsEngine": "hermes",
       "supportsTablet": true,
@@ -23,9 +21,14 @@
       }
     },
     "android": {
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyAGFn8i7iCiS1i-csHsLtpI1wloSrSYO4M"
+        }
+      },
       "jsEngine": "hermes",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/img/logo.jpg",
         "backgroundColor": "#ffffff"
       },
       "softwareKeyboardLayoutMode": "pan",
@@ -35,9 +38,7 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "expo-font"
-    ],
+    "plugins": ["expo-font"],
     "extra": {
       "eas": {
         "projectId": "9e4ad268-895b-40e3-9020-712552b48820"
