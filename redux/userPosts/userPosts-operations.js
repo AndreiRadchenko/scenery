@@ -24,8 +24,6 @@ export const fetchUserPostsOperation = createAsyncThunk(
     const state = thunkAPI.getState();
     const isEndOfPosts = state.userPosts.isEndOfPosts;
 
-    console.log('userPosts/fetchAll isEndOfPosts: ', isEndOfPosts);
-
     if (isEndOfPosts) {
       return thunkAPI.rejectWithValue('end of posts');
     }

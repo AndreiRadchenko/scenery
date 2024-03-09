@@ -87,6 +87,7 @@ export const LoginScreen = ({ navigation, route }) => {
               error={formik.errors.password}
               value={formik.values.password}
               onChangeText={formik.handleChange('password')}
+              returnKeyType="done"
             />
             <>
               <MainButton buttonText="Login" onPress={handleSubmit} />

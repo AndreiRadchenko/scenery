@@ -46,15 +46,12 @@ export const PostsScreen = ({ navigation, route }) => {
   const user = useSelector(selectUser);
   const isUserLoading = useSelector(selectIsUserLoading);
 
-  console.log('posts lengs: ', posts.length);
-
   const fetchMore = async () => {
     dispatch(fetchPostsOperation(10));
   };
 
   const reloadPostsState = () => {
     dispatch(resetPostsState());
-    // fetchMore();
   };
 
   const openComments = (item) => {

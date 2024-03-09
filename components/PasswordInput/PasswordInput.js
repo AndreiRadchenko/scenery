@@ -11,6 +11,7 @@ export const PasswordInput = ({
   placeholder = 'Password',
   value,
   onChangeText,
+  returnKeyType,
 }) => {
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
@@ -37,6 +38,7 @@ export const PasswordInput = ({
         placeholder={placeholder}
         value={getHiddenPassword()}
         onChangeText={handlePasswordChange}
+        returnKeyType={returnKeyType}
       />
       <Styled.Error>{error}</Styled.Error>
       <Styled.ShowPassword
