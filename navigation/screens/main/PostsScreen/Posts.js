@@ -7,22 +7,14 @@ import { PostCard } from '../../../../components/PostCard';
 
 import * as Styled from './Posts.styled';
 import themes from '../../../../utils/themes';
-import authors from '../../../../mock/authors.json';
-// import posts from '../../../../mock/posts.json';
 import { SCREEN, STACK } from '../../../constants';
-import {
-  selectLastVisiblePost,
-  selectIsLoading,
-  selectIsEndOfPosts,
-  selectPosts,
-} from '../../../../redux/posts/posts-selectors';
+import { selectPosts } from '../../../../redux/posts/posts-selectors';
 import {
   selectUser,
   selectIsLoading as selectIsUserLoading,
 } from '../../../../redux/auth/auth-selector';
 import { fetchPostsOperation } from '../../../../redux/posts/posts-operations';
-
-// const user = authors[1];
+import { resetPostsState } from '../../../../redux/posts/posts-slice';
 
 const UserCard = ({ user, isUserLoading }) => {
   return (
@@ -50,15 +42,19 @@ const UserCard = ({ user, isUserLoading }) => {
 
 export const PostsScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
-  const lastVisiblePost = useSelector(selectLastVisiblePost);
-  const isEndOfPosts = useSelector(selectIsEndOfPosts);
-  const isLoading = useSelector(selectIsLoading);
   const posts = useSelector(selectPosts);
   const user = useSelector(selectUser);
   const isUserLoading = useSelector(selectIsUserLoading);
 
+  console.log('posts lengs: ', posts.length);
+
   const fetchMore = async () => {
-    dispatch(fetchPostsOperation(4));
+    dispatch(fetchPostsOperation(10));
+  };
+
+  const reloadPostsState = () => {
+    dispatch(resetPostsState());
+    // fetchMore();
   };
 
   const openComments = (item) => {
@@ -98,6 +94,8 @@ export const PostsScreen = ({ navigation, route }) => {
         showsVerticalScrollIndicator={false}
         onEndReachedThreshold={0.1}
         onEndReached={fetchMore}
+        onRefresh={reloadPostsState}
+        refreshing={false}
       />
     </Styled.PostsContainer>
   );

@@ -12,6 +12,7 @@ import {
   selectIsLoading as selectIsUserLoading,
 } from './redux/auth/auth-selector';
 import { selectIsLoading as selectIsPostsLoading } from './redux/posts/posts-selectors';
+import { selectIsLoading as selectIsUserPostsLoading } from './redux/userPosts/userPosts-selectors';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -20,6 +21,7 @@ export default function Main() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const isUserLoading = useSelector(selectIsUserLoading);
   const isPostsLoading = useSelector(selectIsPostsLoading);
+  const isUserPostsLoading = useSelector(selectIsUserPostsLoading);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -53,7 +55,7 @@ export default function Main() {
   return (
     <>
       <Spinner
-        visible={isUserLoading || isPostsLoading}
+        visible={isUserLoading || isPostsLoading || isUserPostsLoading}
         textContent={'Loading...'}
         textStyle={{ color: 'white' }}
       />

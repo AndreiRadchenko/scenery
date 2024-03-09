@@ -1,10 +1,5 @@
-import { useEffect, useState } from 'react';
-import {
-  KeyboardAvoidingView,
-  Platform,
-  Dimensions,
-  FlatList,
-} from 'react-native';
+import { useState, useEffect, useRef } from 'react';
+import { KeyboardAvoidingView, Platform, FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { LogoutSvg } from '../../../../components/MainHeader/LogoutSvg';
@@ -14,32 +9,52 @@ import { NoPermissionView } from '../../../../components/NoPermissionView';
 
 import * as Styled from './Profile.styled';
 import themes from '../../../../utils/themes';
-import {
-  useKeyboardVisible,
-  useActionSheetMenu,
-  usePermissions,
-  useImagePickerActions,
-} from '../../../../hooks';
+import { useKeyboardVisible, usePermissions } from '../../../../hooks';
 
-import authors from '../../../../mock/authors.json';
-import posts from '../../../../mock/posts.json';
+// import userPosts from '../../../../mock/userPosts.json';
 import { SCREEN, STACK } from '../../../constants';
-import {
-  logOut,
-  updateUserDetails,
-} from '../../../../redux/auth/auth-operations';
+import { logOut } from '../../../../redux/auth/auth-operations';
 import { selectUser } from '../../../../redux/auth/auth-selector';
-
-// const user = authors[1];
+import { selectUserPosts } from '../../../../redux/userPosts/userPosts-selectors';
+import { selectPosts } from '../../../../redux/posts/posts-selectors';
+import { fetchUserPostsOperation } from '../../../../redux/userPosts/userPosts-operations';
+import { resetUserPostsState } from '../../../../redux/userPosts/userPosts-slice';
 
 const isPlatformIOS = Platform.OS === 'ios';
-const windowWidth = Dimensions.get('window').width;
 
 export const ProfileScreen = ({ navigation, route }) => {
+  const flatList = useRef(null);
   const dispatch = useDispatch();
   const isKeyboardVisible = useKeyboardVisible();
-  const [avatar, setAvatar] = useState(null);
   const user = useSelector(selectUser);
+  const posts = useSelector(selectPosts);
+  const userPosts = useSelector(selectUserPosts);
+  const [requiredPermission, setRequiredPermission] = useState('');
+
+  // console.log('ProfileScreen userPosts: ', userPosts.length);
+
+  const fetchMore = async () => {
+    dispatch(fetchUserPostsOperation({ limits: 4, user }));
+  };
+
+  const reloadUserPostsState = async () => {
+    await dispatch(resetUserPostsState());
+    // flatList.current.scrollToIndex({
+    //   index: 1,
+    // });
+  };
+
+  //update userPosts state when new post has been added to the posts state
+  useEffect(() => {
+    console.log('in useEffect(), userPosts.length: ', userPosts.length);
+    console.log('in useEffect(), posts.length: ', posts.length);
+    if (posts.length === 0 && userPosts.length !== 0) {
+      dispatch(resetUserPostsState());
+    }
+    if (posts.length !== 0 && userPosts.length === 0) {
+      fetchMore();
+    }
+  }, [posts, userPosts]);
 
   const {
     cameraPermission,
@@ -48,23 +63,9 @@ export const ProfileScreen = ({ navigation, route }) => {
     permissionsList,
   } = usePermissions();
 
-  const { takePhoto, pickImage, requiredPermission, isLocationLoading } =
-    useImagePickerActions({
-      setPhoto: setAvatar,
-      cameraPermission,
-      mediaLibraryPermission,
-      locationPermission,
-    });
-
-  const showActionSheetMenu = useActionSheetMenu(takePhoto, pickImage);
-
-  const deleteAvatar = () => {
-    dispatch(updateUserDetails({ avatar: '', name: user.nickName }));
+  const getRequiredPermission = (requiredPermission) => {
+    setRequiredPermission(requiredPermission);
   };
-
-  useEffect(() => {
-    avatar && dispatch(updateUserDetails({ avatar, name: user.nickName }));
-  }, [avatar]);
 
   const openComments = (item) => {
     navigation.navigate(STACK.PROFILE, {
@@ -87,6 +88,7 @@ export const ProfileScreen = ({ navigation, route }) => {
   };
 
   const handleLogout = () => {
+    dispatch(resetUserPostsState());
     dispatch(logOut());
   };
 
@@ -117,17 +119,20 @@ export const ProfileScreen = ({ navigation, route }) => {
             isPlatformIOS={isPlatformIOS}
           >
             <Avatar
-              avatarURL={user.avatar}
-              onCreateAvatar={showActionSheetMenu}
-              onDeleteAvatar={deleteAvatar}
+              user={user}
+              getRequiredPermission={getRequiredPermission}
+              cameraPermission={cameraPermission}
+              mediaLibraryPermission={mediaLibraryPermission}
+              locationPermission={locationPermission}
             />
             <Styled.LogoutWrapper onPress={handleLogout} isVisible={true}>
               <LogoutSvg color={themes.primary.colors.lightGrey} />
             </Styled.LogoutWrapper>
             <Styled.Title>{user.nickName}</Styled.Title>
             <FlatList
+              ref={flatList}
               style={{ width: '100%', paddingBottom: 183 }}
-              data={posts}
+              data={userPosts}
               renderItem={({ item, index }) => (
                 <PostCard
                   {...item}
@@ -139,6 +144,10 @@ export const ProfileScreen = ({ navigation, route }) => {
               )}
               keyExtractor={(post) => post._id}
               showsVerticalScrollIndicator={false}
+              onEndReachedThreshold={0.1}
+              onEndReached={fetchMore}
+              onRefresh={reloadUserPostsState}
+              refreshing={false}
             />
           </Styled.ProfileForm>
         </KeyboardAvoidingView>

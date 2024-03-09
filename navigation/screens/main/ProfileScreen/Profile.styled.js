@@ -19,6 +19,7 @@ export const BgImage = styled(ImageBackground)`
 export const ProfileForm = styled.View`
   position: relative;
   align-items: center;
+  height: 80%;
   border-top-left-radius: 25px;
   border-top-right-radius: 25px;
   margin-top: ${({ isPlatformIOS }) => (isPlatformIOS ? '205px' : '190px')};

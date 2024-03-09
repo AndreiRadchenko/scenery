@@ -12,6 +12,7 @@ import { getHeaderLabel } from '../../helpers/getHeaderLabel';
 import { SCREEN, STACK } from '../../navigation/constants';
 import { getMainHeaderVisibility } from '../../helpers/getTabBarVisibility';
 import { logOut } from '../../redux/auth/auth-operations';
+import { resetUserPostsState } from '../../redux/userPosts/userPosts-slice';
 
 const backButtonHeaders = [
   SCREEN.MAIN.CREATE_POST,
@@ -32,6 +33,7 @@ export const MainHeader = ({ navigation, route }) => {
   const isBackButtonHeaders = backButtonHeaders.includes(routeName);
 
   const handleLogout = () => {
+    dispatch(resetUserPostsState());
     dispatch(logOut());
   };
 
