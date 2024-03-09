@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import { MainButton } from '../../../../components/MainButton';
 import { PasswordInput } from '../../../../components/PasswordInput';
-import { Avatar } from '../../../../components/Avatar';
+import { AvatarRegistration } from '../../../../components/Avatar';
 import { NoPermissionView } from '../../../../components/NoPermissionView';
 
 import * as Styled from './RegistrationScreen.styled';
@@ -96,7 +96,7 @@ export const RegistrationScreen = ({ navigation, route }) => {
               ],
             }}
           >
-            <Avatar
+            <AvatarRegistration
               avatarURL={avatar}
               onCreateAvatar={showActionSheetMenu}
               onDeleteAvatar={() => setAvatar(null)}
@@ -117,6 +117,7 @@ export const RegistrationScreen = ({ navigation, route }) => {
                 placeholder="Email"
                 value={formik.values.email}
                 onChangeText={formik.handleChange('email')}
+                keyboardType="email-address"
               />
               <Styled.Error>{formik.errors.email}</Styled.Error>
             </Styled.InputWrapper>
@@ -124,6 +125,7 @@ export const RegistrationScreen = ({ navigation, route }) => {
               error={formik.errors.password}
               value={formik.values.password}
               onChangeText={formik.handleChange('password')}
+              returnKeyType="done"
             />
 
             <MainButton buttonText="Register" onPress={handleSubmit} />

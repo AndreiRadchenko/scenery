@@ -11,7 +11,6 @@ import * as Styled from './Profile.styled';
 import themes from '../../../../utils/themes';
 import { useKeyboardVisible, usePermissions } from '../../../../hooks';
 
-// import userPosts from '../../../../mock/userPosts.json';
 import { SCREEN, STACK } from '../../../constants';
 import { logOut } from '../../../../redux/auth/auth-operations';
 import { selectUser } from '../../../../redux/auth/auth-selector';
@@ -31,23 +30,16 @@ export const ProfileScreen = ({ navigation, route }) => {
   const userPosts = useSelector(selectUserPosts);
   const [requiredPermission, setRequiredPermission] = useState('');
 
-  // console.log('ProfileScreen userPosts: ', userPosts.length);
-
   const fetchMore = async () => {
-    dispatch(fetchUserPostsOperation({ limits: 4, user }));
+    dispatch(fetchUserPostsOperation({ limits: 10, user }));
   };
 
   const reloadUserPostsState = async () => {
-    await dispatch(resetUserPostsState());
-    // flatList.current.scrollToIndex({
-    //   index: 1,
-    // });
+    dispatch(resetUserPostsState());
   };
 
   //update userPosts state when new post has been added to the posts state
   useEffect(() => {
-    console.log('in useEffect(), userPosts.length: ', userPosts.length);
-    console.log('in useEffect(), posts.length: ', posts.length);
     if (posts.length === 0 && userPosts.length !== 0) {
       dispatch(resetUserPostsState());
     }
