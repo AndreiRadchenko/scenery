@@ -17,6 +17,7 @@ import { MainButton } from '../../../../components/MainButton';
 import { NoPermissionView } from '../../../../components/NoPermissionView';
 
 import { addPostOperation } from '../../../../redux/posts/posts-operations';
+import { resetUserPostsState } from '../../../../redux/userPosts/userPosts-slice';
 import { selectUser } from '../../../../redux/auth/auth-selector';
 
 import * as Styled from './Create.styled';
@@ -35,6 +36,8 @@ export const CreateScreen = ({ navigation, route }) => {
   const { nickName, id } = useSelector(selectUser);
 
   const screenHeight = Dimensions.get('window').height - 88;
+  const previousScreen =
+    route?.params?.prevScreen ?? route?.params?.params?.prevScreen;
 
   const {
     cameraPermission,
@@ -63,9 +66,11 @@ export const CreateScreen = ({ navigation, route }) => {
         name: imageName,
       })
     );
+    // dispatch(resetUserPostsState());
     setPhoto(null);
     setImageName('');
-    navigation.goBack();
+    // navigation.goBack();
+    navigation.navigate(previousScreen);
   };
 
   const deletePost = () => {

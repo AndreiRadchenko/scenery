@@ -1,9 +1,10 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import {
-  fetchPostsOperation,
-  addPostOperation,
+  fetchUserPostsOperation,
+  addUserPostOperation,
   // deletePostOperation,
-} from './posts-operations';
+} from './userPosts-operations';
+import { getPaginatedPosts, getLastItem } from '../../firebase/services';
 
 const initialPosts = {
   items: [],
@@ -15,8 +16,8 @@ const initialPosts = {
 };
 
 const extraActions = [
-  fetchPostsOperation,
-  addPostOperation,
+  fetchUserPostsOperation,
+  addUserPostOperation,
   //   deletePostOperation,
 ];
 
@@ -39,16 +40,14 @@ const handleRejected = (state, action) => {
   state.error = action.payload;
 };
 
-export const postsSlice = createSlice({
-  name: 'posts',
+export const userPostsSlice = createSlice({
+  name: 'userPosts',
   initialState: initialPosts,
   reducers: {
-    resetPostsState(state) {
+    resetUserPostsState(state) {
       state.items = [];
-      state.error = null;
       state.lastVisiblePost = null;
       state.isEndOfPosts = false;
-      state.newPostsCount = 0;
     },
     resetPostError(state, action) {
       state.error = null;
@@ -66,7 +65,7 @@ export const postsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(
-        fetchPostsOperation.fulfilled,
+        fetchUserPostsOperation.fulfilled,
         (state, { payload: { posts, lastVisiblePost, isEndOfPosts } }) => {
           state.items = [...state.items, ...posts];
           state.lastVisiblePost = lastVisiblePost;
@@ -74,7 +73,7 @@ export const postsSlice = createSlice({
         }
       )
 
-      .addCase(addPostOperation.fulfilled, (state, { payload }) => {
+      .addCase(addUserPostOperation.fulfilled, (state, { payload }) => {
         state.items = payload;
         state.lastVisiblePost = null;
         state.isEndOfPosts = false;
@@ -91,11 +90,11 @@ export const postsSlice = createSlice({
   },
 });
 
-export const postsReducer = postsSlice.reducer;
+export const userPostsReducer = userPostsSlice.reducer;
 export const {
-  resetPostsState,
+  resetUserPostsState,
   resetPostError,
   resetPosts,
   setLastVisiblePost,
   setIsEndOfPosts,
-} = postsSlice.actions;
+} = userPostsSlice.actions;

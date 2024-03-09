@@ -1,20 +1,53 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dimensions } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import { useDispatch } from 'react-redux';
 
 import { AvatarChangeButton } from './AvatarChangeButton';
 
 import * as Styled from './Avatar.styled';
 import themes from '../../utils/themes';
+import { useActionSheetMenu, useImagePickerActions } from '../../hooks';
+import { updateUserDetails } from '../../redux/auth/auth-operations';
 
 const windowWidth = Dimensions.get('window').width;
 
-export const Avatar = ({ avatarURL, onCreateAvatar, onDeleteAvatar }) => {
+export const Avatar = ({
+  user,
+  getRequiredPermission,
+  cameraPermission,
+  mediaLibraryPermission,
+  locationPermission,
+}) => {
+  const dispatch = useDispatch();
+  const [avatar, setAvatar] = useState(null);
+
+  const { takePhoto, pickImage, requiredPermission } = useImagePickerActions({
+    setPhoto: setAvatar,
+    cameraPermission,
+    mediaLibraryPermission,
+    locationPermission,
+  });
+
+  const showActionSheetMenu = useActionSheetMenu(takePhoto, pickImage);
+
+  const deleteAvatar = () => {
+    dispatch(updateUserDetails({ avatar: '', name: user?.nickName }));
+  };
+
+  useEffect(() => {
+    getRequiredPermission(requiredPermission);
+  }, [requiredPermission]);
+
+  useEffect(() => {
+    avatar && dispatch(updateUserDetails({ avatar, name: user?.nickName }));
+  }, [avatar]);
+
   return (
     <Styled.AvatarWrapper windowWidth={windowWidth}>
       <Styled.ImageWrapper>
-        {avatarURL ? (
-          <Styled.Avatar source={{ uri: avatarURL }} />
+        {user?.avatar ? (
+          <Styled.Avatar source={{ uri: user.avatar }} />
         ) : (
           <FontAwesome
             name="user-circle"
@@ -24,8 +57,8 @@ export const Avatar = ({ avatarURL, onCreateAvatar, onDeleteAvatar }) => {
         )}
       </Styled.ImageWrapper>
       <AvatarChangeButton
-        isAvatar={avatarURL}
-        onPress={!avatarURL ? onCreateAvatar : onDeleteAvatar}
+        isAvatar={user?.avatar}
+        onPress={!user?.avatar ? showActionSheetMenu : deleteAvatar}
       />
     </Styled.AvatarWrapper>
   );

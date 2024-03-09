@@ -6,6 +6,7 @@ import {
 
 import { authSlice } from './auth/auth-slice';
 import { postsSlice } from './posts/posts-slice';
+import { userPostsSlice } from './userPosts/userPosts-slice';
 
 const middleware = [
   ...getDefaultMiddleware({
@@ -18,6 +19,7 @@ const middleware = [
 const rootReducer = combineReducers({
   [authSlice.name]: authSlice.reducer,
   [postsSlice.name]: postsSlice.reducer,
+  [userPostsSlice.name]: userPostsSlice.reducer,
   middleware,
 });
 

@@ -3,7 +3,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import { ProfileScreen } from '../screens/main/ProfileScreen';
 import { CommentsScreen } from '../screens/main/CommentsScreen';
-import { CameraScreen } from '../screens/main/CameraScreen';
 import { MapScreen } from '../screens/main/MapScreen';
 import { MainHeader } from '../../components/MainHeader';
 
