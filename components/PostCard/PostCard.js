@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 
 import { CommentSvg } from './CommentSvg';
 import { LocationSvg } from './LocationSvg';
@@ -7,6 +7,7 @@ import { LikeSvg } from './LikeSvg';
 
 import * as Styled from './PostCard.styled';
 import themes from '../../utils/themes';
+// import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export const PostCard = ({
   _id,
@@ -20,10 +21,13 @@ export const PostCard = ({
   onCommentPress,
   onLocationPress,
   onLikePress,
+  openPreview,
 }) => {
   return (
     <Styled.PostCard index={index}>
-      <Styled.CardImage source={{ uri: image.url }} />
+      <TouchableOpacity activeOpacity={0.8} onPress={openPreview}>
+        <Styled.CardImage source={{ uri: image.url }} />
+      </TouchableOpacity>
       <Styled.CardName>{name}</Styled.CardName>
       <Styled.ExtDataWrapper>
         <Styled.Achievements>

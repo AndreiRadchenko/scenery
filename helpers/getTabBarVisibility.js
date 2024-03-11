@@ -5,11 +5,11 @@ const noTabBarScreens = [
   STACK.CREATE_POST,
   SCREEN.MAIN.CREATE_POST,
   SCREEN.MAIN.COMMENTS,
-  SCREEN.MAIN.CAMERA,
   SCREEN.MAIN.MAP,
+  SCREEN.MAIN.PREVIEW,
 ];
 
-const noMainHeaderScreens = [SCREEN.MAIN.CAMERA];
+const noMainHeaderScreens = [SCREEN.MAIN.PREVIEW];
 
 export const getTabBarVisibility = (route) => {
   const routeName = getFocusedRouteNameFromRoute(route) ?? route.name;

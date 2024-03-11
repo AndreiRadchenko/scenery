@@ -6,6 +6,7 @@ import { LogoutSvg } from '../../../../components/MainHeader/LogoutSvg';
 import { PostCard } from '../../../../components/PostCard';
 import { Avatar } from '../../../../components/Avatar';
 import { NoPermissionView } from '../../../../components/NoPermissionView';
+import { ModalPreview } from '../../../../components/ModalPreview';
 
 import * as Styled from './Profile.styled';
 import themes from '../../../../utils/themes';
@@ -29,6 +30,8 @@ export const ProfileScreen = ({ navigation, route }) => {
   const posts = useSelector(selectPosts);
   const userPosts = useSelector(selectUserPosts);
   const [requiredPermission, setRequiredPermission] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [previewItem, setPreviewItem] = useState(null);
 
   const fetchMore = async () => {
     dispatch(fetchUserPostsOperation({ limits: 10, user }));
@@ -57,6 +60,11 @@ export const ProfileScreen = ({ navigation, route }) => {
 
   const getRequiredPermission = (requiredPermission) => {
     setRequiredPermission(requiredPermission);
+  };
+
+  const openPreview = (item) => {
+    setPreviewItem(item);
+    setModalVisible(true);
   };
 
   const openComments = (item) => {
@@ -97,53 +105,61 @@ export const ProfileScreen = ({ navigation, route }) => {
     );
   }
   return (
-    <Styled.Container>
-      <Styled.BgImage
-        resizeMode="stretch"
-        source={require('../../../../assets/img/PhotoBG-compressed.jpg')}
-      >
-        <KeyboardAvoidingView
-          behavior={isPlatformIOS ? 'padding' : ''}
-          keyboardVerticalOffset={0}
+    <>
+      <ModalPreview
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        item={previewItem}
+      />
+      <Styled.Container>
+        <Styled.BgImage
+          resizeMode="stretch"
+          source={require('../../../../assets/img/PhotoBG-compressed.jpg')}
         >
-          <Styled.ProfileForm
-            isKeyboardVisible={isKeyboardVisible}
-            isPlatformIOS={isPlatformIOS}
+          <KeyboardAvoidingView
+            behavior={isPlatformIOS ? 'padding' : ''}
+            keyboardVerticalOffset={0}
           >
-            <Avatar
-              user={user}
-              getRequiredPermission={getRequiredPermission}
-              cameraPermission={cameraPermission}
-              mediaLibraryPermission={mediaLibraryPermission}
-              locationPermission={locationPermission}
-            />
-            <Styled.LogoutWrapper onPress={handleLogout} isVisible={true}>
-              <LogoutSvg color={themes.primary.colors.lightGrey} />
-            </Styled.LogoutWrapper>
-            <Styled.Title>{user.nickName}</Styled.Title>
-            <FlatList
-              ref={flatList}
-              style={{ width: '100%', paddingBottom: 183 }}
-              data={userPosts}
-              renderItem={({ item, index }) => (
-                <PostCard
-                  {...item}
-                  index={index}
-                  onCommentPress={() => openComments(item)}
-                  onLocationPress={() => openMap(item)}
-                  onLikePress={() => {}}
-                />
-              )}
-              keyExtractor={(post) => post._id}
-              showsVerticalScrollIndicator={false}
-              onEndReachedThreshold={0.1}
-              onEndReached={fetchMore}
-              onRefresh={reloadUserPostsState}
-              refreshing={false}
-            />
-          </Styled.ProfileForm>
-        </KeyboardAvoidingView>
-      </Styled.BgImage>
-    </Styled.Container>
+            <Styled.ProfileForm
+              isKeyboardVisible={isKeyboardVisible}
+              isPlatformIOS={isPlatformIOS}
+            >
+              <Avatar
+                user={user}
+                getRequiredPermission={getRequiredPermission}
+                cameraPermission={cameraPermission}
+                mediaLibraryPermission={mediaLibraryPermission}
+                locationPermission={locationPermission}
+              />
+              <Styled.LogoutWrapper onPress={handleLogout} isVisible={true}>
+                <LogoutSvg color={themes.primary.colors.lightGrey} />
+              </Styled.LogoutWrapper>
+              <Styled.Title>{user.nickName}</Styled.Title>
+              <FlatList
+                ref={flatList}
+                style={{ width: '100%', paddingBottom: 183 }}
+                data={userPosts}
+                renderItem={({ item, index }) => (
+                  <PostCard
+                    {...item}
+                    index={index}
+                    onCommentPress={() => openComments(item)}
+                    onLocationPress={() => openMap(item)}
+                    onLikePress={() => {}}
+                    openPreview={() => openPreview(item)}
+                  />
+                )}
+                keyExtractor={(post) => post._id}
+                showsVerticalScrollIndicator={false}
+                onEndReachedThreshold={0.1}
+                onEndReached={fetchMore}
+                onRefresh={reloadUserPostsState}
+                refreshing={false}
+              />
+            </Styled.ProfileForm>
+          </KeyboardAvoidingView>
+        </Styled.BgImage>
+      </Styled.Container>
+    </>
   );
 };
