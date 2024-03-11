@@ -8,6 +8,7 @@ export const SCREEN = {
     COMMENTS: 'Comments',
     CAMERA: 'Camera',
     MAP: 'Map',
+    PREVIEW: 'Preview',
   },
 };
 

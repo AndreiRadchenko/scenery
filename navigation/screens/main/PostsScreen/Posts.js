@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons';
 
 import { PostCard } from '../../../../components/PostCard';
+import { ModalPreview } from '../../../../components/ModalPreview';
 
 import * as Styled from './Posts.styled';
 import themes from '../../../../utils/themes';
@@ -45,6 +46,8 @@ export const PostsScreen = ({ navigation, route }) => {
   const posts = useSelector(selectPosts);
   const user = useSelector(selectUser);
   const isUserLoading = useSelector(selectIsUserLoading);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [previewItem, setPreviewItem] = useState(null);
 
   const fetchMore = async () => {
     dispatch(fetchPostsOperation(10));
@@ -52,6 +55,11 @@ export const PostsScreen = ({ navigation, route }) => {
 
   const reloadPostsState = () => {
     dispatch(resetPostsState());
+  };
+
+  const openPreview = (item) => {
+    setPreviewItem(item);
+    setModalVisible(true);
   };
 
   const openComments = (item) => {
@@ -75,25 +83,34 @@ export const PostsScreen = ({ navigation, route }) => {
   };
 
   return (
-    <Styled.PostsContainer>
-      <FlatList
-        data={posts}
-        renderItem={({ item, index }) => (
-          <PostCard
-            {...item}
-            index={index}
-            onCommentPress={() => openComments(item)}
-            onLocationPress={() => openMap(item)}
-          />
-        )}
-        ListHeaderComponent={UserCard({ user, isUserLoading })}
-        keyExtractor={(post) => post._id}
-        showsVerticalScrollIndicator={false}
-        onEndReachedThreshold={0.1}
-        onEndReached={fetchMore}
-        onRefresh={reloadPostsState}
-        refreshing={false}
+    <>
+      <ModalPreview
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        item={previewItem}
       />
-    </Styled.PostsContainer>
+      <Styled.PostsContainer>
+        <FlatList
+          data={posts}
+          renderItem={({ item, index }) => (
+            <PostCard
+              {...item}
+              index={index}
+              onCommentPress={() => openComments(item)}
+              onLocationPress={() => openMap(item)}
+              onLikePress={() => {}}
+              openPreview={() => openPreview(item)}
+            />
+          )}
+          ListHeaderComponent={UserCard({ user, isUserLoading })}
+          keyExtractor={(post) => post._id}
+          showsVerticalScrollIndicator={false}
+          onEndReachedThreshold={0.1}
+          onEndReached={fetchMore}
+          onRefresh={reloadPostsState}
+          refreshing={false}
+        />
+      </Styled.PostsContainer>
+    </>
   );
 };
