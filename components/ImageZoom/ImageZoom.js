@@ -4,6 +4,7 @@ import {
   PanGestureHandler,
   PinchGestureHandler,
   State,
+  GestureHandlerRootView,
 } from 'react-native-gesture-handler';
 
 import * as Styled from './ImageZoom.styled';
@@ -68,7 +69,7 @@ export const ImageZoom = ({ image }) => {
   };
 
   return (
-    <View>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <PanGestureHandler
         onGestureEvent={onPanEvent}
         ref={panRef}
@@ -76,6 +77,7 @@ export const ImageZoom = ({ image }) => {
         enabled={panEnabled}
         failOffsetX={[-1000, 1000]}
         shouldCancelWhenOutside
+        activeOffsetX={[0, 0]}
       >
         <Animated.View>
           <PinchGestureHandler
@@ -98,6 +100,6 @@ export const ImageZoom = ({ image }) => {
           </PinchGestureHandler>
         </Animated.View>
       </PanGestureHandler>
-    </View>
+    </GestureHandlerRootView>
   );
 };
