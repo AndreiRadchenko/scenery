@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { StatusBar, Alert, Modal } from 'react-native';
+import { StatusBar, Alert, Modal, View } from 'react-native';
 import { ImageZoom } from '../ImageZoom';
 
 import * as Styled from './ModalPreview.styled';
