@@ -12,6 +12,7 @@ export const ModalPreview = ({ modalVisible, setModalVisible, item }) => {
       animationType="fade"
       transparent={true}
       visible={modalVisible}
+      statusBarTranslucent={true}
       onRequestClose={() => {
         setModalVisible(!modalVisible);
       }}
@@ -25,10 +26,6 @@ export const ModalPreview = ({ modalVisible, setModalVisible, item }) => {
             <Ionicons name="close-outline" size={32} color="white" />
           </Styled.BackButton>
           <ImageZoom image={image} />
-
-          {/* <Styled.AcceptButton onPress={() => {}}>
-            <Ionicons name="checkmark-sharp" size={24} color="white" />
-          </Styled.AcceptButton> */}
         </Styled.ControlsWrapper>
       </Styled.ViewContainer>
     </Modal>

@@ -14,10 +14,9 @@ import { PhotoSvg } from './PhotoSvg';
 import { LocationSvg } from '../../../../components/PostCard/LocationSvg';
 import { DeleteButton } from '../../../../components/DeleteButton';
 import { MainButton } from '../../../../components/MainButton';
-import { NoPermissionView } from '../../../../components/NoPermissionView';
+import { ModalPermission } from '../../../../components/ModalPermission';
 
 import { addPostOperation } from '../../../../redux/posts/posts-operations';
-import { resetUserPostsState } from '../../../../redux/userPosts/userPosts-slice';
 import { selectUser } from '../../../../redux/auth/auth-selector';
 
 import * as Styled from './Create.styled';
@@ -34,6 +33,7 @@ export const CreateScreen = ({ navigation, route }) => {
   const [location, setLocation] = useState(null);
   const [imageName, setImageName] = useState('');
   const { nickName, id } = useSelector(selectUser);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const screenHeight = Dimensions.get('window').height - 88;
   const previousScreen =
@@ -46,14 +46,19 @@ export const CreateScreen = ({ navigation, route }) => {
     permissionsList,
   } = usePermissions();
 
-  const { takePhoto, pickImage, requiredPermission, isLocationLoading } =
-    useImagePickerActions({
-      setPhoto,
-      setLocation,
-      cameraPermission,
-      mediaLibraryPermission,
-      locationPermission,
-    });
+  const {
+    takePhoto,
+    pickImage,
+    requiredPermission,
+    setRequiredPermission,
+    isLocationLoading,
+  } = useImagePickerActions({
+    setPhoto,
+    setLocation,
+    cameraPermission,
+    mediaLibraryPermission,
+    locationPermission,
+  });
 
   const showActionSheetMenu = useActionSheetMenu(takePhoto, pickImage);
 
@@ -66,10 +71,8 @@ export const CreateScreen = ({ navigation, route }) => {
         name: imageName,
       })
     );
-    // dispatch(resetUserPostsState());
     setPhoto(null);
     setImageName('');
-    // navigation.goBack();
     navigation.navigate(previousScreen);
   };
 
@@ -78,81 +81,89 @@ export const CreateScreen = ({ navigation, route }) => {
     setImageName('');
   };
 
-  if (
-    (requiredPermission === 'Camera' && !cameraPermission.granted) ||
-    (requiredPermission === 'Location' && !locationPermission.granted) ||
-    (requiredPermission === 'Media Library' && !mediaLibraryPermission.granted)
-  ) {
-    return (
-      <NoPermissionView
-        requiredPermission={requiredPermission}
-        permission={permissionsList[requiredPermission].permission}
-        requestPermission={permissionsList[requiredPermission].request}
-      />
-    );
-  }
+  useEffect(() => {
+    if (
+      (requiredPermission === 'Camera' && !cameraPermission?.granted) ||
+      (requiredPermission === 'Location' && !locationPermission.granted) ||
+      (requiredPermission === 'Media Library' &&
+        !mediaLibraryPermission?.granted)
+    ) {
+      setIsModalVisible(true);
+    }
+  }, [requiredPermission, cameraPermission, mediaLibraryPermission]);
+
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <KeyboardAvoidingView
-        style={{ flex: 1, position: 'relative' }}
-        behavior={Platform.OS === 'ios' ? 'padding' : null}
-      >
-        <Styled.PostContainer>
-          <Spinner
-            visible={isLocationLoading}
-            textContent={'Getting location...'}
-            textStyle={{ color: 'white' }}
-          />
-          <Styled.ScreenWrapper screenHeight={screenHeight}>
-            <View>
-              <Styled.PostCard>
-                <Styled.ImageContainer>
-                  <Styled.CardImage
-                    source={{ uri: !!photo ? photo : '/' }}
-                    style={{ resizeMode: 'cover' }}
+    <>
+      <ModalPermission
+        isModalVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+        requiredPermission={requiredPermission}
+        setRequiredPermission={setRequiredPermission}
+        permission={permissionsList[requiredPermission]?.permission}
+        requestPermission={permissionsList[requiredPermission]?.request}
+      />
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <KeyboardAvoidingView
+          style={{ flex: 1, position: 'relative' }}
+          behavior={Platform.OS === 'ios' ? 'padding' : null}
+        >
+          <Styled.PostContainer>
+            <Spinner
+              visible={isLocationLoading}
+              textContent={'Getting location...'}
+              textStyle={{ color: 'white' }}
+            />
+            <Styled.ScreenWrapper screenHeight={screenHeight}>
+              <View>
+                <Styled.PostCard>
+                  <Styled.ImageContainer>
+                    <Styled.CardImage
+                      source={{ uri: !!photo ? photo : '/' }}
+                      style={{ resizeMode: 'cover' }}
+                    />
+                    <Styled.UploadImageButton
+                      activeOpacity={0.6}
+                      isImageSelected={!!photo}
+                      onPress={showActionSheetMenu}
+                    >
+                      <PhotoSvg isImageSelected={!!photo} />
+                    </Styled.UploadImageButton>
+                  </Styled.ImageContainer>
+                  <Styled.CardAction>Take a photo</Styled.CardAction>
+                </Styled.PostCard>
+                <Styled.InputWrapper>
+                  <Styled.InputName
+                    placeholder="Name..."
+                    value={imageName}
+                    onChangeText={(value) => setImageName(value)}
                   />
-                  <Styled.UploadImageButton
-                    activeOpacity={0.6}
-                    isImageSelected={!!photo}
-                    onPress={showActionSheetMenu}
-                  >
-                    <PhotoSvg isImageSelected={!!photo} />
-                  </Styled.UploadImageButton>
-                </Styled.ImageContainer>
-                <Styled.CardAction>Take a photo</Styled.CardAction>
-              </Styled.PostCard>
-              <Styled.InputWrapper>
-                <Styled.InputName
-                  placeholder="Name..."
-                  value={imageName}
-                  onChangeText={(value) => setImageName(value)}
+                </Styled.InputWrapper>
+                <Styled.InputWrapper style={{ marginBottom: 4 }}>
+                  <LocationSvg color={themes.primary.colors.lightGrey} />
+                  <Styled.InputName
+                    placeholder="Location..."
+                    value={
+                      !!photo
+                        ? !location?.name
+                          ? `${location?.latitude}, ${location?.longitude}`
+                          : location?.name
+                        : ''
+                    }
+                  />
+                </Styled.InputWrapper>
+                <MainButton
+                  buttonText="Publish"
+                  onPress={onPublish}
+                  isActive={!!photo}
                 />
-              </Styled.InputWrapper>
-              <Styled.InputWrapper style={{ marginBottom: 4 }}>
-                <LocationSvg color={themes.primary.colors.lightGrey} />
-                <Styled.InputName
-                  placeholder="Location..."
-                  value={
-                    !!photo
-                      ? !location?.name
-                        ? `${location?.latitude}, ${location?.longitude}`
-                        : location?.name
-                      : ''
-                  }
-                />
-              </Styled.InputWrapper>
-              <MainButton
-                buttonText="Publish"
-                onPress={onPublish}
-                isActive={!!photo}
-              />
-            </View>
-            <Styled.DeleteButtonBar>
-              <DeleteButton isActive={!!photo} onPress={deletePost} />
-            </Styled.DeleteButtonBar>
-          </Styled.ScreenWrapper>
-        </Styled.PostContainer>
-      </KeyboardAvoidingView>
-    </TouchableWithoutFeedback>
+              </View>
+              <Styled.DeleteButtonBar>
+                <DeleteButton isActive={!!photo} onPress={deletePost} />
+              </Styled.DeleteButtonBar>
+            </Styled.ScreenWrapper>
+          </Styled.PostContainer>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
+    </>
   );
 };
