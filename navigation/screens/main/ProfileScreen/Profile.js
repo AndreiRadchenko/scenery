@@ -5,12 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { LogoutSvg } from '../../../../components/MainHeader/LogoutSvg';
 import { PostCard } from '../../../../components/PostCard';
 import { Avatar } from '../../../../components/Avatar';
-import { NoPermissionView } from '../../../../components/NoPermissionView';
 import { ModalPreview } from '../../../../components/ModalPreview';
 
 import * as Styled from './Profile.styled';
 import themes from '../../../../utils/themes';
-import { useKeyboardVisible, usePermissions } from '../../../../hooks';
+import { useKeyboardVisible } from '../../../../hooks';
 
 import { SCREEN, STACK } from '../../../constants';
 import { logOut } from '../../../../redux/auth/auth-operations';
@@ -29,8 +28,7 @@ export const ProfileScreen = ({ navigation, route }) => {
   const user = useSelector(selectUser);
   const posts = useSelector(selectPosts);
   const userPosts = useSelector(selectUserPosts);
-  const [requiredPermission, setRequiredPermission] = useState('');
-  const [modalVisible, setModalVisible] = useState(false);
+  const [isPreviewModalVisible, setIsPreviewModalVisible] = useState(false);
   const [previewItem, setPreviewItem] = useState(null);
 
   const fetchMore = async () => {
@@ -51,20 +49,9 @@ export const ProfileScreen = ({ navigation, route }) => {
     }
   }, [posts, userPosts]);
 
-  const {
-    cameraPermission,
-    mediaLibraryPermission,
-    locationPermission,
-    permissionsList,
-  } = usePermissions();
-
-  const getRequiredPermission = (requiredPermission) => {
-    setRequiredPermission(requiredPermission);
-  };
-
   const openPreview = (item) => {
     setPreviewItem(item);
-    setModalVisible(true);
+    setIsPreviewModalVisible(true);
   };
 
   const openComments = (item) => {
@@ -92,23 +79,11 @@ export const ProfileScreen = ({ navigation, route }) => {
     dispatch(logOut());
   };
 
-  if (
-    (requiredPermission === 'Camera' && !cameraPermission.granted) ||
-    (requiredPermission === 'Media Library' && !mediaLibraryPermission.granted)
-  ) {
-    return (
-      <NoPermissionView
-        requiredPermission={requiredPermission}
-        permission={permissionsList[requiredPermission].permission}
-        requestPermission={permissionsList[requiredPermission].request}
-      />
-    );
-  }
   return (
     <>
       <ModalPreview
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
+        modalVisible={isPreviewModalVisible}
+        setModalVisible={setIsPreviewModalVisible}
         item={previewItem}
       />
       <Styled.Container>
@@ -124,13 +99,7 @@ export const ProfileScreen = ({ navigation, route }) => {
               isKeyboardVisible={isKeyboardVisible}
               isPlatformIOS={isPlatformIOS}
             >
-              <Avatar
-                user={user}
-                getRequiredPermission={getRequiredPermission}
-                cameraPermission={cameraPermission}
-                mediaLibraryPermission={mediaLibraryPermission}
-                locationPermission={locationPermission}
-              />
+              <Avatar user={user} />
               <Styled.LogoutWrapper onPress={handleLogout} isVisible={true}>
                 <LogoutSvg color={themes.primary.colors.lightGrey} />
               </Styled.LogoutWrapper>
