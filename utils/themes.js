@@ -20,6 +20,7 @@ const themes = {
         heavy: 900,
       },
       size: {
+        bottomMenuText: '1.5em',
         careersTitle: '6.1em',
         smallerCareersTitle: '4em',
       },
