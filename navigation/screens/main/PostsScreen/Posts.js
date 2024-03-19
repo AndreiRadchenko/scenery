@@ -96,6 +96,7 @@ export const PostsScreen = ({ navigation, route }) => {
             <PostCard
               {...item}
               index={index}
+              screen={SCREEN.MAIN.POSTS}
               onCommentPress={() => openComments(item)}
               onLocationPress={() => openMap(item)}
               onLikePress={() => {}}

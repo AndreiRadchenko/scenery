@@ -4,6 +4,8 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { Provider } from 'react-redux';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import 'expo-dev-client';
 
@@ -31,11 +33,15 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <ActionSheetProvider>
-        <NavigationContainer onReady={onLayoutRootView} headerMode="none">
-          <Main />
-        </NavigationContainer>
-      </ActionSheetProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <BottomSheetModalProvider>
+          <ActionSheetProvider>
+            <NavigationContainer onReady={onLayoutRootView} headerMode="none">
+              <Main />
+            </NavigationContainer>
+          </ActionSheetProvider>
+        </BottomSheetModalProvider>
+      </GestureHandlerRootView>
     </Provider>
   );
 }

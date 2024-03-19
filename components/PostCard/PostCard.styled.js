@@ -11,6 +11,11 @@ export const PostCard = styled.View`
   width: 100%;
 `;
 
+export const MenuContainer = styled.View`
+  flex-direction: row;
+  justify-content: flex-end;
+`;
+
 export const CardImage = styled.Image`
   height: 240px;
   border-radius: 8px;
