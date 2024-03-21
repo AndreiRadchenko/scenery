@@ -7,6 +7,7 @@ import {
   setDoc,
   serverTimestamp,
   Timestamp,
+  deleteDoc,
 } from 'firebase/firestore';
 
 import { getPaginatedPosts, getLastItem } from '../../firebase/services';
@@ -15,6 +16,7 @@ import {
   db,
   postsCollection,
   imagesStorage,
+  getDocById,
 } from '../../firebase/config';
 import fireStorage from '../../firebase/fireStorage';
 
@@ -79,12 +81,13 @@ export const addPostOperation = createAsyncThunk(
   }
 );
 
-export const deleteContactOperation = createAsyncThunk(
-  'contacts/deleteContact',
-  async (contactId, thunkAPI) => {
+export const deletePostOperation = createAsyncThunk(
+  'posts/deletePost',
+  async ({ id, photoUrl }, thunkAPI) => {
     try {
-      const { data } = await axios.delete('/contacts/' + contactId);
-      return data;
+      deleteDoc(getDocById(id));
+      fireStorage.deleteImage(photoUrl);
+      return { id, photoUrl };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

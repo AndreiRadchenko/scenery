@@ -2,7 +2,7 @@ import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import {
   fetchPostsOperation,
   addPostOperation,
-  // deletePostOperation,
+  deletePostOperation,
 } from './posts-operations';
 
 const initialPosts = {
@@ -17,7 +17,7 @@ const initialPosts = {
 const extraActions = [
   fetchPostsOperation,
   addPostOperation,
-  //   deletePostOperation,
+  deletePostOperation,
 ];
 
 const getActions = (actionType) =>
@@ -80,10 +80,11 @@ export const postsSlice = createSlice({
         state.isEndOfPosts = false;
       })
 
-      //   .addCase(deletePostOperation.fulfilled, (state, action) => {
-      //     const index = state.items.findIndex((e) => e.id === action.payload.id);
-      //     state.items.splice(index, 1);
-      //   })
+      .addCase(deletePostOperation.fulfilled, (state, action) => {
+        state.items = [];
+        state.lastVisiblePost = null;
+        state.isEndOfPosts = false;
+      })
 
       .addMatcher(isAnyOf(...getActions('pending')), handlePending)
       .addMatcher(isAnyOf(...getActions('fulfilled')), handleAnySuccess)

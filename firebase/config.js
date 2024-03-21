@@ -12,7 +12,7 @@ import {
   signInWithEmailAndPassword,
   AuthErrorCodes,
 } from 'firebase/auth';
-import { getFirestore, collection, addDoc } from 'firebase/firestore';
+import { getFirestore, collection, addDoc, doc } from 'firebase/firestore';
 import { getStorage, ref } from 'firebase/storage';
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -46,3 +46,4 @@ export const postsCollection = collection(db, 'posts');
 export const storage = getStorage(app);
 export const imagesStorage = ref(storage, 'images');
 export const avatarStorage = ref(storage, 'avatars');
+export const getDocById = (id) => doc(db, 'posts', id);

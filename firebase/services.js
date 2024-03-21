@@ -7,7 +7,11 @@ import {
   getDocs,
   Timestamp,
   where,
+  doc,
+  deleteDoc,
 } from 'firebase/firestore';
+
+// await deleteDoc(doc(db, 'cities', 'DC'));
 
 import { postsCollection } from './config';
 

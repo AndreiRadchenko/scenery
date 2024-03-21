@@ -1,5 +1,9 @@
 import { BottomMenuBuilder } from '../BottomMenuBuilder/BottomMenuBuilder';
 import { onImageShare } from '../../services/shareService';
+import { store } from '../../redux/store';
+import { deletePostOperation } from '../../redux/posts/posts-operations';
+
+const dispatch = store.dispatch;
 
 export const ProfileMenu = ({ id, image, author }) => {
   return new BottomMenuBuilder()
@@ -14,7 +18,12 @@ export const ProfileMenu = ({ id, image, author }) => {
       ioniconsName: 'trash',
       text: 'Delete post',
       handler: () => {
-        console.log('Delete post');
+        dispatch(
+          deletePostOperation({
+            id,
+            photoUrl: image.url,
+          })
+        );
       },
     })
     .build();

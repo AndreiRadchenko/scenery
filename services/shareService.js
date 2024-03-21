@@ -8,7 +8,7 @@ export const onImageShare = async (imageUrl, id) => {
       extension: '.jpg',
       shareOptions: {
         mimeType: 'image/jpeg',
-        dialosTitle: 'Check out this image!',
+        dialogTitle: 'Check out this image!',
         UTI: 'image/jpeg',
       },
     };
