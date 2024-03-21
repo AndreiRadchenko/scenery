@@ -56,8 +56,8 @@ export default function Main() {
     <>
       <Spinner
         visible={isUserLoading || isPostsLoading || isUserPostsLoading}
-        textContent={'Loading...'}
-        textStyle={{ color: 'white' }}
+        // textContent={'Loading...'}
+        // textStyle={{ color: 'white' }}
       />
       <UseRoute isLoggedIn={isLoggedIn} />
     </>
