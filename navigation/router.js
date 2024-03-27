@@ -54,7 +54,7 @@ export const UseRoute = ({ isLoggedIn }) => {
             tabBarIcon: ({ focused, size, color }) => (
               <PostsSvg size={size} color={color} />
             ),
-            headerStyle: { height: 88 },
+            headerStyle: { height: 88, position: 'absolute' },
             header: (props) => {
               return <MainHeader {...props} />;
             },

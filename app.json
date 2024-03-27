@@ -31,6 +31,9 @@
         "foregroundImage": "./assets/img/logo.jpg",
         "backgroundColor": "#ffffff"
       },
+      "androidStatusBar": {
+        "backgroundColor": "#000000"
+      },
       "softwareKeyboardLayoutMode": "pan",
       "package": "com.andriiradchenko.scenery",
       "runtimeVersion": "1.0.0"

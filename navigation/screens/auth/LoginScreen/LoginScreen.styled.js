@@ -4,19 +4,23 @@ import themes from '../../../../utils/themes';
 
 export const Container = styled.View`
   flex: 1;
+  width: 100vw;
   background-color: ${themes.primary.colors.backgroundColor};
   font-family: ${themes.primary.font.family.robotoRegular};
 `;
 
 export const BgImage = styled(ImageBackground)`
   flex: 1;
+  width: 100vw;
   justify-content: flex-end;
+  align-items: center;
   object-position: center top;
   position: relative;
 `;
 
 export const LoginForm = styled(Animated.View)`
   z-index: 10;
+  width: 100%;
   align-items: center;
   border-top-left-radius: 25px;
   border-top-right-radius: 25px;
@@ -88,7 +92,7 @@ export const Button = styled.TouchableOpacity`
   height: 50px;
   border-radius: 100px;
   background-color: ${themes.primary.colors.accentColor};
-  margin-top: 28px;
+  padding-top: 28px;
 `;
 
 export const ButtonText = styled.Text`
@@ -98,4 +102,5 @@ export const ButtonText = styled.Text`
 export const RegisterText = styled.Text`
   margin-top: 16px;
   color: ${themes.primary.colors.formTextColor};
+  align-self: center;
 `;

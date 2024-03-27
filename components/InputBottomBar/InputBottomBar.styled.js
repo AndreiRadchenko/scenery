@@ -1,8 +1,12 @@
 import { styled } from 'styled-components/native';
+import { Animated } from 'react-native';
 
 import themes from '../../utils/themes';
 
-export const InputBar = styled.View`
+export const InputBar = styled(Animated.View)`
+  /* position: absolute;
+  bottom: 0;
+  left: 0; */
   display: flex;
   flex-direction: row;
   align-self: center;
