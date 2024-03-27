@@ -3,7 +3,7 @@ import { TouchableOpacity } from 'react-native';
 import themes from '../../utils/themes';
 
 export const HeaderContainer = styled.View`
-  position: relative;
+  position: fixed;
   display: ${({ displayOption }) => (displayOption ? displayOption : 'flex')};
   flex-direction: row;
   justify-content: space-around;

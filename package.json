@@ -53,6 +53,7 @@
     "react-native-svg-transformer": "^1.0.0",
     "react-native-uuid": "^2.0.1",
     "react-redux": "^8.1.2",
+    "rn-android-keyboard-adjust": "^2.1.2",
     "styled-components": "^6.0.7",
     "yup": "^1.2.0"
   },

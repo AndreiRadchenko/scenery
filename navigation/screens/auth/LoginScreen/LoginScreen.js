@@ -12,7 +12,7 @@ import { MainButton } from '../../../../components/MainButton';
 import { PasswordInput } from '../../../../components/PasswordInput';
 
 import * as Styled from './LoginScreen.styled';
-import { useFormAnimation } from '../../../../hooks';
+import { useFormAnimation, useKeyboardVisible } from '../../../../hooks';
 import { loginValidationSchema } from '../../../../validations/ValidationSchemas';
 import { logIn } from '../../../../redux/auth/auth-operations';
 import { SCREEN, STACK } from '../../../constants';
@@ -20,7 +20,7 @@ import { SCREEN, STACK } from '../../../constants';
 export const LoginScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-  const screenHeight = Dimensions.get('window').height;
+  const keyboardHeight = useKeyboardVisible();
 
   const translateAnim = useFormAnimation({
     formOffset: 250,
@@ -53,6 +53,7 @@ export const LoginScreen = ({ navigation, route }) => {
       }}
       style={{
         flex: 1,
+        backgroundColor: 'green',
         minHeight: Math.round(Dimensions.get('window').height),
       }}
     >
@@ -62,7 +63,9 @@ export const LoginScreen = ({ navigation, route }) => {
           source={require('../../../../assets/img/PhotoBG-compressed.jpg')}
         >
           <Styled.LoginForm
+            keyboardHeight={keyboardHeight}
             style={{
+              // flex: 1,
               transform: [
                 { scale: 1 },
                 { rotateY: '0deg' },
@@ -89,14 +92,13 @@ export const LoginScreen = ({ navigation, route }) => {
               onChangeText={formik.handleChange('password')}
               returnKeyType="done"
             />
-            <>
-              <MainButton buttonText="Login" onPress={handleSubmit} />
-              <Styled.RegisterText
-                onPress={() => navigation.navigate(STACK.REGISTRATION)}
-              >
-                Don't have account? Register
-              </Styled.RegisterText>
-            </>
+
+            <MainButton buttonText="Login" onPress={handleSubmit} />
+            <Styled.RegisterText
+              onPress={() => navigation.navigate(STACK.REGISTRATION)}
+            >
+              Don't have account? Register
+            </Styled.RegisterText>
           </Styled.LoginForm>
         </Styled.BgImage>
       </Styled.Container>
