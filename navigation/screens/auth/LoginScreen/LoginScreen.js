@@ -17,13 +17,15 @@ import { loginValidationSchema } from '../../../../validations/ValidationSchemas
 import { logIn } from '../../../../redux/auth/auth-operations';
 import { SCREEN, STACK } from '../../../constants';
 
+const isPlatformIOS = Platform.OS === 'ios';
+
 export const LoginScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const keyboardHeight = useKeyboardVisible();
 
   const translateAnim = useFormAnimation({
-    formOffset: 250,
+    formOffset: isPlatformIOS ? 250 : 265,
     animationDuration: Platform.OS === 'ios' ? 200 : 200,
   });
 
@@ -51,21 +53,17 @@ export const LoginScreen = ({ navigation, route }) => {
       onPress={() => {
         Keyboard.dismiss();
       }}
-      style={{
-        flex: 1,
-        backgroundColor: 'green',
-        minHeight: Math.round(Dimensions.get('window').height),
-      }}
     >
       <Styled.Container>
         <Styled.BgImage
           resizeMode="cover"
           source={require('../../../../assets/img/PhotoBG-compressed.jpg')}
+          style={{ minHeight: Math.round(Dimensions.get('window').height) }}
         >
           <Styled.LoginForm
             keyboardHeight={keyboardHeight}
+            isPlatformIOS={isPlatformIOS}
             style={{
-              // flex: 1,
               transform: [
                 { scale: 1 },
                 { rotateY: '0deg' },
@@ -92,13 +90,14 @@ export const LoginScreen = ({ navigation, route }) => {
               onChangeText={formik.handleChange('password')}
               returnKeyType="done"
             />
-
-            <MainButton buttonText="Login" onPress={handleSubmit} />
-            <Styled.RegisterText
-              onPress={() => navigation.navigate(STACK.REGISTRATION)}
-            >
-              Don't have account? Register
-            </Styled.RegisterText>
+            <>
+              <MainButton buttonText="Login" onPress={handleSubmit} />
+              <Styled.RegisterText
+                onPress={() => navigation.navigate(STACK.REGISTRATION)}
+              >
+                Don't have account? Register
+              </Styled.RegisterText>
+            </>
           </Styled.LoginForm>
         </Styled.BgImage>
       </Styled.Container>
