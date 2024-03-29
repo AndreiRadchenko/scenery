@@ -1,4 +1,9 @@
-import { TouchableWithoutFeedback, Keyboard } from 'react-native';
+import {
+  TouchableWithoutFeedback,
+  Keyboard,
+  Dimensions,
+  Platform,
+} from 'react-native';
 import { useFormik } from 'formik';
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
@@ -18,11 +23,17 @@ import {
 import { RegisterValidationSchema } from '../../../../validations/ValidationSchemas';
 import { register } from '../../../../redux/auth/auth-operations';
 
+const isPlatformIOS = Platform.OS === 'ios';
+
 export const RegistrationScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [avatar, setAvatar] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const screenHeight = Math.round(Dimensions.get('window').height);
+
+  console.log('screen height: ', screenHeight);
 
   const {
     cameraPermission,
@@ -52,7 +63,7 @@ export const RegistrationScreen = ({ navigation, route }) => {
   }, [requiredPermission, cameraPermission, mediaLibraryPermission]);
 
   const translateAnim = useFormAnimation({
-    formOffset: 195,
+    formOffset: isPlatformIOS ? screenHeight * 0.2 : screenHeight * 0.27,
     animationDuration: 200,
   });
 
@@ -92,6 +103,7 @@ export const RegistrationScreen = ({ navigation, route }) => {
           <Styled.BgImage
             resizeMode="stretch"
             source={require('../../../../assets/img/PhotoBG-compressed.jpg')}
+            style={{ minHeight: Math.round(Dimensions.get('window').height) }}
           >
             <Styled.RegisterForm
               style={{

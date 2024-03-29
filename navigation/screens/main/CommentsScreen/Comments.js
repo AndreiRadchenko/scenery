@@ -5,7 +5,7 @@ import {
   Platform,
   useWindowDimensions,
 } from 'react-native';
-import { setAdjustResize, setAdjustPan } from 'rn-android-keyboard-adjust';
+// import { setAdjustResize, setAdjustPan } from 'rn-android-keyboard-adjust';
 
 import { CommentCard } from '../../../../components/CommentCard';
 import { InputBottomBar } from '../../../../components/InputBottomBar';
@@ -26,12 +26,12 @@ export const CommentsScreen = ({ navigation, route }) => {
   const keyboardHeight = useKeyboardVisible();
   const [listHeight, setListHeight] = useState(windowHeight);
 
-  useEffect(() => {
-    if (Platform.OS === 'android') {
-      setAdjustResize();
-      return () => setAdjustPan();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (Platform.OS === 'android') {
+  //     setAdjustResize();
+  //     return () => setAdjustPan();
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (windowHeight - keyboardHeight !== listHeight) {

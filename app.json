@@ -34,7 +34,7 @@
       "androidStatusBar": {
         "backgroundColor": "#000000"
       },
-      "softwareKeyboardLayoutMode": "pan",
+      "softwareKeyboardLayoutMode": "resize",
       "package": "com.andriiradchenko.scenery",
       "runtimeVersion": "1.0.0"
     },

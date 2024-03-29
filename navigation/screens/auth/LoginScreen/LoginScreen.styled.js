@@ -10,16 +10,14 @@ export const Container = styled.View`
 `;
 
 export const BgImage = styled(ImageBackground)`
-  flex: 1;
   width: 100vw;
   justify-content: flex-end;
   align-items: center;
-  object-position: center top;
-  position: relative;
 `;
 
 export const LoginForm = styled(Animated.View)`
   z-index: 10;
+  position: relative;
   width: 100%;
   align-items: center;
   border-top-left-radius: 25px;

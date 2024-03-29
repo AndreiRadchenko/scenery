@@ -11,7 +11,6 @@ export const Container = styled.View`
 `;
 
 export const BgImage = styled(ImageBackground)`
-  flex: 1;
   justify-content: flex-end;
 `;
 
