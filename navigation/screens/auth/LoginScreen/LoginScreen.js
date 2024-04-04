@@ -17,6 +17,7 @@ import { loginValidationSchema } from '../../../../validations/ValidationSchemas
 import { logIn } from '../../../../redux/auth/auth-operations';
 import { SCREEN, STACK } from '../../../constants';
 
+const screenHeight = Math.round(Dimensions.get('window').height);
 const isPlatformIOS = Platform.OS === 'ios';
 
 export const LoginScreen = ({ navigation, route }) => {
@@ -25,7 +26,7 @@ export const LoginScreen = ({ navigation, route }) => {
   const keyboardHeight = useKeyboardVisible();
 
   const translateAnim = useFormAnimation({
-    formOffset: isPlatformIOS ? 250 : 265,
+    formOffset: isPlatformIOS ? 250 : 250,
     animationDuration: Platform.OS === 'ios' ? 200 : 200,
   });
 

@@ -1,20 +1,33 @@
-import { View, Text, FlatList } from 'react-native';
+import { useState, useEffect } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
 
 import * as Styled from './CommentCard.styled';
+import fireStorage from '../../firebase/fireStorage';
 
-export const CommentCard = ({ avatar, text, date, index, isLastComment }) => {
+export const CommentCard = ({ authorId, text, date, index }) => {
+  const [photoURL, setPhotoURL] = useState('');
   const isEvenCard = index % 2 === 0;
+  const dateFormatted = new Date(date).toString();
+
+  useEffect(() => {
+    fireStorage
+      .getAvatarByUserId(authorId)
+      .then((avatar) => setPhotoURL(avatar))
+      .catch((error) => console.log(error.message));
+  }, []);
+
   return (
-    <Styled.CardContainer isEvenCard={isEvenCard} isLastComment={isLastComment}>
-      {!avatar.photoURL ? (
-        <FontAwesome name="user-circle" size={28} color="gray" />
+    <Styled.CardContainer isEvenCard={isEvenCard}>
+      {!photoURL ? (
+        <FontAwesome name="user-circle" size={40} color="gray" />
       ) : (
-        <Styled.Avatar source={{ uri: avatar.photoURL }} />
+        <Styled.Avatar source={{ uri: photoURL }} />
       )}
       <Styled.CommentContainer isEvenCard={isEvenCard}>
         <Styled.CommentText>{text}</Styled.CommentText>
-        <Styled.CommentDate isEvenCard={isEvenCard}>{date}</Styled.CommentDate>
+        <Styled.CommentDate isEvenCard={isEvenCard}>
+          {dateFormatted}
+        </Styled.CommentDate>
       </Styled.CommentContainer>
     </Styled.CardContainer>
   );

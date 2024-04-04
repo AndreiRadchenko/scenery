@@ -82,6 +82,7 @@ export const updateUserDetails = createAsyncThunk(
         ? await fireStorage.uploadImage({
             storage: avatarStorage,
             image: avatar,
+            userId: currentUser.uid,
           })
         : { photoUrl: '', uniquePhotoId: '' };
       !photoUrl && (await fireStorage.deleteImage(currentUser.photoURL));
@@ -92,6 +93,32 @@ export const updateUserDetails = createAsyncThunk(
       });
 
       await currentUser.reload();
+
+      return {
+        avatar: currentUser.photoURL,
+        name: currentUser.displayName,
+        id: currentUser.uid,
+        email: currentUser.email,
+      };
+    } catch (error) {
+      console.log(error.message);
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+//del me
+export const getUserById = createAsyncThunk(
+  'auth/getUserById',
+  async ({ id = '' }, thunkAPI) => {
+    try {
+      // const state = thunkAPI.getState();
+      const { currentUser } = auth;
+
+      await updateProfile(currentUser, {
+        displayName: name || currentUser.displayName,
+        photoURL: photoUrl,
+      });
 
       return {
         avatar: currentUser.photoURL,

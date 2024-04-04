@@ -23,13 +23,10 @@ export const ProfileForm = styled.View`
   border-top-left-radius: 25px;
   border-top-right-radius: 25px;
   margin-top: ${({ isPlatformIOS }) => (isPlatformIOS ? '205px' : '190px')};
-  padding: 92px 16px 0 16px;
+  padding: 92px 0 0 0;
   background-color: ${themes.primary.colors.backgroundColor};
   font-size: 16px;
   line-height: 19px;
-  padding-bottom: 58px;
-  /* padding-bottom: ${({ isKeyboardVisible }) =>
-    isKeyboardVisible ? 0 : '78px'}; */
 `;
 
 export const AvatarWrapper = styled.View`

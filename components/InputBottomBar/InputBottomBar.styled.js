@@ -1,21 +1,18 @@
 import { styled } from 'styled-components/native';
-import { Animated } from 'react-native';
 
 import themes from '../../utils/themes';
 
-export const InputBar = styled(Animated.View)`
-  /* position: absolute;
-  bottom: 0;
-  left: 0; */
+export const InputBar = styled.View`
   display: flex;
   flex-direction: row;
   align-self: center;
   justify-content: center;
   padding-top: 8px;
   padding-bottom: ${({ keyboardHeight, isPlatformIOS }) =>
-    // isPlatformIOS ? (keyboardHeight ? 100 : 32) : 16}px;
     isPlatformIOS ? 32 : 16}px;
   width: 100%;
+  padding-left: 16px;
+  padding-right: 16px;
 `;
 
 export const InputWrapper = styled.View`

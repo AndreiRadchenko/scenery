@@ -6,14 +6,14 @@ import {
 } from 'firebase/storage';
 import uuid from 'react-native-uuid';
 
-import { storage } from '../firebase/config';
+import { storage, avatarStorage } from '../firebase/config';
 
 class FireStorage {
-  async uploadImage({ storage, image }) {
+  async uploadImage({ storage, image, userId = '' }) {
     const response = await fetch(image);
     const file = await response.blob();
 
-    const uniquePhotoId = uuid.v4();
+    const uniquePhotoId = userId ? userId : uuid.v4();
     const newImageRef = ref(storage, uniquePhotoId);
     await uploadBytes(newImageRef, file);
 
@@ -24,6 +24,12 @@ class FireStorage {
   async deleteImage(photoUrl) {
     const delImageRef = ref(storage, photoUrl);
     await deleteObject(delImageRef);
+  }
+
+  async getAvatarByUserId(uid) {
+    const imageRef = ref(avatarStorage, uid);
+    const photoUrl = await getDownloadURL(imageRef);
+    return photoUrl;
   }
 }
 

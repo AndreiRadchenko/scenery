@@ -33,8 +33,6 @@ export const RegistrationScreen = ({ navigation, route }) => {
 
   const screenHeight = Math.round(Dimensions.get('window').height);
 
-  console.log('screen height: ', screenHeight);
-
   const {
     cameraPermission,
     mediaLibraryPermission,
@@ -63,7 +61,7 @@ export const RegistrationScreen = ({ navigation, route }) => {
   }, [requiredPermission, cameraPermission, mediaLibraryPermission]);
 
   const translateAnim = useFormAnimation({
-    formOffset: isPlatformIOS ? screenHeight * 0.2 : screenHeight * 0.27,
+    formOffset: isPlatformIOS ? 200 : 200,
     animationDuration: 200,
   });
 

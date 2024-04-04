@@ -4,6 +4,7 @@ import {
   addUserPostOperation,
   // deletePostOperation,
 } from './userPosts-operations';
+import { updatePostOperation } from '../posts/posts-operations';
 import { getPaginatedPosts, getLastItem } from '../../firebase/services';
 
 const initialPosts = {
@@ -44,6 +45,13 @@ export const userPostsSlice = createSlice({
   name: 'userPosts',
   initialState: initialPosts,
   reducers: {
+    // userPostsUpdateComments(state, payload) {
+    //   console.log('payload: ', payload);
+    //   if (payload?.comments?.length > 0) {
+    //     const idx = state.items.findIndex((post) => post._id === payload._id);
+    //     state.items[idx] = payload;
+    //   }
+    // },
     resetUserPostsState(state) {
       state.items = [];
       state.lastVisiblePost = null;
@@ -79,6 +87,20 @@ export const userPostsSlice = createSlice({
         state.isEndOfPosts = false;
       })
 
+      .addCase(
+        updatePostOperation.fulfilled,
+        (state, { payload: { docId, comment } }) => {
+          const index = state.items.findIndex((e) => e._id === docId);
+          if (index > -1) {
+            if (!state.items[index].comments) {
+              state.items[index].comments = [comment];
+            } else {
+              state.items[index].comments.push(comment);
+            }
+          }
+        }
+      )
+
       //   .addCase(deletePostOperation.fulfilled, (state, action) => {
       //     const index = state.items.findIndex((e) => e.id === action.payload.id);
       //     state.items.splice(index, 1);
@@ -92,6 +114,7 @@ export const userPostsSlice = createSlice({
 
 export const userPostsReducer = userPostsSlice.reducer;
 export const {
+  userPostsUpdateComments,
   resetUserPostsState,
   resetPostError,
   resetPosts,

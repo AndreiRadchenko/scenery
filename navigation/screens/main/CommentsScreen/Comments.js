@@ -1,18 +1,14 @@
-import { useState, useEffect } from 'react';
-import {
-  FlatList,
-  KeyboardAvoidingView,
-  Platform,
-  useWindowDimensions,
-} from 'react-native';
-// import { setAdjustResize, setAdjustPan } from 'rn-android-keyboard-adjust';
+import React, { useMemo, useRef } from 'react';
+import { FlatList, KeyboardAvoidingView, Platform, View } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import { CommentCard } from '../../../../components/CommentCard';
 import { InputBottomBar } from '../../../../components/InputBottomBar';
 
 import * as Styled from './Comments.styled';
-import authors from '../../../../mock/authors.json';
-import { useKeyboardVisible } from '../../../../hooks';
+import { selectPostById } from '../../../../redux/posts/posts-selectors';
+import { selectUserPostById } from '../../../../redux/userPosts/userPosts-selectors';
+import { SCREEN } from '../../../constants';
 
 const isPlatformIOS = Platform.OS === 'ios';
 
@@ -21,55 +17,39 @@ const ImageCard = ({ url }) => {
 };
 
 export const CommentsScreen = ({ navigation, route }) => {
-  const { image, comments } = route.params.post;
-  const windowHeight = useWindowDimensions().height;
-  const keyboardHeight = useKeyboardVisible();
-  const [listHeight, setListHeight] = useState(windowHeight);
+  const flatListRef = useRef(null);
+  const {
+    post: { image, _id },
+    prevScreen,
+  } = useMemo(() => route.params, []);
 
-  // useEffect(() => {
-  //   if (Platform.OS === 'android') {
-  //     setAdjustResize();
-  //     return () => setAdjustPan();
-  //   }
-  // }, []);
+  const items =
+    prevScreen === SCREEN.MAIN.POSTS
+      ? useSelector(selectPostById(_id))
+      : useSelector(selectUserPostById(_id));
 
-  useEffect(() => {
-    if (windowHeight - keyboardHeight !== listHeight) {
-      setListHeight(Math.round(windowHeight - keyboardHeight));
-    }
-  }, [windowHeight, keyboardHeight]);
+  const comments = items?.comments || [];
+
+  const renderComment = ({ item, index }) => {
+    return <CommentCard {...item} index={index} />;
+  };
 
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={isPlatformIOS ? 'padding' : null}
-      keyboardVerticalOffset={isPlatformIOS ? 65 : 0}
-      keyboardShouldPersistTaps="handled"
     >
       <Styled.CommentsContainer>
         <FlatList
+          ref={flatListRef}
           data={comments}
-          renderItem={({ item, index }) => {
-            const avatar = authors.find((e) => e._id === item.authorId);
-            const isLastComment = index === comments.length - 1;
-            return (
-              <CommentCard
-                {...item}
-                index={index}
-                avatar={avatar}
-                isLastComment={isLastComment}
-              />
-            );
-          }}
+          renderItem={renderComment}
           ListHeaderComponent={<ImageCard url={image.url} />}
-          // showsVerticalScrollIndicator={false}
-          // contentContainerStyle={{
-          //   flex: 1,
-          //   justifyContent: 'space-between',
-          // }}
-          // ListFooterComponent={<InputBottomBar />}
+          contentContainerStyle={{ paddingRight: 16, paddingLeft: 16 }}
+          ListFooterComponent={<View />}
+          ListFooterComponentStyle={{ height: 12 }}
         />
-        <InputBottomBar />
+        <InputBottomBar docId={_id} flatListRef={flatListRef} />
       </Styled.CommentsContainer>
     </KeyboardAvoidingView>
   );
