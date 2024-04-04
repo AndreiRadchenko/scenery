@@ -2,6 +2,7 @@ import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import {
   fetchPostsOperation,
   addPostOperation,
+  updatePostOperation,
   deletePostOperation,
 } from './posts-operations';
 
@@ -79,6 +80,20 @@ export const postsSlice = createSlice({
         state.lastVisiblePost = null;
         state.isEndOfPosts = false;
       })
+
+      .addCase(
+        updatePostOperation.fulfilled,
+        (state, { payload: { docId, comment } }) => {
+          const index = state.items.findIndex((e) => e._id === docId);
+          if (index > -1) {
+            if (!state.items[index].comments) {
+              state.items[index].comments = [comment];
+            } else {
+              state.items[index].comments.push(comment);
+            }
+          }
+        }
+      )
 
       .addCase(deletePostOperation.fulfilled, (state, action) => {
         state.items = [];

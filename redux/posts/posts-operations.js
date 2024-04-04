@@ -8,6 +8,8 @@ import {
   serverTimestamp,
   Timestamp,
   deleteDoc,
+  updateDoc,
+  arrayUnion,
 } from 'firebase/firestore';
 
 import { getPaginatedPosts, getLastItem } from '../../firebase/services';
@@ -81,13 +83,28 @@ export const addPostOperation = createAsyncThunk(
   }
 );
 
+export const updatePostOperation = createAsyncThunk(
+  'posts/updatePost',
+  async ({ docId, comment }, thunkAPI) => {
+    try {
+      await updateDoc(getDocById(docId), {
+        comments: arrayUnion(comment),
+      });
+
+      return { docId, comment };
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 export const deletePostOperation = createAsyncThunk(
   'posts/deletePost',
-  async ({ id, photoUrl }, thunkAPI) => {
+  async ({ docId, photoUrl }, thunkAPI) => {
     try {
-      deleteDoc(getDocById(id));
+      deleteDoc(getDocById(docId));
       fireStorage.deleteImage(photoUrl);
-      return { id, photoUrl };
+      return { docId, photoUrl };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

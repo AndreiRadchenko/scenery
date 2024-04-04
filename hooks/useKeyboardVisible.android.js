@@ -14,7 +14,7 @@ export const useKeyboardVisible = () => {
     const keyboardDidHideListener = Keyboard.addListener(
       'keyboardDidHide',
       () => {
-        setKeyboardHeight(0); // or some other action
+        setKeyboardHeight(0);
       }
     );
 

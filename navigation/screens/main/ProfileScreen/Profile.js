@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { KeyboardAvoidingView, Platform, FlatList } from 'react-native';
+import { KeyboardAvoidingView, Platform, FlatList, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { LogoutSvg } from '../../../../components/MainHeader/LogoutSvg';
@@ -17,7 +17,10 @@ import { selectUser } from '../../../../redux/auth/auth-selector';
 import { selectUserPosts } from '../../../../redux/userPosts/userPosts-selectors';
 import { selectPosts } from '../../../../redux/posts/posts-selectors';
 import { fetchUserPostsOperation } from '../../../../redux/userPosts/userPosts-operations';
-import { resetUserPostsState } from '../../../../redux/userPosts/userPosts-slice';
+import {
+  resetUserPostsState,
+  userPostsUpdateComments,
+} from '../../../../redux/userPosts/userPosts-slice';
 
 const isPlatformIOS = Platform.OS === 'ios';
 
@@ -32,22 +35,31 @@ export const ProfileScreen = ({ navigation, route }) => {
   const [previewItem, setPreviewItem] = useState(null);
 
   const fetchMore = async () => {
-    dispatch(fetchUserPostsOperation({ limits: 10, user }));
+    await dispatch(fetchUserPostsOperation({ limits: 10, user }));
+  };
+
+  const appendPosts = () => {
+    if (userPosts.length >= 10) {
+      fetchMore();
+    }
   };
 
   const reloadUserPostsState = async () => {
-    dispatch(resetUserPostsState());
+    await dispatch(resetUserPostsState());
   };
 
   //update userPosts state when new post has been added to the posts state
   useEffect(() => {
-    if (posts.length === 0 && userPosts.length !== 0) {
-      dispatch(resetUserPostsState());
+    if (posts.length === 0) {
+      reloadUserPostsState();
     }
-    if (posts.length !== 0 && userPosts.length === 0) {
+  }, [posts]);
+
+  useEffect(() => {
+    if (userPosts.length === 0) {
       fetchMore();
     }
-  }, [posts, userPosts]);
+  }, [userPosts]);
 
   const openPreview = (item) => {
     setPreviewItem(item);
@@ -118,10 +130,13 @@ export const ProfileScreen = ({ navigation, route }) => {
                     openPreview={() => openPreview(item)}
                   />
                 )}
+                ListFooterComponent={<View />}
+                ListFooterComponentStyle={{ height: 40 }}
                 keyExtractor={(post) => post._id}
-                showsVerticalScrollIndicator={false}
+                showsVerticalScrollIndicator={true}
+                contentContainerStyle={{ paddingLeft: 16, paddingRight: 16 }}
                 onEndReachedThreshold={0.1}
-                onEndReached={fetchMore}
+                onEndReached={appendPosts}
                 onRefresh={reloadUserPostsState}
                 refreshing={false}
               />

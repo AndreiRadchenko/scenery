@@ -1,21 +1,18 @@
 import { useState } from 'react';
-import { Platform } from 'react-native';
+import { Keyboard, Platform } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 
 import * as Styled from './InputBottomBar.styled';
-import { useKeyboardVisible, useFormAnimation } from '../../hooks';
+import { db, auth, avatarStorage, storage } from '../../firebase/config';
+import { updatePostOperation } from '../../redux/posts/posts-operations';
 
 const isPlatformIOS = Platform.OS === 'ios';
 
-export const InputBottomBar = ({ color = '#fff', style }) => {
-  const keyboardHeight = useKeyboardVisible();
-
-  const translateAnim = useFormAnimation({
-    formOffset: 270,
-    animationDuration: 200,
-  });
+export const InputBottomBar = ({ docId, flatListRef }) => {
+  const dispatch = useDispatch();
+  const { currentUser } = auth;
 
   const formik = useFormik({
     initialValues: {
@@ -23,32 +20,29 @@ export const InputBottomBar = ({ color = '#fff', style }) => {
       text: '',
       date: '',
     },
-    onSubmit: (values, { resetForm }) => {
-      // dispatch(logIn(values));
-      console.log('values: ', values);
+    onSubmit: async (values, { resetForm }) => {
+      values.authorId = currentUser.uid;
+      values.date = Date.now();
+      await dispatch(
+        updatePostOperation({
+          docId,
+          comment: values,
+        })
+      );
       resetForm();
+      Keyboard.dismiss();
+      flatListRef.current.scrollToEnd();
     },
   });
 
   return (
-    <Styled.InputBar
-      isPlatformIOS={isPlatformIOS}
-      keyboardHeight={keyboardHeight}
-      // style={{
-      //   transform: [
-      //     { scale: 1 },
-      //     { rotateY: '0deg' },
-      //     { perspective: 100 },
-      //     { translateY: translateAnim },
-      //   ],
-      // }}
-    >
+    <Styled.InputBar isPlatformIOS={isPlatformIOS}>
       <Styled.InputWrapper>
         <Styled.Input
           placeholder="Comment..."
           value={formik.values.text}
           onChangeText={formik.handleChange('text')}
-        ></Styled.Input>
+        />
         <Styled.ArrowButton activeOpacity={0.8} onPress={formik.handleSubmit}>
           <Svg width="34" height="34" viewBox="0 0 34 34" fill="none">
             <Path

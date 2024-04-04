@@ -4,7 +4,7 @@ import themes from '../../../../utils/themes';
 
 export const CommentsContainer = styled.View`
   flex: 1;
-  padding: 0 16px;
+  padding: 0 0px;
   background-color: ${themes.primary.colors.backgroundColor};
 `;
 

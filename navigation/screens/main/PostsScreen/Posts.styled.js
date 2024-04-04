@@ -3,7 +3,7 @@ import { styled } from 'styled-components/native';
 import themes from '../../../../utils/themes';
 
 export const PostsContainer = styled.View`
-  padding: 0 16px 0 16px;
+  padding: 0;
   width: 100%;
   height: 100%;
   background-color: ${themes.primary.colors.backgroundColor};

@@ -105,7 +105,8 @@ export const PostsScreen = ({ navigation, route }) => {
           )}
           ListHeaderComponent={UserCard({ user, isUserLoading })}
           keyExtractor={(post) => post._id}
-          showsVerticalScrollIndicator={false}
+          showsVerticalScrollIndicator={true}
+          contentContainerStyle={{ paddingLeft: 16, paddingRight: 16 }}
           onEndReachedThreshold={0.1}
           onEndReached={fetchMore}
           onRefresh={reloadPostsState}

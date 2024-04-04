@@ -9,13 +9,12 @@ export const CardContainer = styled.View`
   gap: 16px;
   align-items: flex-start;
   margin-top: 24px;
-  margin-bottom: ${({ isLastComment }) => (isLastComment ? '24px' : 0)};
 `;
 
 export const Avatar = styled.Image`
-  width: 28px;
-  height: 28px;
-  border-radius: 14px;
+  width: 44px;
+  height: 44px;
+  border-radius: 22px;
 `;
 
 export const CommentContainer = styled.View`
@@ -41,7 +40,7 @@ export const CommentText = styled.Text`
 export const CommentDate = styled.Text`
   color: ${themes.primary.colors.lightGrey};
   text-align: ${({ isEvenCard }) => (isEvenCard ? 'right' : 'left')};
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 400;
-  line-height: 10px;
+  line-height: 12px;
 `;

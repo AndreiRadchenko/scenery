@@ -20,7 +20,7 @@ export const ProfileMenu = ({ id, image, author }) => {
       handler: () => {
         dispatch(
           deletePostOperation({
-            id,
+            docId: id,
             photoUrl: image.url,
           })
         );
