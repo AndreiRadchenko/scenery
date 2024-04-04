@@ -38,6 +38,7 @@ export const CommentsScreen = ({ navigation, route }) => {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={isPlatformIOS ? 'padding' : null}
+      keyboardVerticalOffset={isPlatformIOS ? 65 : null}
     >
       <Styled.CommentsContainer>
         <FlatList
