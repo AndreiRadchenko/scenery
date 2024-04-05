@@ -21,7 +21,7 @@ export const CommentsScreen = ({ navigation, route }) => {
   const {
     post: { image, _id },
     prevScreen,
-  } = useMemo(() => route.params, []);
+  } = route.params;
 
   const items =
     prevScreen === SCREEN.MAIN.POSTS
