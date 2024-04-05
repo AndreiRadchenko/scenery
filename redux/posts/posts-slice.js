@@ -19,6 +19,7 @@ const extraActions = [
   fetchPostsOperation,
   addPostOperation,
   deletePostOperation,
+  updatePostOperation,
 ];
 
 const getActions = (actionType) =>

@@ -26,6 +26,7 @@ export const register = createAsyncThunk(
         ? await fireStorage.uploadImage({
             storage: avatarStorage,
             image: avatar,
+            userId: user.uid,
           })
         : { photoUrl: '', uniquePhotoId: '' };
 
