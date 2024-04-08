@@ -14,7 +14,10 @@ import {
   selectUser,
   selectIsLoading as selectIsUserLoading,
 } from '../../../../redux/auth/auth-selector';
-import { fetchPostsOperation } from '../../../../redux/posts/posts-operations';
+import {
+  fetchPostsOperation,
+  updatePostOperation,
+} from '../../../../redux/posts/posts-operations';
 import { resetPostsState } from '../../../../redux/posts/posts-slice';
 
 const UserCard = ({ user, isUserLoading }) => {
@@ -72,6 +75,17 @@ export const PostsScreen = ({ navigation, route }) => {
     });
   };
 
+  const onLikePress = (post) => {
+    const isPostLiked = post.likes?.includes(user.id);
+    dispatch(
+      updatePostOperation({
+        docId: post._id,
+        userId: user.id,
+        isPostLiked,
+      })
+    );
+  };
+
   const openMap = (item) => {
     navigation.navigate(STACK.HOME, {
       screen: SCREEN.MAIN.MAP,
@@ -95,11 +109,12 @@ export const PostsScreen = ({ navigation, route }) => {
           renderItem={({ item, index }) => (
             <PostCard
               {...item}
+              user={user}
               index={index}
               screen={SCREEN.MAIN.POSTS}
               onCommentPress={() => openComments(item)}
               onLocationPress={() => openMap(item)}
-              onLikePress={() => {}}
+              onLikePress={() => onLikePress(item)}
               openPreview={() => openPreview(item)}
             />
           )}

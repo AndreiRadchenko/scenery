@@ -1,22 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import {
-  getFirestore,
-  collection,
-  doc,
-  addDoc,
-  setDoc,
-  serverTimestamp,
-  Timestamp,
-} from 'firebase/firestore';
 
 import { getPaginatedUserPosts, getLastItem } from '../../firebase/services';
-import {
-  storage,
-  db,
-  postsCollection,
-  imagesStorage,
-} from '../../firebase/config';
-import fireStorage from '../../firebase/fireStorage';
 
 export const fetchUserPostsOperation = createAsyncThunk(
   'userPosts/fetchAll',
@@ -52,43 +36,6 @@ export const fetchUserPostsOperation = createAsyncThunk(
       } else {
         return { isEndOfPosts: true, lastVisiblePost, posts: [] };
       }
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  }
-);
-
-export const addUserPostOperation = createAsyncThunk(
-  'userPosts/addPost',
-  async ({ photo, location, author, name }, thunkAPI) => {
-    try {
-      const { photoUrl, uniquePhotoId } = await fireStorage.uploadImage({
-        storage: imagesStorage,
-        image: photo,
-      });
-
-      const newPost = doc(postsCollection, uniquePhotoId);
-      const createPost = await setDoc(newPost, {
-        image: { url: photoUrl },
-        location,
-        author,
-        name,
-        timestamp: serverTimestamp(),
-      });
-
-      return [];
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  }
-);
-
-export const deleteContactOperation = createAsyncThunk(
-  'contacts/deleteContact',
-  async (contactId, thunkAPI) => {
-    try {
-      const { data } = await axios.delete('/contacts/' + contactId);
-      return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

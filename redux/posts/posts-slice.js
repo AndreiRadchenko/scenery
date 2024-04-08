@@ -84,13 +84,28 @@ export const postsSlice = createSlice({
 
       .addCase(
         updatePostOperation.fulfilled,
-        (state, { payload: { docId, comment } }) => {
+        (state, { payload: { docId, comment, userId, isPostLiked } }) => {
           const index = state.items.findIndex((e) => e._id === docId);
           if (index > -1) {
-            if (!state.items[index].comments) {
-              state.items[index].comments = [comment];
-            } else {
-              state.items[index].comments.push(comment);
+            const { comments, likes } = state.items[index];
+            if (comment) {
+              if (!comments) {
+                state.items[index].comments = [comment];
+              } else {
+                state.items[index].comments.push(comment);
+              }
+            }
+            if (userId) {
+              if (!likes) {
+                state.items[index].likes = [userId];
+              } else {
+                isPostLiked
+                  ? state.items[index].likes.splice(
+                      likes.findIndex((e) => e === userId),
+                      1
+                    )
+                  : state.items[index].likes.push(userId);
+              }
             }
           }
         }

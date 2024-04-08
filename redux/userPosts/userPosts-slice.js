@@ -1,11 +1,6 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
-import {
-  fetchUserPostsOperation,
-  addUserPostOperation,
-  // deletePostOperation,
-} from './userPosts-operations';
+import { fetchUserPostsOperation } from './userPosts-operations';
 import { updatePostOperation } from '../posts/posts-operations';
-import { getPaginatedPosts, getLastItem } from '../../firebase/services';
 
 const initialPosts = {
   items: [],
@@ -16,11 +11,7 @@ const initialPosts = {
   newPostsCount: 0,
 };
 
-const extraActions = [
-  fetchUserPostsOperation,
-  addUserPostOperation,
-  //   deletePostOperation,
-];
+const extraActions = [fetchUserPostsOperation];
 
 const getActions = (actionType) =>
   extraActions.map((action) => {
@@ -45,13 +36,6 @@ export const userPostsSlice = createSlice({
   name: 'userPosts',
   initialState: initialPosts,
   reducers: {
-    // userPostsUpdateComments(state, payload) {
-    //   console.log('payload: ', payload);
-    //   if (payload?.comments?.length > 0) {
-    //     const idx = state.items.findIndex((post) => post._id === payload._id);
-    //     state.items[idx] = payload;
-    //   }
-    // },
     resetUserPostsState(state) {
       state.items = [];
       state.lastVisiblePost = null;
@@ -81,30 +65,34 @@ export const userPostsSlice = createSlice({
         }
       )
 
-      .addCase(addUserPostOperation.fulfilled, (state, { payload }) => {
-        state.items = payload;
-        state.lastVisiblePost = null;
-        state.isEndOfPosts = false;
-      })
-
       .addCase(
         updatePostOperation.fulfilled,
-        (state, { payload: { docId, comment } }) => {
+        (state, { payload: { docId, comment, userId, isPostLiked } }) => {
           const index = state.items.findIndex((e) => e._id === docId);
           if (index > -1) {
-            if (!state.items[index].comments) {
-              state.items[index].comments = [comment];
-            } else {
-              state.items[index].comments.push(comment);
+            const { comments, likes } = state.items[index];
+            if (comment) {
+              if (!comments) {
+                state.items[index].comments = [comment];
+              } else {
+                state.items[index].comments.push(comment);
+              }
+            }
+            if (userId) {
+              if (!likes) {
+                state.items[index].likes = [userId];
+              } else {
+                isPostLiked
+                  ? state.items[index].likes.splice(
+                      likes.findIndex((e) => e === userId),
+                      1
+                    )
+                  : state.items[index].likes.push(userId);
+              }
             }
           }
         }
       )
-
-      //   .addCase(deletePostOperation.fulfilled, (state, action) => {
-      //     const index = state.items.findIndex((e) => e.id === action.payload.id);
-      //     state.items.splice(index, 1);
-      //   })
 
       .addMatcher(isAnyOf(...getActions('pending')), handlePending)
       .addMatcher(isAnyOf(...getActions('fulfilled')), handleAnySuccess)
@@ -114,7 +102,6 @@ export const userPostsSlice = createSlice({
 
 export const userPostsReducer = userPostsSlice.reducer;
 export const {
-  userPostsUpdateComments,
   resetUserPostsState,
   resetPostError,
   resetPosts,
