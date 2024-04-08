@@ -17,6 +17,7 @@ import { selectUser } from '../../../../redux/auth/auth-selector';
 import { selectUserPosts } from '../../../../redux/userPosts/userPosts-selectors';
 import { selectPosts } from '../../../../redux/posts/posts-selectors';
 import { fetchUserPostsOperation } from '../../../../redux/userPosts/userPosts-operations';
+import { updatePostOperation } from '../../../../redux/posts/posts-operations';
 import {
   resetUserPostsState,
   userPostsUpdateComments,
@@ -76,6 +77,17 @@ export const ProfileScreen = ({ navigation, route }) => {
     });
   };
 
+  const onLikePress = (post) => {
+    const isPostLiked = post.likes?.includes(user.id);
+    dispatch(
+      updatePostOperation({
+        docId: post._id,
+        userId: user.id,
+        isPostLiked,
+      })
+    );
+  };
+
   const openMap = (item) => {
     navigation.navigate(STACK.PROFILE, {
       screen: SCREEN.MAIN.MAP,
@@ -124,9 +136,10 @@ export const ProfileScreen = ({ navigation, route }) => {
                   <PostCard
                     {...item}
                     index={index}
+                    user={user}
                     onCommentPress={() => openComments(item)}
                     onLocationPress={() => openMap(item)}
-                    onLikePress={() => {}}
+                    onLikePress={() => onLikePress(item)}
                     openPreview={() => openPreview(item)}
                   />
                 )}

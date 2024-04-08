@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useMemo } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -20,12 +20,18 @@ export const PostCard = ({
   comments,
   author,
   index,
+  user,
   onCommentPress,
   onLocationPress,
   onLikePress,
   openPreview,
 }) => {
   const bottomSheetRef = useRef(null);
+
+  const isPostLiked = useMemo(
+    () => likes?.includes(user?.id),
+    [likes, user?.id]
+  );
 
   const openModalMenu = () => bottomSheetRef.current?.present();
 
@@ -64,9 +70,9 @@ export const PostCard = ({
               </Styled.CommentNumbers>
             </Styled.InfoBlock>
             <Styled.InfoBlock>
-              <LikeSvg isEmpty={likes == 0} handlePress={onLikePress} />
-              <Styled.CommentNumbers isEmpty={likes == 0}>
-                {likes}
+              <LikeSvg isEmpty={!isPostLiked} handlePress={onLikePress} />
+              <Styled.CommentNumbers isEmpty={likes?.length == 0}>
+                {likes?.length}
               </Styled.CommentNumbers>
             </Styled.InfoBlock>
           </Styled.Achievements>

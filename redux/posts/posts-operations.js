@@ -1,21 +1,16 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
-  getFirestore,
-  collection,
   doc,
-  addDoc,
   setDoc,
   serverTimestamp,
-  Timestamp,
   deleteDoc,
   updateDoc,
   arrayUnion,
+  arrayRemove,
 } from 'firebase/firestore';
 
 import { getPaginatedPosts, getLastItem } from '../../firebase/services';
 import {
-  storage,
-  db,
   postsCollection,
   imagesStorage,
   getDocById,
@@ -85,14 +80,21 @@ export const addPostOperation = createAsyncThunk(
 
 export const updatePostOperation = createAsyncThunk(
   'posts/updatePost',
-  async ({ docId, comment }, thunkAPI) => {
+  async ({ docId, comment, userId, isPostLiked }, thunkAPI) => {
     try {
-      await updateDoc(getDocById(docId), {
-        comments: arrayUnion(comment),
-      });
+      let fieldForUpdate = {};
+      if (comment) {
+        fieldForUpdate = { comments: arrayUnion(comment) };
+      } else if (userId) {
+        fieldForUpdate = isPostLiked
+          ? { likes: arrayRemove(userId) }
+          : { likes: arrayUnion(userId) };
+      }
+      await updateDoc(getDocById(docId), fieldForUpdate);
 
-      return { docId, comment };
+      return { docId, comment, userId, isPostLiked };
     } catch (error) {
+      console.log(error.message);
       return thunkAPI.rejectWithValue(error.message);
     }
   }
