@@ -39,7 +39,6 @@ export const register = createAsyncThunk(
         email: user.email,
       };
     } catch (error) {
-      console.log('register: ', error.message);
       return thunkAPI.rejectWithValue(error.message);
     }
   }
@@ -57,7 +56,6 @@ export const logIn = createAsyncThunk(
         email: user.email,
       };
     } catch (error) {
-      console.log('login: ', error.message);
       return thunkAPI.rejectWithValue(error.message);
     }
   }
@@ -101,54 +99,6 @@ export const updateUserDetails = createAsyncThunk(
         id: currentUser.uid,
         email: currentUser.email,
       };
-    } catch (error) {
-      console.log(error.message);
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  }
-);
-
-//del me
-export const getUserById = createAsyncThunk(
-  'auth/getUserById',
-  async ({ id = '' }, thunkAPI) => {
-    try {
-      // const state = thunkAPI.getState();
-      const { currentUser } = auth;
-
-      await updateProfile(currentUser, {
-        displayName: name || currentUser.displayName,
-        photoURL: photoUrl,
-      });
-
-      return {
-        avatar: currentUser.photoURL,
-        name: currentUser.displayName,
-        id: currentUser.uid,
-        email: currentUser.email,
-      };
-    } catch (error) {
-      console.log(error.message);
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  }
-);
-
-export const fetchCurrentUser = createAsyncThunk(
-  'auth/refresh',
-  async (_, thunkAPI) => {
-    const state = thunkAPI.getState();
-    const persistedToken = state.auth.token;
-
-    if (persistedToken === null) {
-      // console.log('Токена нет, уходим из fetchCurrentUser');
-      return thunkAPI.rejectWithValue();
-    }
-
-    token.set(persistedToken);
-    try {
-      const { data } = await axios.get('/users/current');
-      return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

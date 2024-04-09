@@ -57,7 +57,8 @@ export const authSlice = createSlice({
       .addCase(updateUserDetails.fulfilled, handleSuccess)
 
       .addCase(logIn.rejected, (state, { payload }) => {
-        state.error = 'Login failed, please try again';
+        state.error =
+          "Credentials that you've entered are incorrect. Please try again";
         state.isLoading = false;
       })
       .addCase(register.rejected, (state, { payload }) => {

@@ -3,10 +3,11 @@ import {
   Keyboard,
   Platform,
   Dimensions,
+  Alert,
 } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { MainButton } from '../../../../components/MainButton';
 import { PasswordInput } from '../../../../components/PasswordInput';
@@ -15,6 +16,8 @@ import * as Styled from './LoginScreen.styled';
 import { useFormAnimation, useKeyboardVisible } from '../../../../hooks';
 import { loginValidationSchema } from '../../../../validations/ValidationSchemas';
 import { logIn } from '../../../../redux/auth/auth-operations';
+import { selectError } from '../../../../redux/auth/auth-selector';
+import { resetAuthError } from '../../../../redux/auth/auth-slice';
 import { SCREEN, STACK } from '../../../constants';
 
 const screenHeight = Math.round(Dimensions.get('window').height);
@@ -22,13 +25,27 @@ const isPlatformIOS = Platform.OS === 'ios';
 
 export const LoginScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
+  const authError = useSelector(selectError);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const keyboardHeight = useKeyboardVisible();
 
   const translateAnim = useFormAnimation({
-    formOffset: isPlatformIOS ? 250 : 250,
+    formOffset: isPlatformIOS ? 250 : 260,
     animationDuration: Platform.OS === 'ios' ? 200 : 200,
   });
+
+  useEffect(() => {
+    if (authError) {
+      Alert.alert('Incorrect credentials', authError, [
+        {
+          text: 'OK',
+          onPress: () => {
+            dispatch(resetAuthError());
+          },
+        },
+      ]);
+    }
+  }, [authError]);
 
   const formik = useFormik({
     initialValues: {
