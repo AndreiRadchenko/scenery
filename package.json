@@ -55,7 +55,8 @@
     "react-redux": "^8.1.2",
     "rn-android-keyboard-adjust": "^2.1.2",
     "styled-components": "^6.0.7",
-    "yup": "^1.2.0"
+    "yup": "^1.2.0",
+    "expo-intent-launcher": "~10.11.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

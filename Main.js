@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useLayoutEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -13,6 +13,7 @@ import {
 } from './redux/auth/auth-selector';
 import { selectIsLoading as selectIsPostsLoading } from './redux/posts/posts-selectors';
 import { selectIsLoading as selectIsUserPostsLoading } from './redux/userPosts/userPosts-selectors';
+import { useAppState } from './hooks';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -22,17 +23,34 @@ export default function Main() {
   const isUserLoading = useSelector(selectIsUserLoading);
   const isPostsLoading = useSelector(selectIsPostsLoading);
   const isUserPostsLoading = useSelector(selectIsUserPostsLoading);
+  const isAppStateVisible = useAppState();
+
+  useEffect(() => {
+    if (!isLoggedIn && auth.currentUser && isAppStateVisible) {
+      auth.currentUser.reload().then(() => {
+        dispatch(
+          updateUserProfile({
+            avatar: auth.currentUser.photoURL,
+            name: auth.currentUser.displayName,
+            id: auth.currentUser.uid,
+            email: auth.currentUser.email,
+            isLoggedIn: auth.currentUser.emailVerified,
+          })
+        );
+      });
+    }
+  }, [isLoggedIn, isAppStateVisible, auth.currentUser]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
+      if (user?.emailVerified) {
         dispatch(
           updateUserProfile({
             avatar: user.photoURL,
             name: user.displayName,
             id: user.uid,
             email: user.email,
-            isLoggedIn: true,
+            isLoggedIn: user.emailVerified,
           })
         );
       } else {
@@ -50,7 +68,7 @@ export default function Main() {
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [auth]);
 
   return (
     <>
