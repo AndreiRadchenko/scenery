@@ -1,3 +1,4 @@
+import { Alert } from 'react-native';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
   GoogleAuthProvider,
@@ -6,12 +7,47 @@ import {
   signOut,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  sendEmailVerification,
   AuthErrorCodes,
   updateProfile,
 } from 'firebase/auth';
 
 import { db, auth, avatarStorage, storage } from '../../firebase/config';
 import fireStorage from '../../firebase/fireStorage';
+import { openMailClient } from '../../helpers/openMailClient';
+
+const emailVerification = async () => {
+  try {
+    await sendEmailVerification(
+      auth.currentUser
+      // , {
+      // handleCodeInApp: true,
+      // url: 'https://scenery-53dd5.firebaseapp.com',
+      // }
+    );
+    Alert.alert(
+      'Email verification',
+      'Please confirm your email and login with your credentials',
+      [
+        {
+          text: 'Open Email Client',
+          onPress: openMailClient,
+        },
+        {
+          text: 'Dismiss',
+          onPress: () => {},
+        },
+      ]
+    );
+  } catch (error) {
+    console.error(
+      'Email verification error: code, message',
+      error.code,
+      error.message
+    );
+    throw error;
+  }
+};
 
 export const register = createAsyncThunk(
   'auth/register',
@@ -22,6 +58,7 @@ export const register = createAsyncThunk(
         email,
         password
       );
+
       const { photoUrl, uniquePhotoId } = avatar
         ? await fireStorage.uploadImage({
             storage: avatarStorage,
@@ -32,11 +69,17 @@ export const register = createAsyncThunk(
 
       await updateProfile(user, { displayName: name, photoURL: photoUrl });
 
+      if (user.emailVerified === false) {
+        await emailVerification();
+        // await signOut(auth);
+      }
+
       return {
         avatar: user.photoURL,
         name: user.displayName,
         id: user.uid,
         email: user.email,
+        emailVerified: user.emailVerified,
       };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -49,11 +92,30 @@ export const logIn = createAsyncThunk(
   async ({ email, password }, thunkAPI) => {
     try {
       const { user } = await signInWithEmailAndPassword(auth, email, password);
+      if (user.emailVerified === false) {
+        Alert.alert(
+          'Email verification',
+          'Please check your email to confirm the address you provided. ',
+          [
+            {
+              text: 'Resend verification email',
+              onPress: () => {
+                emailVerification();
+              },
+            },
+            {
+              text: 'Open Email Client',
+              onPress: openMailClient,
+            },
+          ]
+        );
+      }
       return {
         avatar: user.photoURL,
         name: user.displayName,
         id: user.uid,
         email: user.email,
+        emailVerified: user.emailVerified,
       };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -98,6 +160,7 @@ export const updateUserDetails = createAsyncThunk(
         name: currentUser.displayName,
         id: currentUser.uid,
         email: currentUser.email,
+        emailVerified: currentUser.emailVerified,
       };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

@@ -24,7 +24,7 @@ const handleSuccess = (state, { payload }) => {
   state.user.nickName = payload.name;
   state.user.email = payload.email;
   state.user.id = payload.id;
-  state.isLoggedIn = true;
+  state.isLoggedIn = payload.emailVerified;
 };
 
 const handleAnySuccess = (state) => {

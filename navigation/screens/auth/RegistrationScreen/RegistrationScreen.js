@@ -22,6 +22,7 @@ import {
 } from '../../../../hooks';
 import { RegisterValidationSchema } from '../../../../validations/ValidationSchemas';
 import { register } from '../../../../redux/auth/auth-operations';
+import { SCREEN } from '../../../constants';
 
 const isPlatformIOS = Platform.OS === 'ios';
 
@@ -30,8 +31,6 @@ export const RegistrationScreen = ({ navigation, route }) => {
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [avatar, setAvatar] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const screenHeight = Math.round(Dimensions.get('window').height);
 
   const {
     cameraPermission,
@@ -146,7 +145,9 @@ export const RegistrationScreen = ({ navigation, route }) => {
               />
 
               <MainButton buttonText="Register" onPress={handleSubmit} />
-              <Styled.RegisterText onPress={() => navigation.navigate('Login')}>
+              <Styled.RegisterText
+                onPress={() => navigation.navigate(SCREEN.AUTH.LOGIN)}
+              >
                 Already have account? Login
               </Styled.RegisterText>
             </Styled.RegisterForm>
