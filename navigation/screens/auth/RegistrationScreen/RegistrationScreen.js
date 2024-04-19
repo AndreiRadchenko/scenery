@@ -3,6 +3,8 @@ import {
   Keyboard,
   Dimensions,
   Platform,
+  ImageBackground,
+  StatusBar,
 } from 'react-native';
 import { useFormik } from 'formik';
 import { useState, useEffect } from 'react';
@@ -24,6 +26,7 @@ import { RegisterValidationSchema } from '../../../../validations/ValidationSche
 import { register } from '../../../../redux/auth/auth-operations';
 import { SCREEN } from '../../../constants';
 
+const screenHeight = Math.round(Dimensions.get('window').height);
 const isPlatformIOS = Platform.OS === 'ios';
 
 export const RegistrationScreen = ({ navigation, route }) => {
@@ -31,6 +34,11 @@ export const RegistrationScreen = ({ navigation, route }) => {
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [avatar, setAvatar] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [formHeight, setFormHeight] = useState(0);
+
+  const onFormLayout = (event) => {
+    setFormHeight(event.nativeEvent.layout.height);
+  };
 
   const {
     cameraPermission,
@@ -60,8 +68,9 @@ export const RegistrationScreen = ({ navigation, route }) => {
   }, [requiredPermission, cameraPermission, mediaLibraryPermission]);
 
   const translateAnim = useFormAnimation({
-    formOffset: isPlatformIOS ? 200 : 200,
-    animationDuration: 200,
+    formHeight: formHeight,
+    formDivider: 0.7,
+    animationDuration: 290,
   });
 
   const formik = useFormik({
@@ -97,12 +106,16 @@ export const RegistrationScreen = ({ navigation, route }) => {
       />
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <Styled.Container>
-          <Styled.BgImage
+          <ImageBackground
             resizeMode="stretch"
             source={require('../../../../assets/img/PhotoBG-compressed.jpg')}
-            style={{ minHeight: Math.round(Dimensions.get('window').height) }}
+            style={{
+              minHeight: screenHeight + StatusBar.currentHeight,
+              justifyContent: 'flex-end',
+            }}
           >
             <Styled.RegisterForm
+              onLayout={onFormLayout}
               style={{
                 transform: [
                   { scale: 1 },
@@ -151,7 +164,7 @@ export const RegistrationScreen = ({ navigation, route }) => {
                 Already have account? Login
               </Styled.RegisterText>
             </Styled.RegisterForm>
-          </Styled.BgImage>
+          </ImageBackground>
         </Styled.Container>
       </TouchableWithoutFeedback>
     </>

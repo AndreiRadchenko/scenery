@@ -4,6 +4,8 @@ import {
   Platform,
   Dimensions,
   Alert,
+  ImageBackground,
+  StatusBar,
 } from 'react-native';
 import { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
@@ -28,10 +30,16 @@ export const LoginScreen = ({ navigation, route }) => {
   const authError = useSelector(selectError);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const keyboardHeight = useKeyboardVisible();
+  const [formHeight, setFormHeight] = useState(0);
+
+  const onFormLayout = (event) => {
+    setFormHeight(event.nativeEvent.layout.height);
+  };
 
   const translateAnim = useFormAnimation({
-    formOffset: isPlatformIOS ? 250 : 260,
-    animationDuration: Platform.OS === 'ios' ? 200 : 200,
+    formHeight: formHeight,
+    formDivider: 0.55,
+    animationDuration: 190,
   });
 
   useEffect(() => {
@@ -71,14 +79,19 @@ export const LoginScreen = ({ navigation, route }) => {
       onPress={() => {
         Keyboard.dismiss();
       }}
+      style={{ flex: 1 }}
     >
       <Styled.Container>
-        <Styled.BgImage
-          resizeMode="cover"
+        <ImageBackground
+          resizeMode="stretch"
           source={require('../../../../assets/img/PhotoBG-compressed.jpg')}
-          style={{ minHeight: Math.round(Dimensions.get('window').height) }}
+          style={{
+            minHeight: screenHeight + StatusBar.currentHeight,
+            justifyContent: 'flex-end',
+          }}
         >
           <Styled.LoginForm
+            onLayout={onFormLayout}
             keyboardHeight={keyboardHeight}
             isPlatformIOS={isPlatformIOS}
             style={{
@@ -109,6 +122,9 @@ export const LoginScreen = ({ navigation, route }) => {
               returnKeyType="done"
             />
             <>
+              <Styled.ForgotText onPress={() => {}}>
+                Forgot password?
+              </Styled.ForgotText>
               <MainButton buttonText="Login" onPress={handleSubmit} />
               <Styled.RegisterText
                 onPress={() => navigation.navigate(STACK.REGISTRATION)}
@@ -117,7 +133,7 @@ export const LoginScreen = ({ navigation, route }) => {
               </Styled.RegisterText>
             </>
           </Styled.LoginForm>
-        </Styled.BgImage>
+        </ImageBackground>
       </Styled.Container>
     </TouchableWithoutFeedback>
   );
