@@ -5,14 +5,15 @@ import themes from '../../../../utils/themes';
 export const Container = styled.View`
   flex: 1;
   width: 100vw;
+  position: relative;
   background-color: ${themes.primary.colors.backgroundColor};
+  background-color: tomato;
   font-family: ${themes.primary.font.family.robotoRegular};
 `;
 
 export const BgImage = styled(ImageBackground)`
-  width: 100vw;
+  width: 100%;
   justify-content: flex-end;
-  align-items: center;
 `;
 
 export const LoginForm = styled(Animated.View)`
@@ -95,6 +96,14 @@ export const Button = styled.TouchableOpacity`
 
 export const ButtonText = styled.Text`
   color: ${themes.primary.colors.backgroundColor};
+`;
+
+export const ForgotText = styled.Text`
+  margin-bottom: 16px;
+  margin-top: -4px;
+  color: ${themes.primary.colors.formTextColor};
+  align-self: flex-start;
+  padding-left: 4px;
 `;
 
 export const RegisterText = styled.Text`

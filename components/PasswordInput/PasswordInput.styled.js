@@ -25,7 +25,7 @@ export const Error = styled.Text`
 export const PasswordWrapper = styled.View`
   width: 100%;
   position: relative;
-  margin-bottom: 5px;
+  /* margin-bottom: 5px; */
   display: flex;
   flex-direction: column;
   align-items: flex-end;

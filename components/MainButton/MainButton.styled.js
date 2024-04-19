@@ -12,7 +12,7 @@ export const Button = styled.TouchableOpacity`
     isActive
       ? themes.primary.colors.accentColor
       : themes.primary.colors.inputBgColor};
-  margin-top: 28px;
+  /* margin-top: 28px; */
 `;
 
 export const ButtonText = styled.Text`
