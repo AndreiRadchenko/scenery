@@ -1,7 +1,7 @@
 import { styled } from 'styled-components/native';
 import MapView, { Marker } from 'react-native-maps';
 
-import themes from '../../../../utils/themes';
+import themes from '../../../utils/themes';
 
 export const MapContainer = styled.View`
   flex: 1;

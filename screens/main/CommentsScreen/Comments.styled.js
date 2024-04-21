@@ -1,6 +1,6 @@
 import { styled } from 'styled-components/native';
 
-import themes from '../../../../utils/themes';
+import themes from '../../../utils/themes';
 
 export const CommentsContainer = styled.View`
   flex: 1;

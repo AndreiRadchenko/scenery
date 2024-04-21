@@ -1,7 +1,7 @@
 import { styled } from 'styled-components/native';
 import { Camera } from 'expo-camera';
 
-import themes from '../../../../utils/themes';
+import themes from '../../../utils/themes';
 
 export const PostContainer = styled.ScrollView`
   padding: 0 16px 0 16px;

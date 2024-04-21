@@ -3,22 +3,22 @@ import { FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons';
 
-import { PostCard } from '../../../../components/PostCard';
-import { ModalPreview } from '../../../../components/ModalPreview';
+import { PostCard } from '../../../components/PostCard';
+import { ModalPreview } from '../../../components/ModalPreview';
 
 import * as Styled from './Posts.styled';
-import themes from '../../../../utils/themes';
-import { SCREEN, STACK } from '../../../constants';
-import { selectPosts } from '../../../../redux/posts/posts-selectors';
+import themes from '../../../utils/themes';
+import { SCREEN, STACK } from '../../../navigation/constants';
+import { selectPosts } from '../../../redux/posts/posts-selectors';
 import {
   selectUser,
   selectIsLoading as selectIsUserLoading,
-} from '../../../../redux/auth/auth-selector';
+} from '../../../redux/auth/auth-selector';
 import {
   fetchPostsOperation,
   updatePostOperation,
-} from '../../../../redux/posts/posts-operations';
-import { resetPostsState } from '../../../../redux/posts/posts-slice';
+} from '../../../redux/posts/posts-operations';
+import { resetPostsState } from '../../../redux/posts/posts-slice';
 
 const UserCard = ({ user, isUserLoading }) => {
   return (

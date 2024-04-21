@@ -1,7 +1,7 @@
 import React from 'react';
 import Svg, { Path, Rect, ClipPath, Defs, G } from 'react-native-svg';
 
-import themes from '../../../../utils/themes';
+import themes from '../../../utils/themes';
 
 export const PhotoSvg = ({ isImageSelected }) => (
   <Svg

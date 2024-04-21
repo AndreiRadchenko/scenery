@@ -11,21 +11,21 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { PhotoSvg } from './PhotoSvg';
-import { LocationSvg } from '../../../../components/PostCard/LocationSvg';
-import { DeleteButton } from '../../../../components/DeleteButton';
-import { MainButton } from '../../../../components/MainButton';
-import { ModalPermission } from '../../../../components/ModalPermission';
+import { LocationSvg } from '../../../components/PostCard/LocationSvg';
+import { DeleteButton } from '../../../components/DeleteButton';
+import { MainButton } from '../../../components/MainButton';
+import { ModalPermission } from '../../../components/ModalPermission';
 
-import { addPostOperation } from '../../../../redux/posts/posts-operations';
-import { selectUser } from '../../../../redux/auth/auth-selector';
+import { addPostOperation } from '../../../redux/posts/posts-operations';
+import { selectUser } from '../../../redux/auth/auth-selector';
 
 import * as Styled from './Create.styled';
-import themes from '../../../../utils/themes';
+import themes from '../../../utils/themes';
 import {
   useActionSheetMenu,
   usePermissions,
   useImagePickerActions,
-} from '../../../../hooks';
+} from '../../../hooks';
 
 export const CreateScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();

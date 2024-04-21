@@ -10,10 +10,10 @@ import { useFormik } from 'formik';
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { MainButton } from '../../../../components/MainButton';
-import { PasswordInput } from '../../../../components/PasswordInput';
-import { AvatarRegistration } from '../../../../components/Avatar';
-import { ModalPermission } from '../../../../components/ModalPermission';
+import { MainButton } from '../../../components/MainButton';
+import { PasswordInput } from '../../../components/PasswordInput';
+import { AvatarRegistration } from '../../../components/Avatar';
+import { ModalPermission } from '../../../components/ModalPermission';
 
 import * as Styled from './RegistrationScreen.styled';
 import {
@@ -21,10 +21,10 @@ import {
   useActionSheetMenu,
   usePermissions,
   useImagePickerActions,
-} from '../../../../hooks';
-import { RegisterValidationSchema } from '../../../../validations/ValidationSchemas';
-import { register } from '../../../../redux/auth/auth-operations';
-import { SCREEN } from '../../../constants';
+} from '../../../hooks';
+import { RegisterValidationSchema } from '../../../validations/ValidationSchemas';
+import { register } from '../../../redux/auth/auth-operations';
+import { SCREEN } from '../../../navigation/constants';
 
 const screenHeight = Math.round(Dimensions.get('window').height);
 const isPlatformIOS = Platform.OS === 'ios';
@@ -108,7 +108,7 @@ export const RegistrationScreen = ({ navigation, route }) => {
         <Styled.Container>
           <ImageBackground
             resizeMode="stretch"
-            source={require('../../../../assets/img/PhotoBG-compressed.jpg')}
+            source={require('../../../assets/img/PhotoBG-compressed.jpg')}
             style={{
               minHeight: screenHeight + StatusBar.currentHeight,
               justifyContent: 'flex-end',

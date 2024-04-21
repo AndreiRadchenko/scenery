@@ -3,10 +3,10 @@ import { Platform } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { LoginScreen } from './screens/auth/LoginScreen';
-import { RegistrationScreen } from './screens/auth/RegistrationScreen';
+import { LoginScreen } from '../screens/auth/LoginScreen';
+import { RegistrationScreen } from '../screens/auth/RegistrationScreen';
 import { HomeStack } from './HomeStack';
-import { CreateScreen } from './screens/main/CreatePostsScreen';
+import { CreateScreen } from '../screens/main/CreatePostsScreen';
 import { ProfileStack } from './ProfileStack';
 import {
   PostsSvg,

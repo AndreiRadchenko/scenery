@@ -1,9 +1,9 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { PostsScreen } from '../screens/main/PostsScreen/Posts';
-import { CommentsScreen } from '../screens/main/CommentsScreen';
-import { MapScreen } from '../screens/main/MapScreen';
+import { PostsScreen } from '../../screens/main/PostsScreen/Posts';
+import { CommentsScreen } from '../../screens/main/CommentsScreen';
+import { MapScreen } from '../../screens/main/MapScreen';
 
 import { SCREEN, STACK } from '../constants';
 

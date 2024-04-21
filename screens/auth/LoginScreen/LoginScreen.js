@@ -11,23 +11,23 @@ import { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { MainButton } from '../../../../components/MainButton';
-import { PasswordInput } from '../../../../components/PasswordInput';
+import { MainButton } from '../../../components/MainButton';
+import { PasswordInput } from '../../../components/PasswordInput';
 
 import * as Styled from './LoginScreen.styled';
 import {
   useEmailAnimation,
   useFormAnimation,
   useKeyboardVisible,
-} from '../../../../hooks';
+} from '../../../hooks';
 import {
   loginValidationSchema,
   emailValidationSchema,
-} from '../../../../validations/ValidationSchemas';
-import { logIn, resetPassword } from '../../../../redux/auth/auth-operations';
-import { selectError } from '../../../../redux/auth/auth-selector';
-import { resetAuthError } from '../../../../redux/auth/auth-slice';
-import { SCREEN, STACK } from '../../../constants';
+} from '../../../validations/ValidationSchemas';
+import { logIn, resetPassword } from '../../../redux/auth/auth-operations';
+import { selectError } from '../../../redux/auth/auth-selector';
+import { resetAuthError } from '../../../redux/auth/auth-slice';
+import { SCREEN, STACK } from '../../../navigation/constants';
 
 const screenHeight = Math.round(Dimensions.get('window').height);
 const isPlatformIOS = Platform.OS === 'ios';
@@ -106,7 +106,7 @@ export const LoginScreen = ({ navigation, route }) => {
       <Styled.Container>
         <ImageBackground
           resizeMode="stretch"
-          source={require('../../../../assets/img/PhotoBG-compressed.jpg')}
+          source={require('../../../assets/img/PhotoBG-compressed.jpg')}
           style={{
             minHeight: screenHeight + StatusBar.currentHeight,
             justifyContent: 'flex-end',

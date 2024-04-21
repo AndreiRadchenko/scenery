@@ -2,26 +2,23 @@ import { useState, useEffect, useRef } from 'react';
 import { KeyboardAvoidingView, Platform, FlatList, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { LogoutSvg } from '../../../../components/MainHeader/LogoutSvg';
-import { PostCard } from '../../../../components/PostCard';
-import { Avatar } from '../../../../components/Avatar';
-import { ModalPreview } from '../../../../components/ModalPreview';
+import { LogoutSvg } from '../../../components/MainHeader/LogoutSvg';
+import { PostCard } from '../../../components/PostCard';
+import { Avatar } from '../../../components/Avatar';
+import { ModalPreview } from '../../../components/ModalPreview';
 
 import * as Styled from './Profile.styled';
-import themes from '../../../../utils/themes';
-import { useKeyboardVisible } from '../../../../hooks';
+import themes from '../../../utils/themes';
+import { useKeyboardVisible } from '../../../hooks';
 
-import { SCREEN, STACK } from '../../../constants';
-import { logOut } from '../../../../redux/auth/auth-operations';
-import { selectUser } from '../../../../redux/auth/auth-selector';
-import { selectUserPosts } from '../../../../redux/userPosts/userPosts-selectors';
-import { selectPosts } from '../../../../redux/posts/posts-selectors';
-import { fetchUserPostsOperation } from '../../../../redux/userPosts/userPosts-operations';
-import { updatePostOperation } from '../../../../redux/posts/posts-operations';
-import {
-  resetUserPostsState,
-  userPostsUpdateComments,
-} from '../../../../redux/userPosts/userPosts-slice';
+import { SCREEN, STACK } from '../../../navigation/constants';
+import { logOut } from '../../../redux/auth/auth-operations';
+import { selectUser } from '../../../redux/auth/auth-selector';
+import { selectUserPosts } from '../../../redux/userPosts/userPosts-selectors';
+import { selectPosts } from '../../../redux/posts/posts-selectors';
+import { fetchUserPostsOperation } from '../../../redux/userPosts/userPosts-operations';
+import { updatePostOperation } from '../../../redux/posts/posts-operations';
+import { resetUserPostsState } from '../../../redux/userPosts/userPosts-slice';
 
 const isPlatformIOS = Platform.OS === 'ios';
 
@@ -113,7 +110,7 @@ export const ProfileScreen = ({ navigation, route }) => {
       <Styled.Container>
         <Styled.BgImage
           resizeMode="stretch"
-          source={require('../../../../assets/img/PhotoBG-compressed.jpg')}
+          source={require('../../../assets/img/PhotoBG-compressed.jpg')}
         >
           <KeyboardAvoidingView
             behavior={isPlatformIOS ? 'padding' : ''}

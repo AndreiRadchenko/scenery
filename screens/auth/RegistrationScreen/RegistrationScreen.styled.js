@@ -1,8 +1,8 @@
 import { styled } from 'styled-components/native';
 import { ImageBackground, Text, Animated } from 'react-native';
-import themes from '../../../../utils/themes';
+import themes from '../../../utils/themes';
 
-import AddSvg from '../../../../assets/svg/add.svg';
+import AddSvg from '../../../assets/svg/add.svg';
 
 export const Container = styled.View`
   flex: 1;

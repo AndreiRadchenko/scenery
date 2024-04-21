@@ -1,9 +1,9 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { ProfileScreen } from '../screens/main/ProfileScreen';
-import { CommentsScreen } from '../screens/main/CommentsScreen';
-import { MapScreen } from '../screens/main/MapScreen';
+import { ProfileScreen } from '../../screens/main/ProfileScreen';
+import { CommentsScreen } from '../../screens/main/CommentsScreen';
+import { MapScreen } from '../../screens/main/MapScreen';
 import { MainHeader } from '../../components/MainHeader';
 
 import { SCREEN, STACK } from '../constants';
