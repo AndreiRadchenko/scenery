@@ -1,5 +1,11 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
-import { register, logIn, logOut, updateUserDetails } from './auth-operations';
+import {
+  register,
+  logIn,
+  logOut,
+  updateUserDetails,
+  resetPassword,
+} from './auth-operations';
 
 const initialState = {
   user: { avatar: null, nickName: null, email: null, id: null },
@@ -8,7 +14,13 @@ const initialState = {
   error: null,
 };
 
-const extraActions = [register, logIn, logOut, updateUserDetails];
+const extraActions = [
+  register,
+  logIn,
+  logOut,
+  updateUserDetails,
+  resetPassword,
+];
 
 const getActions = (actionType) =>
   extraActions.map((action) => {
@@ -71,6 +83,10 @@ export const authSlice = createSlice({
       })
       .addCase(updateUserDetails.rejected, (state, { payload }) => {
         state.error = "Sorry, can't update user details!";
+        state.isLoading = false;
+      })
+      .addCase(resetPassword.rejected, (state, { payload }) => {
+        state.error = 'Firebase: Error (auth/invalid-email)';
         state.isLoading = false;
       })
 

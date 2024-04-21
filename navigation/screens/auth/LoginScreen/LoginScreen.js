@@ -15,9 +15,16 @@ import { MainButton } from '../../../../components/MainButton';
 import { PasswordInput } from '../../../../components/PasswordInput';
 
 import * as Styled from './LoginScreen.styled';
-import { useFormAnimation, useKeyboardVisible } from '../../../../hooks';
-import { loginValidationSchema } from '../../../../validations/ValidationSchemas';
-import { logIn } from '../../../../redux/auth/auth-operations';
+import {
+  useEmailAnimation,
+  useFormAnimation,
+  useKeyboardVisible,
+} from '../../../../hooks';
+import {
+  loginValidationSchema,
+  emailValidationSchema,
+} from '../../../../validations/ValidationSchemas';
+import { logIn, resetPassword } from '../../../../redux/auth/auth-operations';
 import { selectError } from '../../../../redux/auth/auth-selector';
 import { resetAuthError } from '../../../../redux/auth/auth-slice';
 import { SCREEN, STACK } from '../../../constants';
@@ -31,6 +38,7 @@ export const LoginScreen = ({ navigation, route }) => {
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const keyboardHeight = useKeyboardVisible();
   const [formHeight, setFormHeight] = useState(0);
+  const [isEmailAnimated, setIsEmailAnimated] = useState(false);
 
   const onFormLayout = (event) => {
     setFormHeight(event.nativeEvent.layout.height);
@@ -41,6 +49,8 @@ export const LoginScreen = ({ navigation, route }) => {
     formDivider: 0.55,
     animationDuration: 190,
   });
+
+  const emailAnimation = useEmailAnimation({ isAnimated: isEmailAnimated });
 
   useEffect(() => {
     if (authError) {
@@ -74,6 +84,18 @@ export const LoginScreen = ({ navigation, route }) => {
     formik.handleSubmit();
   };
 
+  const handleResetPassword = async () => {
+    try {
+      await emailValidationSchema.validate(formik.values);
+      dispatch(resetPassword({ email: formik.values.email }));
+      formik.resetForm();
+    } catch (e) {
+      formik.setFieldError('email', e.message);
+      setIsEmailAnimated(true);
+      setTimeout(() => setIsEmailAnimated(false), 200);
+    }
+  };
+
   return (
     <TouchableWithoutFeedback
       onPress={() => {
@@ -104,7 +126,11 @@ export const LoginScreen = ({ navigation, route }) => {
             }}
           >
             <Styled.Title>Login</Styled.Title>
-            <Styled.InputWrapper>
+            <Styled.InputWrapper
+              style={{
+                transform: [{ translateX: emailAnimation }],
+              }}
+            >
               <Styled.Input
                 isError={formik.errors.email}
                 placeholder="Email"
@@ -122,7 +148,7 @@ export const LoginScreen = ({ navigation, route }) => {
               returnKeyType="done"
             />
             <>
-              <Styled.ForgotText onPress={() => {}}>
+              <Styled.ForgotText onPress={handleResetPassword}>
                 Forgot password?
               </Styled.ForgotText>
               <MainButton buttonText="Login" onPress={handleSubmit} />
