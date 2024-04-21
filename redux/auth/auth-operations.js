@@ -8,6 +8,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   sendEmailVerification,
+  sendPasswordResetEmail,
   AuthErrorCodes,
   updateProfile,
 } from 'firebase/auth';
@@ -118,6 +119,29 @@ export const logIn = createAsyncThunk(
         emailVerified: user.emailVerified,
       };
     } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const resetPassword = createAsyncThunk(
+  'auth/reset-password',
+  async ({ email }, thunkAPI) => {
+    try {
+      await sendPasswordResetEmail(auth, email);
+      Alert.alert(
+        'Password Reset Sent',
+        `An email has been sent to ${email} with instructions for how to reset your Scenery password.`,
+        [
+          {
+            text: 'OK',
+            onPress: () => {},
+          },
+        ]
+      );
+      return 'Password has been reset';
+    } catch (error) {
+      console.log(error.message);
       return thunkAPI.rejectWithValue(error.message);
     }
   }

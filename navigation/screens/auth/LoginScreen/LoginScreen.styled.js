@@ -37,7 +37,7 @@ export const Title = styled.Text`
   margin-bottom: 33px;
 `;
 
-export const InputWrapper = styled.View`
+export const InputWrapper = styled(Animated.View)`
   width: 100%;
   margin-bottom: 5px;
   display: flex;
