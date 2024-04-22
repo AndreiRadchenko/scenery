@@ -7,7 +7,7 @@ import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import 'expo-dev-client';
+// import 'expo-dev-client';
 
 import Main from './Main';
 

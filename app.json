@@ -2,14 +2,14 @@
   "expo": {
     "name": "scenery",
     "slug": "scenery",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/img/logo.jpg",
     "userInterfaceStyle": "light",
     "jsEngine": "hermes",
     "splash": {
       "image": "./assets/img/PhotoBG-compressed.jpg",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": ["**/*"],
@@ -36,7 +36,7 @@
       },
       "softwareKeyboardLayoutMode": "resize",
       "package": "com.andriiradchenko.scenery",
-      "runtimeVersion": "1.0.0"
+      "runtimeVersion": "1.0.2"
     },
     "web": {
       "favicon": "./assets/favicon.png"
