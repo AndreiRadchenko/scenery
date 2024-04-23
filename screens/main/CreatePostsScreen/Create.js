@@ -138,7 +138,7 @@ export const CreateScreen = ({ navigation, route }) => {
                     onChangeText={(value) => setImageName(value)}
                   />
                 </Styled.InputWrapper>
-                <Styled.InputWrapper style={{ marginBottom: 4 }}>
+                <Styled.InputWrapper style={{ marginBottom: 32 }}>
                   <LocationSvg color={themes.primary.colors.lightGrey} />
                   <Styled.InputName
                     placeholder="Location..."

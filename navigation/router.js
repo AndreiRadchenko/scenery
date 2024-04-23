@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, StatusBar } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -27,19 +27,22 @@ const HomeTab = createBottomTabNavigator();
 export const UseRoute = ({ isLoggedIn }) => {
   if (!isLoggedIn) {
     return (
-      <AuthStack.Navigator
-        initialRouteName={SCREEN.AUTH.LOGIN}
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <AuthStack.Screen name={SCREEN.AUTH.LOGIN}>
-          {(props) => <LoginScreen {...props} />}
-        </AuthStack.Screen>
-        <AuthStack.Screen name={STACK.REGISTRATION}>
-          {(props) => <RegistrationScreen {...props} />}
-        </AuthStack.Screen>
-      </AuthStack.Navigator>
+      <>
+        <StatusBar translucent backgroundColor="transparent" />
+        <AuthStack.Navigator
+          initialRouteName={SCREEN.AUTH.LOGIN}
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <AuthStack.Screen name={SCREEN.AUTH.LOGIN}>
+            {(props) => <LoginScreen {...props} />}
+          </AuthStack.Screen>
+          <AuthStack.Screen name={STACK.REGISTRATION}>
+            {(props) => <RegistrationScreen {...props} />}
+          </AuthStack.Screen>
+        </AuthStack.Navigator>
+      </>
     );
   }
   return (

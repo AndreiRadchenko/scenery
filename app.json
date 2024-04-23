@@ -12,7 +12,9 @@
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "jsEngine": "hermes",
       "supportsTablet": true,
@@ -36,12 +38,15 @@
       },
       "softwareKeyboardLayoutMode": "resize",
       "package": "com.andriiradchenko.scenery",
-      "runtimeVersion": "1.0.2"
+      "runtimeVersion": "1.0.2",
+      "versionCode": 6
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": ["expo-font"],
+    "plugins": [
+      "expo-font"
+    ],
     "extra": {
       "eas": {
         "projectId": "9e4ad268-895b-40e3-9020-712552b48820"

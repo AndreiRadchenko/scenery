@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { StatusBar, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
@@ -7,13 +8,20 @@ import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-// import 'expo-dev-client';
+import 'expo-dev-client';
 
 import Main from './Main';
 
 import { store } from './redux/store';
 
 SplashScreen.preventAutoHideAsync();
+
+StatusBar.setBarStyle('dark-content');
+
+if (Platform.OS === 'android') {
+  StatusBar.setTranslucent(true);
+  StatusBar.setBackgroundColor('transparent');
+}
 
 export default function App() {
   const [fontsLoaded] = useFonts({

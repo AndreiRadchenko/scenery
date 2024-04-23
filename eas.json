@@ -1,6 +1,7 @@
 {
   "cli": {
-    "version": ">= 7.1.2"
+    "version": ">= 7.1.2",
+    "appVersionSource": "local"
   },
   "build": {
     "development": {
@@ -16,7 +17,13 @@
       }
     },
     "preview": {
+      "autoIncrement": true,
+      "developmentClient": false,
       "distribution": "internal",
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleRelease"
+      },
       "env": {
         "FIREBASE_API_KEY": "AIzaSyAGFn8i7iCiS1i-csHsLtpI1wloSrSYO4M",
         "FIREBASE_AUTH_DOMAIN": "scenery-53dd5.firebaseapp.com",
@@ -27,6 +34,8 @@
       }
     },
     "production": {
+      "autoIncrement": true,
+      "developmentClient": false,
       "env": {
         "FIREBASE_API_KEY": "AIzaSyAGFn8i7iCiS1i-csHsLtpI1wloSrSYO4M",
         "FIREBASE_AUTH_DOMAIN": "scenery-53dd5.firebaseapp.com",

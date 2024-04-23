@@ -7,7 +7,9 @@ import fireStorage from '../../firebase/fireStorage';
 export const CommentCard = ({ authorId, text, date, index }) => {
   const [photoURL, setPhotoURL] = useState('');
   const isEvenCard = index % 2 === 0;
-  const dateFormatted = new Date(date).toString();
+  const commentDate = new Date(date);
+  const dateFormatted =
+    commentDate.toDateString() + ' ' + commentDate.toLocaleTimeString('it-IT');
 
   useEffect(() => {
     fireStorage
