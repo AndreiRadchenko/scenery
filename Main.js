@@ -17,7 +17,7 @@ import { useAppState } from './hooks';
 
 SplashScreen.preventAutoHideAsync();
 
-export default function Main() {
+export default function Main({ hideSplashScreen }) {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const isUserLoading = useSelector(selectIsUserLoading);
@@ -77,7 +77,7 @@ export default function Main() {
         // textContent={'Loading...'}
         // textStyle={{ color: 'white' }}
       />
-      <UseRoute isLoggedIn={isLoggedIn} />
+      <UseRoute hideSplashScreen={hideSplashScreen} isLoggedIn={isLoggedIn} />
     </>
   );
 }

@@ -64,7 +64,7 @@ export const authSlice = createSlice({
       .addCase(register.fulfilled, handleSuccess)
       .addCase(logIn.fulfilled, handleSuccess)
       .addCase(logOut.fulfilled, (state) => {
-        return initialState;
+        return { ...initialState, isLoggedIn: false };
       })
       .addCase(updateUserDetails.fulfilled, handleSuccess)
 

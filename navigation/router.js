@@ -24,75 +24,78 @@ const isPlatformIos = Platform.OS === 'ios';
 const AuthStack = createStackNavigator();
 const HomeTab = createBottomTabNavigator();
 
-export const UseRoute = ({ isLoggedIn }) => {
-  if (!isLoggedIn) {
+export const UseRoute = ({ hideSplashScreen, isLoggedIn }) => {
+  if (isLoggedIn !== null) {
+    hideSplashScreen();
+    if (!isLoggedIn) {
+      return (
+        <>
+          <StatusBar translucent backgroundColor="transparent" />
+          <AuthStack.Navigator
+            initialRouteName={SCREEN.AUTH.LOGIN}
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            <AuthStack.Screen name={SCREEN.AUTH.LOGIN}>
+              {(props) => <LoginScreen {...props} />}
+            </AuthStack.Screen>
+            <AuthStack.Screen name={STACK.REGISTRATION}>
+              {(props) => <RegistrationScreen {...props} />}
+            </AuthStack.Screen>
+          </AuthStack.Navigator>
+        </>
+      );
+    }
     return (
       <>
-        <StatusBar translucent backgroundColor="transparent" />
-        <AuthStack.Navigator
-          initialRouteName={SCREEN.AUTH.LOGIN}
-          screenOptions={{
-            headerShown: false,
-          }}
+        {isPlatformIos && <FocusAwareStatusBar barStyle="dark-content" />}
+        <HomeTab.Navigator
+          initialRouteName={STACK.HOME}
+          tabBar={(props) => <BottomTabBar {...props} />}
         >
-          <AuthStack.Screen name={SCREEN.AUTH.LOGIN}>
-            {(props) => <LoginScreen {...props} />}
-          </AuthStack.Screen>
-          <AuthStack.Screen name={STACK.REGISTRATION}>
-            {(props) => <RegistrationScreen {...props} />}
-          </AuthStack.Screen>
-        </AuthStack.Navigator>
+          <HomeTab.Screen
+            options={({ route }) => ({
+              tabBarIcon: ({ focused, size, color }) => (
+                <PostsSvg size={size} color={color} />
+              ),
+              headerStyle: { height: 88, position: 'absolute' },
+              header: (props) => {
+                return <MainHeader {...props} />;
+              },
+            })}
+            name={STACK.HOME}
+          >
+            {(props) => <HomeStack {...props} />}
+          </HomeTab.Screen>
+          <HomeTab.Screen
+            options={{
+              tabBarIcon: ({ focused, size, color }) => (
+                <CreateSvg size={size} color={color} />
+              ),
+              headerShown: true,
+              headerTitle: 'Create Post',
+              headerStyle: { height: 88 },
+              header: (props) => {
+                return <MainHeader {...props} />;
+              },
+            }}
+            name={SCREEN.MAIN.CREATE_POST}
+            component={CreateScreen}
+          />
+          <HomeTab.Screen
+            options={{
+              tabBarIcon: ({ focused, size, color }) => (
+                <ProfileSvg size={size} color={color} />
+              ),
+              headerShown: false,
+            }}
+            name={STACK.PROFILE}
+          >
+            {(props) => <ProfileStack {...props} />}
+          </HomeTab.Screen>
+        </HomeTab.Navigator>
       </>
     );
   }
-  return (
-    <>
-      {isPlatformIos && <FocusAwareStatusBar barStyle="dark-content" />}
-      <HomeTab.Navigator
-        initialRouteName={STACK.HOME}
-        tabBar={(props) => <BottomTabBar {...props} />}
-      >
-        <HomeTab.Screen
-          options={({ route }) => ({
-            tabBarIcon: ({ focused, size, color }) => (
-              <PostsSvg size={size} color={color} />
-            ),
-            headerStyle: { height: 88, position: 'absolute' },
-            header: (props) => {
-              return <MainHeader {...props} />;
-            },
-          })}
-          name={STACK.HOME}
-        >
-          {(props) => <HomeStack {...props} />}
-        </HomeTab.Screen>
-        <HomeTab.Screen
-          options={{
-            tabBarIcon: ({ focused, size, color }) => (
-              <CreateSvg size={size} color={color} />
-            ),
-            headerShown: true,
-            headerTitle: 'Create Post',
-            headerStyle: { height: 88 },
-            header: (props) => {
-              return <MainHeader {...props} />;
-            },
-          }}
-          name={SCREEN.MAIN.CREATE_POST}
-          component={CreateScreen}
-        />
-        <HomeTab.Screen
-          options={{
-            tabBarIcon: ({ focused, size, color }) => (
-              <ProfileSvg size={size} color={color} />
-            ),
-            headerShown: false,
-          }}
-          name={STACK.PROFILE}
-        >
-          {(props) => <ProfileStack {...props} />}
-        </HomeTab.Screen>
-      </HomeTab.Navigator>
-    </>
-  );
 };

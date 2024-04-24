@@ -7,7 +7,6 @@ export const Container = styled.View`
   width: 100vw;
   position: relative;
   background-color: ${themes.primary.colors.backgroundColor};
-  background-color: tomato;
   font-family: ${themes.primary.font.family.robotoRegular};
 `;
 
