@@ -6,6 +6,7 @@ export const TabBar = styled.View`
   position: relative;
   z-index: 10;
   display: ${({ displayOption }) => displayOption};
+  background-color: ${themes.primary.colors.backgroundColor};
   flex-direction: row;
   height: 83px;
   align-self: center;

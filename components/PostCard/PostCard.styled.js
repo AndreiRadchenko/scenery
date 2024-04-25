@@ -32,7 +32,9 @@ export const CardName = styled.Text`
 export const ExtDataWrapper = styled.View`
   display: flex;
   flex-direction: row;
+  gap: 24px;
   justify-content: space-between;
+  overflow: hidden;
 `;
 
 export const Achievements = styled.View`

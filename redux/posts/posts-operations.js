@@ -94,8 +94,7 @@ export const updatePostOperation = createAsyncThunk(
 
       return { docId, comment, userId, isPostLiked };
     } catch (error) {
-      console.log(error.message);
-      return thunkAPI.rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue({ error: error.code, docId });
     }
   }
 );

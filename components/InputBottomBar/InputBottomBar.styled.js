@@ -23,8 +23,9 @@ export const InputWrapper = styled.View`
 
 export const Input = styled.TextInput`
   width: 100%;
-  height: 50px;
+  min-height: 50px;
   padding: 16px;
+  padding-right: 48px;
   background-color: ${themes.primary.colors.inputBgColor};
   border-width: 1px;
   border-color: ${themes.primary.colors.inputBorderColor};
