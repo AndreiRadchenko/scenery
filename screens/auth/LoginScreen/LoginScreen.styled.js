@@ -13,6 +13,7 @@ export const Container = styled.View`
 export const BgImage = styled(ImageBackground)`
   width: 100%;
   justify-content: flex-end;
+  font-family: ${themes.primary.font.family.robotoRegular};
 `;
 
 export const LoginForm = styled(Animated.View)`

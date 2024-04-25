@@ -111,6 +111,17 @@ export const postsSlice = createSlice({
         }
       )
 
+      .addCase(
+        updatePostOperation.rejected,
+        (state, { payload: { error, docId } }) => {
+          const index = state.items.findIndex((e) => e._id === docId);
+          if (index > -1 && error === 'not-found') {
+            state.items.splice(index, 1);
+            state.error = error;
+          }
+        }
+      )
+
       .addCase(deletePostOperation.fulfilled, (state, action) => {
         state.items = [];
         state.lastVisiblePost = null;

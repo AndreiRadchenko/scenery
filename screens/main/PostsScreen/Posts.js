@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, Alert } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -9,7 +9,7 @@ import { ModalPreview } from '../../../components/ModalPreview';
 import * as Styled from './Posts.styled';
 import themes from '../../../utils/themes';
 import { SCREEN, STACK } from '../../../navigation/constants';
-import { selectPosts } from '../../../redux/posts/posts-selectors';
+import { selectPosts, selectError } from '../../../redux/posts/posts-selectors';
 import {
   selectUser,
   selectIsLoading as selectIsUserLoading,
@@ -18,7 +18,10 @@ import {
   fetchPostsOperation,
   updatePostOperation,
 } from '../../../redux/posts/posts-operations';
-import { resetPostsState } from '../../../redux/posts/posts-slice';
+import {
+  resetPostsState,
+  resetPostError,
+} from '../../../redux/posts/posts-slice';
 
 const UserCard = ({ user, isUserLoading }) => {
   return (
@@ -47,10 +50,24 @@ const UserCard = ({ user, isUserLoading }) => {
 export const PostsScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const posts = useSelector(selectPosts);
+  const postError = useSelector(selectError);
   const user = useSelector(selectUser);
   const isUserLoading = useSelector(selectIsUserLoading);
   const [modalVisible, setModalVisible] = useState(false);
   const [previewItem, setPreviewItem] = useState(null);
+
+  useEffect(() => {
+    if (postError?.error === 'not-found') {
+      Alert.alert('Post not found', 'Post was just deleted by owner', [
+        {
+          text: 'OK',
+          onPress: () => {
+            dispatch(resetPostError());
+          },
+        },
+      ]);
+    }
+  }, [postError]);
 
   const fetchMore = async () => {
     dispatch(fetchPostsOperation(10));

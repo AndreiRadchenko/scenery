@@ -7,10 +7,11 @@
     "icon": "./assets/img/logo.jpg",
     "userInterfaceStyle": "light",
     "jsEngine": "hermes",
+    "backgroundColor": "#00000000",
     "splash": {
       "image": "./assets/img/PhotoBG-compressed.jpg",
       "resizeMode": "cover",
-      "backgroundColor": "#555555"
+      "backgroundColor": "#00000000"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
@@ -27,17 +28,22 @@
         }
       },
       "jsEngine": "hermes",
+      "splash": {
+        "image": "./assets/img/PhotoBG-compressed.jpg",
+        "resizeMode": "native"
+      },
       "adaptiveIcon": {
         "foregroundImage": "./assets/img/logo.jpg",
         "backgroundColor": "#ffffff"
       },
       "androidStatusBar": {
-        "backgroundColor": "#000000"
+        "backgroundColor": "#000000",
+        "translucent": true
       },
       "softwareKeyboardLayoutMode": "resize",
       "package": "com.andriiradchenko.scenery",
       "runtimeVersion": "1.0.2",
-      "versionCode": 7
+      "versionCode": 9
     },
     "web": {
       "favicon": "./assets/favicon.png"
