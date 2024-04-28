@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { StatusBar, Platform } from 'react-native';
+import { Platform, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
@@ -7,19 +7,13 @@ import { Provider } from 'react-redux';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { delay } from './helpers/delay';
 
 // import 'expo-dev-client';
 
 import Main from './Main';
 
 import { store } from './redux/store';
-
-StatusBar.setBarStyle('dark-content');
-
-if (Platform.OS === 'android') {
-  StatusBar.setTranslucent(true);
-  StatusBar.setBackgroundColor('transparent');
-}
 
 SplashScreen.preventAutoHideAsync();
 
@@ -31,7 +25,17 @@ export default function App() {
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
-      await SplashScreen.hideAsync();
+      await delay(
+        () =>
+          StatusBar.pushStackEntry({
+            barStyle: 'dark-content',
+            translucent: true,
+            animated: true,
+            backgroundColor: 'transparent',
+          }),
+        2000
+      );
+      delay(SplashScreen.hideAsync, 33);
     }
   }, [fontsLoaded]);
 
@@ -44,7 +48,6 @@ export default function App() {
       <GestureHandlerRootView style={{ flex: 1 }}>
         <BottomSheetModalProvider>
           <ActionSheetProvider>
-            {/* <NavigationContainer onReady={onLayoutRootView} headerMode="none"> */}
             <NavigationContainer headerMode="none">
               <Main hideSplashScreen={onLayoutRootView} />
             </NavigationContainer>

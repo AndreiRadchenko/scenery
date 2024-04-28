@@ -1,19 +1,20 @@
 {
   "expo": {
-    "name": "scenery",
+    "name": "Scenery",
     "slug": "scenery",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "orientation": "portrait",
-    "icon": "./assets/img/logo.jpg",
-    "userInterfaceStyle": "light",
+    "icon": "./assets/img/icon.png",
     "jsEngine": "hermes",
-    "backgroundColor": "#00000000",
+    "backgroundColor": "#ffffff",
     "splash": {
-      "image": "./assets/img/PhotoBG-compressed.jpg",
+      "image": "./assets/img/river.png",
       "resizeMode": "cover",
-      "backgroundColor": "#00000000"
+      "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "jsEngine": "hermes",
       "supportsTablet": true,
@@ -28,27 +29,26 @@
         }
       },
       "jsEngine": "hermes",
-      "splash": {
-        "image": "./assets/img/PhotoBG-compressed.jpg",
-        "resizeMode": "native"
-      },
       "adaptiveIcon": {
-        "foregroundImage": "./assets/img/logo.jpg",
+        "foregroundImage": "./assets/img/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "androidStatusBar": {
-        "backgroundColor": "#000000",
-        "translucent": true
+      "splash": {
+        "image": "./assets/img/river.png",
+        "resizeMode": "cover",
+        "backgroundColor": "#ffffff"
       },
       "softwareKeyboardLayoutMode": "resize",
       "package": "com.andriiradchenko.scenery",
-      "runtimeVersion": "1.0.2",
-      "versionCode": 9
+      "runtimeVersion": "1.0.3",
+      "versionCode": 33
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/img/favicon.png"
     },
-    "plugins": ["expo-font"],
+    "plugins": [
+      "expo-font"
+    ],
     "extra": {
       "eas": {
         "projectId": "9e4ad268-895b-40e3-9020-712552b48820"

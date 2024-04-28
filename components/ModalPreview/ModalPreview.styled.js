@@ -2,9 +2,10 @@ import { styled } from 'styled-components/native';
 import themes from '../../utils/themes';
 
 export const ViewContainer = styled.View`
+  flex: 1;
   width: 100%;
   height: 100%;
-  background: black;
+  background-color: #00000088;
 `;
 
 export const ControlsWrapper = styled.View`
