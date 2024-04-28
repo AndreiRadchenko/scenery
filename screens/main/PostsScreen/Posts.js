@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FlatList, Alert } from 'react-native';
+import { FlatList, Alert, StatusBar } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -22,6 +22,7 @@ import {
   resetPostsState,
   resetPostError,
 } from '../../../redux/posts/posts-slice';
+import { delay } from '../../../helpers/delay';
 
 const UserCard = ({ user, isUserLoading }) => {
   return (
@@ -77,9 +78,15 @@ export const PostsScreen = ({ navigation, route }) => {
     dispatch(resetPostsState());
   };
 
-  const openPreview = (item) => {
+  const openPreview = async (item) => {
+    await delay(() => StatusBar.setBarStyle('light-content'), 3);
     setPreviewItem(item);
     setModalVisible(true);
+  };
+
+  const closePreview = async () => {
+    setModalVisible(false);
+    delay(() => StatusBar.setBarStyle('dark-content'), 3);
   };
 
   const openComments = (item) => {
@@ -117,7 +124,7 @@ export const PostsScreen = ({ navigation, route }) => {
     <>
       <ModalPreview
         modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
+        closePreview={closePreview}
         item={previewItem}
       />
       <Styled.PostsContainer>

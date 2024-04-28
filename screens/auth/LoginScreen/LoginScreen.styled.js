@@ -4,8 +4,6 @@ import themes from '../../../utils/themes';
 
 export const Container = styled.View`
   flex: 1;
-  width: 100vw;
-  position: relative;
   background-color: ${themes.primary.colors.backgroundColor};
   font-family: ${themes.primary.font.family.robotoRegular};
 `;
@@ -13,7 +11,6 @@ export const Container = styled.View`
 export const BgImage = styled(ImageBackground)`
   width: 100%;
   justify-content: flex-end;
-  font-family: ${themes.primary.font.family.robotoRegular};
 `;
 
 export const LoginForm = styled(Animated.View)`

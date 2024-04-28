@@ -6,6 +6,7 @@ export const PostsContainer = styled.View`
   padding: 0;
   width: 100%;
   height: 100%;
+  flex: 1;
   background-color: ${themes.primary.colors.backgroundColor};
 `;
 

@@ -103,62 +103,64 @@ export const LoginScreen = ({ navigation, route }) => {
       }}
       style={{ flex: 1, backgroundColor: 'transparent' }}
     >
-      <ImageBackground
-        resizeMode="stretch"
-        source={require('../../../assets/img/PhotoBG-compressed.jpg')}
-        style={{
-          minHeight: screenHeight + StatusBar.currentHeight,
-          justifyContent: 'flex-end',
-        }}
-      >
-        <Styled.LoginForm
-          onLayout={onFormLayout}
-          keyboardHeight={keyboardHeight}
-          isPlatformIOS={isPlatformIOS}
+      <Styled.Container>
+        <ImageBackground
+          resizeMode="stretch"
+          source={require('../../../assets/img/PhotoBG-compressed.jpg')}
           style={{
-            transform: [
-              { scale: 1 },
-              { rotateY: '0deg' },
-              { perspective: 100 },
-              { translateY: translateAnim },
-            ],
+            minHeight: screenHeight + StatusBar.currentHeight,
+            justifyContent: 'flex-end',
           }}
         >
-          <Styled.Title>Login</Styled.Title>
-          <Styled.InputWrapper
+          <Styled.LoginForm
+            onLayout={onFormLayout}
+            keyboardHeight={keyboardHeight}
+            isPlatformIOS={isPlatformIOS}
             style={{
-              transform: [{ translateX: emailAnimation }],
+              transform: [
+                { scale: 1 },
+                { rotateY: '0deg' },
+                { perspective: 100 },
+                { translateY: translateAnim },
+              ],
             }}
           >
-            <Styled.Input
-              isError={formik.errors.email}
-              placeholder="Email"
-              value={formik.values.email}
-              onChangeText={formik.handleChange('email')}
-              textContentType="emailAddress"
-              keyboardType="email-address"
-            />
-            <Styled.Error>{formik.errors.email}</Styled.Error>
-          </Styled.InputWrapper>
-          <PasswordInput
-            error={formik.errors.password}
-            value={formik.values.password}
-            onChangeText={formik.handleChange('password')}
-            returnKeyType="done"
-          />
-          <>
-            <Styled.ForgotText onPress={handleResetPassword}>
-              Forgot password?
-            </Styled.ForgotText>
-            <MainButton buttonText="Login" onPress={handleSubmit} />
-            <Styled.RegisterText
-              onPress={() => navigation.navigate(STACK.REGISTRATION)}
+            <Styled.Title>Login</Styled.Title>
+            <Styled.InputWrapper
+              style={{
+                transform: [{ translateX: emailAnimation }],
+              }}
             >
-              Don't have account? Register
-            </Styled.RegisterText>
-          </>
-        </Styled.LoginForm>
-      </ImageBackground>
+              <Styled.Input
+                isError={formik.errors.email}
+                placeholder="Email"
+                value={formik.values.email}
+                onChangeText={formik.handleChange('email')}
+                textContentType="emailAddress"
+                keyboardType="email-address"
+              />
+              <Styled.Error>{formik.errors.email}</Styled.Error>
+            </Styled.InputWrapper>
+            <PasswordInput
+              error={formik.errors.password}
+              value={formik.values.password}
+              onChangeText={formik.handleChange('password')}
+              returnKeyType="done"
+            />
+            <>
+              <Styled.ForgotText onPress={handleResetPassword}>
+                Forgot password?
+              </Styled.ForgotText>
+              <MainButton buttonText="Login" onPress={handleSubmit} />
+              <Styled.RegisterText
+                onPress={() => navigation.navigate(STACK.REGISTRATION)}
+              >
+                Don't have account? Register
+              </Styled.RegisterText>
+            </>
+          </Styled.LoginForm>
+        </ImageBackground>
+      </Styled.Container>
     </TouchableWithoutFeedback>
   );
 };

@@ -1,11 +1,18 @@
 import { useState, useEffect, useRef } from 'react';
-import { KeyboardAvoidingView, Platform, FlatList, View } from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  FlatList,
+  View,
+  StatusBar,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { LogoutSvg } from '../../../components/MainHeader/LogoutSvg';
 import { PostCard } from '../../../components/PostCard';
 import { Avatar } from '../../../components/Avatar';
 import { ModalPreview } from '../../../components/ModalPreview';
+import { FocusAwareStatusBar } from '../../../components/FocusAwareStatusBar/FocusAwareStatusBar';
 
 import * as Styled from './Profile.styled';
 import themes from '../../../utils/themes';
@@ -19,6 +26,7 @@ import { selectPosts } from '../../../redux/posts/posts-selectors';
 import { fetchUserPostsOperation } from '../../../redux/userPosts/userPosts-operations';
 import { updatePostOperation } from '../../../redux/posts/posts-operations';
 import { resetUserPostsState } from '../../../redux/userPosts/userPosts-slice';
+import { delay } from '../../../helpers/delay';
 
 const isPlatformIOS = Platform.OS === 'ios';
 
@@ -59,9 +67,15 @@ export const ProfileScreen = ({ navigation, route }) => {
     }
   }, [userPosts]);
 
-  const openPreview = (item) => {
+  const openPreview = async (item) => {
+    await delay(() => StatusBar.setBarStyle('light-content'), 3);
     setPreviewItem(item);
     setIsPreviewModalVisible(true);
+  };
+
+  const closePreview = async () => {
+    setIsPreviewModalVisible(false);
+    delay(() => StatusBar.setBarStyle('dark-content'), 3);
   };
 
   const openComments = (item) => {
@@ -104,7 +118,7 @@ export const ProfileScreen = ({ navigation, route }) => {
     <>
       <ModalPreview
         modalVisible={isPreviewModalVisible}
-        setModalVisible={setIsPreviewModalVisible}
+        closePreview={closePreview}
         item={previewItem}
       />
       <Styled.Container>
