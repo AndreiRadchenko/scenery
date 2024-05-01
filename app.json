@@ -4,7 +4,7 @@
     "slug": "scenery",
     "version": "1.0.3",
     "orientation": "portrait",
-    "icon": "./assets/img/icon.png",
+    "icon": "./assets/icon.png",
     "jsEngine": "hermes",
     "backgroundColor": "#ffffff",
     "splash": {
@@ -12,9 +12,7 @@
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "jsEngine": "hermes",
       "supportsTablet": true,
@@ -30,7 +28,7 @@
       },
       "jsEngine": "hermes",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/img/icon.png",
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "splash": {
@@ -41,14 +39,12 @@
       "softwareKeyboardLayoutMode": "resize",
       "package": "com.andriiradchenko.scenery",
       "runtimeVersion": "1.0.3",
-      "versionCode": 33
+      "versionCode": 35
     },
     "web": {
-      "favicon": "./assets/img/favicon.png"
+      "favicon": "./assets/img/favicon2.png"
     },
-    "plugins": [
-      "expo-font"
-    ],
+    "plugins": ["expo-font"],
     "extra": {
       "eas": {
         "projectId": "9e4ad268-895b-40e3-9020-712552b48820"
