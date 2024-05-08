@@ -9,7 +9,7 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { delay } from './helpers/delay';
 
-import 'expo-dev-client';
+// import 'expo-dev-client';
 
 import Main from './Main';
 
