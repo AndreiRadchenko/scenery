@@ -6,7 +6,7 @@
 
 Scenary is a social media clone app. Written with Expo React Native JS.
 
-[Expo Go](https://expo.dev/preview/update?message=fix%3A%20Change%20app%20icon&updateRuntimeVersion=1.0.3&createdAt=2024-05-01T11%3A19%3A17.488Z&slug=exp&projectId=9e4ad268-895b-40e3-9020-712552b48820&group=b7609741-fb65-4787-bc00-a64dd280c8c2) | [Google Play](https://play.google.com/store/apps/details?id=com.andriiradchenko.scenery)
+[Expo Go](https://expo.dev/preview/update?message=feat%3A%20Update%20to%20expo%2051&updateRuntimeVersion=1.0.3&createdAt=2024-05-15T07%3A42%3A37.769Z&slug=exp&projectId=9e4ad268-895b-40e3-9020-712552b48820&group=d481ded0-6fb0-49c9-9154-e4d8f9a2ee97) | [Google Play](https://play.google.com/store/apps/details?id=com.andriiradchenko.scenery)
 
 More technical details in [Scenery Wiki](https://github.com/AndreiRadchenko/scenery/wiki)
 
